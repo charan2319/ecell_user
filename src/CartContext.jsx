@@ -6,8 +6,14 @@ import { API_BASE } from './config';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-    const [cart, setCart] = useState([]);
-    const [user, setUser] = useState(null);
+    const [cart, setCart] = useState(() => {
+        const stored = localStorage.getItem('cart');
+        return stored ? JSON.parse(stored) : [];
+    });
+    const [user, setUser] = useState(() => {
+        const stored = localStorage.getItem('user');
+        return stored ? JSON.parse(stored) : null;
+    });
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -26,10 +32,13 @@ export const AppProvider = ({ children }) => {
 
     // Initial auth check
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) setUser(JSON.parse(storedUser));
         fetchProducts();
     }, []);
+
+    // Sync cart to localStorage
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
     const login = (userData) => {
         setUser(userData);
@@ -42,6 +51,22 @@ export const AppProvider = ({ children }) => {
             localStorage.setItem('user', JSON.stringify(newUser));
             return newUser;
         });
+    };
+
+    const refreshUser = async () => {
+        if (!user) return;
+        try {
+            const res = await axios.get(`${API_BASE}/auth/user/${user.id}`);
+            const freshUser = res.data;
+            
+            // Critical check: don't restore if they logged out during the async call
+            if (localStorage.getItem('user')) {
+                setUser(freshUser);
+                localStorage.setItem('user', JSON.stringify(freshUser));
+            }
+        } catch (err) {
+            console.error('Error refreshing user data:', err);
+        }
     };
 
     const logout = () => {
@@ -67,7 +92,7 @@ export const AppProvider = ({ children }) => {
     const clearCart = () => setCart([]);
 
     return (
-        <AppContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, user, login, logout, updateUser, searchTerm, setSearchTerm, products, loading, fetchProducts }}>
+        <AppContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, user, login, logout, updateUser, refreshUser, searchTerm, setSearchTerm, products, loading, fetchProducts }}>
             {children}
         </AppContext.Provider>
     );

@@ -11,20 +11,58 @@ import ShopAll from './pages/ShopAll';
 import { Search, MapPin } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
+import axios from 'axios';
 import './index.css';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 function App() {
   const { cart, searchTerm, setSearchTerm, user, products } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const suggestionRef = useRef(null);
+  const locationDropdownRef = useRef(null);
 
-  // Close suggestions when clicking outside
+  // Fetch locations
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/auth/locations`);
+        setLocations(res.data);
+        const saved = localStorage.getItem('selectedLocation');
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            const exists = res.data.find(l => l.id === parsed.id);
+            setSelectedLocation(exists || res.data[0]);
+          } catch (e) { setSelectedLocation(res.data[0]); }
+        } else {
+          setSelectedLocation(res.data[0]);
+        }
+      } catch (err) { console.error('Failed to fetch locations'); }
+    };
+    fetchLocations();
+  }, []);
+
+  // Persist selected location
+  useEffect(() => {
+    if (selectedLocation) {
+      localStorage.setItem('selectedLocation', JSON.stringify(selectedLocation));
+    }
+  }, [selectedLocation]);
+
+  // Close suggestions and location dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
         setShowSuggestions(false);
+      }
+      if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target)) {
+        setShowLocationDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -48,21 +86,102 @@ function App() {
           <div className="navbar-main">
             <div className="nav-brand-section">
               <Link to="/" className="nav-brand-stylized" style={{ textDecoration: 'none' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1' }}>
-                  <div style={{ fontSize: '1.4rem', fontWeight: '850', color: '#FFC700', marginBottom: '2px' }}>Founder's</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontSize: '1.1rem', fontWeight: '850', color: '#fff' }}>mart</span>
-                    <span style={{ fontSize: '0.4rem', color: '#fff', border: '1px solid #FFC700', borderRadius: '12px', padding: '1px 6px', fontWeight: '700', letterSpacing: '0.3px', opacity: 0.9 }}>BY E-CELL</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                  <div style={{ 
+                    fontSize: '1.2rem', 
+                    fontWeight: '950', 
+                    color: '#FFC107', 
+                    lineHeight: '0.9',
+                    letterSpacing: '-0.5px'
+                  }}>Founder's</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '-1px' }}>
+                    <span style={{ 
+                      fontSize: '1.5rem', 
+                      fontWeight: '950', 
+                      color: '#E5E7EB', 
+                      lineHeight: '0.8',
+                      letterSpacing: '-1px'
+                    }}>mart</span>
+                    <div style={{ 
+                      fontSize: '0.45rem', 
+                      color: '#fff', 
+                      border: '1.5px solid #FFC107', 
+                      borderRadius: '50px', 
+                      padding: '2px 8px', 
+                      fontWeight: '900', 
+                      letterSpacing: '0.5px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '16px',
+                      marginTop: '2px'
+                    }}>BY E-CELL</div>
                   </div>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '1.5px', 
+                    background: '#E5E7EB', 
+                    marginTop: '4px',
+                    opacity: 0.8
+                  }}></div>
+                  <div style={{ 
+                    fontSize: '0.6rem', 
+                    color: '#E5E7EB', 
+                    fontWeight: '800', 
+                    letterSpacing: '2px',
+                    marginTop: '4px',
+                    textAlign: 'center',
+                    textTransform: 'uppercase'
+                  }}>Alliance University</div>
                 </div>
               </Link>
 
-              <div className="nav-location-stylized">
-                <MapPin size={20} strokeWidth={2} />
-                <div className="nav-location-text">
-                  <span style={{ fontSize: '0.65rem', opacity: 0.7 }}>Delivering to Bengaluru 562130</span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: '700' }}>Alliance University</span>
+              <div 
+                className="nav-location-stylized" 
+                ref={locationDropdownRef}
+                onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+                style={{ cursor: 'pointer', position: 'relative' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <MapPin size={20} strokeWidth={2} />
+                  <div className="nav-location-text" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <span style={{ fontSize: '0.65rem', opacity: 0.7 }}>
+                      {selectedLocation ? `Delivering to ${selectedLocation.name} ${selectedLocation.pincode}` : 'Select Location'}
+                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: '700' }}>
+                        {selectedLocation ? selectedLocation.name : 'Choose Zone'}
+                      </span>
+                      <span style={{ fontSize: '10px', opacity: 0.6, transition: 'transform 0.2s', transform: showLocationDropdown ? 'rotate(180deg)' : 'none' }}>▼</span>
+                    </div>
+                  </div>
                 </div>
+
+                {showLocationDropdown && (
+                  <div className="location-selector-dropdown">
+                    <div className="dropdown-header">Choose your location</div>
+                    <div className="location-list">
+                      {locations.map(loc => (
+                        <div 
+                          key={loc.id} 
+                          className={`location-item ${selectedLocation?.id === loc.id ? 'active' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedLocation(loc);
+                            setShowLocationDropdown(false);
+                          }}
+                        >
+                          <MapPin size={16} />
+                          <div className="location-info">
+                            <div className="location-name">{loc.name}</div>
+                            <div className="location-pin">{loc.pincode}</div>
+                          </div>
+                        </div>
+                      ))}
+                      {locations.length === 0 && <div className="no-locations">No locations available</div>}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

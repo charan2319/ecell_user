@@ -1,4 +1,11 @@
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../CartContext';
+import { ArrowLeft, ShoppingCart, Truck } from 'lucide-react';
+import axios from 'axios';
+import { CustomCartIcon } from '../components/Icons';
 import { API_BASE } from '../config';
+
 
 function Cart() {
   const { cart, removeFromCart, clearCart, user, updateUser } = useContext(AppContext);

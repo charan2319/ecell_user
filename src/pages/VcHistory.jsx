@@ -1,9 +1,14 @@
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+import { AppContext } from '../CartContext';
+import { Clock, ArrowUpRight, ArrowDownLeft, ChevronLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { API_BASE } from '../config';
 
 function VcHistory() {
+  const { user, refreshUser } = useContext(AppContext);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem('user'));
 
   const fetchHistory = async () => {
     try {
@@ -18,6 +23,7 @@ function VcHistory() {
 
   useEffect(() => {
     if (user) {
+      refreshUser();
       fetchHistory();
     }
   }, []);

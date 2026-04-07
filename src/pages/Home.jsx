@@ -177,15 +177,24 @@ function Home() {
         </div>
       </div>
 
-      {/* 3. Upcoming Event (Full Width with card padding logic in CSS) */}
-      <div className="banner-upcoming" style={event?.image_url ? { background: `url(${event.image_url}) center/cover no-repeat` } : {}}>
-        {event ? (
-          <div style={{ color: '#1b1515ff', textShadow: '0 2px 10px rgba(0,0,0,0.5)', padding: '4rem', textAlign: 'center' }}>
-            <h2 style={{ fontSize: '3rem', margin: 0 }}>{event.title}</h2>
-            <p style={{ fontSize: '1.5rem', marginTop: '1rem', opacity: 0.9 }}>{event.subtitle}</p>
+      {/* 3. Upcoming Event (Dynamic High-Fidelity Card) */}
+      {event && (
+        <div className="section-container">
+          <div className="banner-upcoming-dynamic">
+            {event.image_url && (
+              <div className="event-image-box">
+                <img src={event.image_url} alt={event.title || 'Upcoming Event'} />
+              </div>
+            )}
+            {(event.title || event.subtitle) && (
+              <div className="event-info-box">
+                {event.title && <h2 className="event-title-dyn">{event.title}</h2>}
+                {event.subtitle && <p className="event-subtitle-dyn">{event.subtitle}</p>}
+              </div>
+            )}
           </div>
-        ) : <p style={{ fontSize: '2rem', opacity: 0.5, color: '#333' }}>Upcoming event ...</p>}
-      </div>
+        </div>
+      )}
 
       {/* 4. More Content in the Centered Container */}
       <div className="section-container">
@@ -287,10 +296,10 @@ function Home() {
               <span>Ecellatalliance@gmail.com</span>
             </div>
             <div className="footer-social-row">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="Instagram">
+              <a href="https://www.instagram.com/ecellatalliance?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="Instagram">
                 <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/e-cell-alliance-university/?originalSubdomain=in" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="LinkedIn">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />
               </a>
               <a href="https://facebook.com" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="Facebook">
