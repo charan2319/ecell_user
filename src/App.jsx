@@ -8,6 +8,7 @@ import OrderHistory from './pages/OrderHistory';
 import VcHistory from './pages/VcHistory';
 import ProductDetail from './pages/ProductDetail';
 import ShopAll from './pages/ShopAll';
+import VerifyEmail from './pages/VerifyEmail';
 import { Search, MapPin } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
@@ -260,6 +261,7 @@ function App() {
             <Route path="/vc-history" element={<VcHistory />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/shop-all" element={<ShopAll />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
           </Routes>
         </main>
       </div>

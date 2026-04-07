@@ -50,7 +50,7 @@ function ProductCard({ product, onNavigate, onAddToCart }) {
 }
 
 function Home() {
-  const { addToCart, searchTerm, products, loading, fetchProducts } = useContext(AppContext);
+  const { addToCart, searchTerm, products, loading, fetchProducts, user } = useContext(AppContext);
   const navigate = useNavigate();
   const [heroImages, setHeroImages] = useState([]);
   const [currentHero, setCurrentHero] = useState(0);
@@ -60,8 +60,12 @@ function Home() {
   const [activeCategory, setActiveCategory] = useState('All products');
 
   useEffect(() => {
+    // If user logged in via magic link and hasn't set their name, redirect to profile
+    if (user && user.name === 'New Student') {
+      navigate('/profile', { state: { promptName: true } });
+    }
     fetchData();
-  }, []);
+  }, [user, navigate]);
 
   // Automatic slider transition every 5 seconds
   useEffect(() => {
