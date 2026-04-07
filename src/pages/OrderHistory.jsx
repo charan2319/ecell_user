@@ -4,21 +4,17 @@ import { AppContext } from '../CartContext';
 import { ChevronLeft, Package, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import { API_BASE } from '../config';
+
 function OrderHistory() {
   const { user } = useContext(AppContext);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  useEffect(() => {
-    if (user) {
-      fetchOrders();
-    }
-  }, [user]);
-
   const fetchOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/api/orders/user/${user.id}`);
+      const res = await axios.get(`${API_BASE}/orders/user/${user.id}`);
       setOrders(res.data);
       setLoading(false);
     } catch (err) {
@@ -29,12 +25,18 @@ function OrderHistory() {
 
   const fetchOrderDetails = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:5001/api/orders/${id}`);
+      const res = await axios.get(`${API_BASE}/orders/${id}`);
       setSelectedOrder(res.data);
     } catch (err) {
       alert('Failed to load order details');
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchOrders();
+    }
+  }, [user]);
 
   if (!user) return <div className="section-container" style={{padding: '4rem 0'}}>Please login to view order history.</div>;
 

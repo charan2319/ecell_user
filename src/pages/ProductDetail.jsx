@@ -5,7 +5,7 @@ import { MapPin, Truck, ArrowLeft } from 'lucide-react';
 import { AppContext } from '../CartContext';
 import '../index.css';
 
-const API_BASE = 'http://localhost:5001/api';
+import { API_BASE } from '../config';
 
 function ProductDetail() {
   const { id } = useParams();

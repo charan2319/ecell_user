@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { API_BASE } from './config';
+
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -10,17 +12,10 @@ export const AppProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Initial auth check
-    useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) setUser(JSON.parse(storedUser));
-        fetchProducts();
-    }, []);
-
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:5001/api/products');
+            const res = await axios.get(`${API_BASE}/products`);
             setProducts(res.data);
             setLoading(false);
         } catch (err) {
@@ -28,6 +23,13 @@ export const AppProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    // Initial auth check
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) setUser(JSON.parse(storedUser));
+        fetchProducts();
+    }, []);
 
     const login = (userData) => {
         setUser(userData);

@@ -1,9 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { AppContext } from '../CartContext';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Wind, Truck } from 'lucide-react';
-import { CustomCartIcon } from '../components/Icons';
+import { API_BASE } from '../config';
 
 function Cart() {
   const { cart, removeFromCart, clearCart, user, updateUser } = useContext(AppContext);
@@ -56,7 +51,7 @@ function Cart() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5001/api/orders', {
+      const response = await axios.post(`${API_BASE}/orders`, {
         user_id: user.id,
         total_vc: total,
         items: itemsToCheckout.map(i => ({ ...i, quantity: getQty(i.id) })),

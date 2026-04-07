@@ -1,7 +1,4 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../CartContext';
+import { API_BASE } from '../config';
 
 function Login() {
   const [isRegister, setIsRegister] = useState(false);
@@ -20,7 +17,7 @@ function Login() {
     
     try {
       const endpoint = isRegister ? 'register' : 'login';
-      const res = await axios.post(`http://localhost:5001/api/auth/${endpoint}`, {
+      const res = await axios.post(`${API_BASE}/auth/${endpoint}`, {
         email, password, name
       });
       

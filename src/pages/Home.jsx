@@ -4,6 +4,8 @@ import { UserPlus, Calendar, Trophy, ChevronLeft, ChevronRight } from 'lucide-re
 import { AppContext } from '../CartContext';
 import { useNavigate } from 'react-router-dom';
 
+import { API_BASE } from '../config';
+
 // Auto-rotating product card
 function ProductCard({ product, onNavigate, onAddToCart }) {
   const allImages = [
@@ -74,10 +76,10 @@ function Home() {
   const fetchData = async () => {
     try {
       const [hRes, eRes, bRes, aRes] = await Promise.all([
-        axios.get('http://localhost:5001/api/hero'),
-        axios.get('http://localhost:5001/api/events'),
-        axios.get('http://localhost:5001/api/brands'),
-        axios.get('http://localhost:5001/api/about-image')
+        axios.get(`${API_BASE}/hero`),
+        axios.get(`${API_BASE}/events`),
+        axios.get(`${API_BASE}/brands`),
+        axios.get(`${API_BASE}/about-image`)
       ]);
       // fetchProducts(); // We can call this if we want to ensure fresh data on home mount, or trust CartContext
       setHeroImages(hRes.data);

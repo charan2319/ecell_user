@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ArrowUpRight, ArrowDownLeft, Clock, ChevronLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { API_BASE } from '../config';
 
 function VcHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(() => {
-    if (user) {
-      fetchHistory();
-    }
-  }, []);
-
   const fetchHistory = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/api/auth/points-history/${user.id}`);
+      const res = await axios.get(`${API_BASE}/auth/points-history/${user.id}`);
       setHistory(res.data);
       setLoading(false);
     } catch (err) {
@@ -24,6 +15,12 @@ function VcHistory() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchHistory();
+    }
+  }, []);
 
   if (!user) return <div className="section-container" style={{padding: '4rem 0'}}>Please login to view history.</div>;
 
