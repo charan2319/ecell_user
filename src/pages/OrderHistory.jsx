@@ -12,10 +12,21 @@ function OrderHistory() {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
+  const parseLocation = (locStr) => {
+    try {
+      const parsed = JSON.parse(locStr);
+      return parsed.full || `${parsed.name} ${parsed.pincode}`.trim();
+    } catch (e) {
+      return locStr || 'Not Specified';
+    }
+  };
+
   const fetchOrders = async () => {
     try {
       const res = await axios.get(`${API_BASE}/orders/user/${user.id}`);
-      setOrders(res.data);
+      // Sort orders by latest first
+      const sortedOrders = res.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      setOrders(sortedOrders);
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -73,8 +84,8 @@ function OrderHistory() {
                     borderRadius: '20px', 
                     fontSize: '0.8rem', 
                     fontWeight: 700,
-                    background: '#F0FDF4',
-                    color: '#10B981'
+                    background: order.status === 'Delivered' ? '#F0FDF4' : '#FFF7ED',
+                    color: order.status === 'Delivered' ? '#10B981' : '#F97316'
                   }}>
                     {order.status}
                   </span>
@@ -86,6 +97,11 @@ function OrderHistory() {
                   <div>•</div>
                   <div>Total Spent: <strong>{order.total_vc} Vc's</strong></div>
                 </div>
+                {order.delivery_location && (
+                  <div style={{ marginTop: '10px', fontSize: '0.85rem', color: '#888', fontStyle: 'italic' }}>
+                    Delivering to: {parseLocation(order.delivery_location)}
+                  </div>
+                )}
               </div>
               <div style={{ textAlign: 'right' }}>
                 <button 
@@ -113,6 +129,13 @@ function OrderHistory() {
                 ✕
               </button>
             </div>
+
+            {selectedOrder.delivery_location && (
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#F8FAFC', borderRadius: '16px', border: '1px solid #E2E8F0', fontSize: '0.9rem' }}>
+                <span style={{ fontWeight: 700, color: '#64748B', display: 'block', marginBottom: '4px', textTransform: 'uppercase', fontSize: '0.75rem' }}>Delivery Address</span>
+                <span style={{ color: '#1E293B' }}>{parseLocation(selectedOrder.delivery_location)}</span>
+              </div>
+            )}
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '10px' }}>
               {selectedOrder.items?.map((item, idx) => (

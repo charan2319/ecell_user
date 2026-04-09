@@ -16,45 +16,70 @@ import axios from 'axios';
 import './index.css';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-
 function App() {
   const { cart, searchTerm, setSearchTerm, user, products } = useContext(AppContext);
   const navigate = useNavigate();
-  const location = useLocation();
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
+  const [detecting, setDetecting] = useState(false);
   const suggestionRef = useRef(null);
   const locationDropdownRef = useRef(null);
 
-  // Fetch locations
+  // Initialize location from localStorage
   useEffect(() => {
-    const fetchLocations = async () => {
+    const saved = localStorage.getItem('userLocation');
+    if (saved) {
       try {
-        const res = await axios.get(`${API_BASE}/auth/locations`);
-        setLocations(res.data);
-        const saved = localStorage.getItem('selectedLocation');
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            const exists = res.data.find(l => l.id === parsed.id);
-            setSelectedLocation(exists || res.data[0]);
-          } catch (e) { setSelectedLocation(res.data[0]); }
-        } else {
-          setSelectedLocation(res.data[0]);
-        }
-      } catch (err) { console.error('Failed to fetch locations'); }
-    };
-    fetchLocations();
+        setUserLocation(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse saved location');
+      }
+    }
   }, []);
 
-  // Persist selected location
-  useEffect(() => {
-    if (selectedLocation) {
-      localStorage.setItem('selectedLocation', JSON.stringify(selectedLocation));
+  const reverseGeocode = async (lat, lon) => {
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`, {
+        headers: {
+          'User-Agent': "Founder's Mart User App"
+        }
+      });
+      const data = await response.json();
+      
+      // Extract a clean address
+      const address = data.address;
+      const cleanName = address.suburb || address.neighbourhood || address.road || address.city || "Current Location";
+      const pincode = address.postcode || "";
+      
+      return { name: cleanName, pincode, full: data.display_name, lat, lon };
+    } catch (err) {
+      console.error('Reverse geocoding failed', err);
+      return { name: "Current Location", pincode: "", lat, lon };
     }
-  }, [selectedLocation]);
+  };
+
+  const handleDetectLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setDetecting(true);
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      const locationData = await reverseGeocode(latitude, longitude);
+      setUserLocation(locationData);
+      localStorage.setItem('userLocation', JSON.stringify(locationData));
+      setDetecting(false);
+      setShowLocationDropdown(false);
+    }, (error) => {
+      console.error(error);
+      alert("Unable to retrieve your location. Please check your permissions.");
+      setDetecting(false);
+    });
+  };
+
 
   // Close suggestions and location dropdown when clicking outside
   useEffect(() => {
@@ -147,11 +172,11 @@ function App() {
                   <MapPin size={20} strokeWidth={2} />
                   <div className="nav-location-text" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span style={{ fontSize: '0.65rem', opacity: 0.7 }}>
-                      {selectedLocation ? `Delivering to ${selectedLocation.name} ${selectedLocation.pincode}` : 'Select Location'}
+                      {userLocation ? `Delivering to ${userLocation.name} ${userLocation.pincode}` : 'Set Location'}
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <span style={{ fontSize: '0.85rem', fontWeight: '700' }}>
-                        {selectedLocation ? selectedLocation.name : 'Choose Zone'}
+                        {userLocation ? userLocation.name : 'Choose Location'}
                       </span>
                       <span style={{ fontSize: '10px', opacity: 0.6, transition: 'transform 0.2s', transform: showLocationDropdown ? 'rotate(180deg)' : 'none' }}>▼</span>
                     </div>
@@ -160,26 +185,32 @@ function App() {
 
                 {showLocationDropdown && (
                   <div className="location-selector-dropdown">
-                    <div className="dropdown-header">Choose your location</div>
+                    <div className="dropdown-header">Set your delivery location</div>
                     <div className="location-list">
-                      {locations.map(loc => (
-                        <div 
-                          key={loc.id} 
-                          className={`location-item ${selectedLocation?.id === loc.id ? 'active' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedLocation(loc);
-                            setShowLocationDropdown(false);
-                          }}
-                        >
+                      <div 
+                        className="location-item"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDetectLocation();
+                        }}
+                      >
+                        <MapPin size={16} />
+                        <div className="location-info">
+                          <div className="location-name" style={{ color: '#FFC700', fontWeight: '800' }}>
+                            {detecting ? 'Detecting...' : 'Use My Current Location'}
+                          </div>
+                          <div className="location-pin">Fast & accurate via browser</div>
+                        </div>
+                      </div>
+                      {userLocation && (
+                        <div className="location-item active" style={{ marginTop: '0.5rem', borderTop: '1px solid #eee', paddingTop: '0.5rem' }}>
                           <MapPin size={16} />
                           <div className="location-info">
-                            <div className="location-name">{loc.name}</div>
-                            <div className="location-pin">{loc.pincode}</div>
+                            <div className="location-name">{userLocation.name}</div>
+                            <div className="location-pin">{userLocation.pincode}</div>
                           </div>
                         </div>
-                      ))}
-                      {locations.length === 0 && <div className="no-locations">No locations available</div>}
+                      )}
                     </div>
                   </div>
                 )}

@@ -92,7 +92,7 @@ export const AppProvider = ({ children }) => {
     const clearCart = () => setCart([]);
 
     return (
-        <AppContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, user, login, logout, updateUser, refreshUser, searchTerm, setSearchTerm, products, loading, fetchProducts }}>
+        <AppContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, user, login, logout, updateUser, refreshUser, searchTerm, setSearchTerm, products, loading, setLoading, fetchProducts }}>
             {children}
         </AppContext.Provider>
     );

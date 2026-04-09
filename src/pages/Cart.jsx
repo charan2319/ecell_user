@@ -5,11 +5,13 @@ import { ArrowLeft, ShoppingCart, Truck } from 'lucide-react';
 import axios from 'axios';
 import { CustomCartIcon } from '../components/Icons';
 import { API_BASE } from '../config';
+import checkmarkImage from '../assets/checkmark.png';
 
 
 function Cart() {
   const { cart, removeFromCart, clearCart, user, updateUser } = useContext(AppContext);
   const navigate = useNavigate();
+  const [orderConfirmed, setOrderConfirmed] = useState(false);
 
   // Track qty per item locally (starts from cart qty)
   const [quantities, setQuantities] = useState(() => {
@@ -58,21 +60,49 @@ function Cart() {
       return;
     }
     try {
+      const savedLocation = localStorage.getItem('userLocation');
+      const locationObj = savedLocation ? JSON.parse(savedLocation) : null;
+      const deliveryLocation = locationObj ? JSON.stringify(locationObj) : 'Processing';
+
       const response = await axios.post(`${API_BASE}/orders`, {
         user_id: user.id,
         total_vc: total,
         items: itemsToCheckout.map(i => ({ ...i, quantity: getQty(i.id) })),
+        delivery_location: deliveryLocation
       });
       updateUser({ points: user.points - total });
       clearCart();
-      alert(response.data.message || "Order placed successfully!");
-      navigate('/profile');
+      setOrderConfirmed(true);
     } catch (err) {
       console.error(err);
       const msg = err.response?.data?.message || "Error placing order";
       alert(msg);
     }
   };
+
+  if (orderConfirmed) {
+    return (
+      <div className="cart-page-wrapper" style={{ padding: '0 1rem' }}>
+        <div className="order-confirmed-overlay">
+          <div className="checkmark-wrapper">
+            <img src={checkmarkImage} alt="Order Confirmed" className="checkmark-img" />
+          </div>
+          
+          <h1 className="confirmation-title">Your Order Is Confirmed!</h1>
+          <p className="confirmation-sub">We'll Send You Shipping Confirmation Email</p>
+          
+          <div className="confirmation-actions">
+            <button className="btn-confirm-view" onClick={() => navigate('/orders')}>
+              View My Orders
+            </button>
+            <button className="btn-confirm-shop" onClick={() => navigate('/')}>
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="cart-page-wrapper">
@@ -208,6 +238,7 @@ function Cart() {
 
         </div>
       )}
+
     </div>
   );
 }
