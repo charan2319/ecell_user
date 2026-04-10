@@ -50,7 +50,7 @@ function ProductCard({ product, onNavigate, onAddToCart }) {
 }
 
 function Home() {
-  const { addToCart, searchTerm, products, loading, setLoading, fetchProducts, user } = useContext(AppContext);
+  const { addToCart, searchTerm, products, loading, setLoading, fetchProducts, user, updateUser } = useContext(AppContext);
   const navigate = useNavigate();
   const [heroImages, setHeroImages] = useState([]);
   const [currentHero, setCurrentHero] = useState(0);
@@ -59,13 +59,38 @@ function Home() {
   const [aboutImage, setAboutImage] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All products');
 
+  // Name Modal State
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [updatingName, setUpdatingName] = useState(false);
+
   useEffect(() => {
-    // If user logged in via magic link and hasn't set their name, redirect to profile
     if (user && user.name === 'New Student') {
-      navigate('/profile', { state: { promptName: true } });
+      setShowNameModal(true);
+    } else {
+      setShowNameModal(false);
     }
+  }, [user]);
+
+  useEffect(() => {
     fetchData();
-  }, [user, navigate]);
+  }, []);
+
+  const handleUpdateName = async (e) => {
+    e.preventDefault();
+    if (!newName.trim()) return;
+    setUpdatingName(true);
+    try {
+      const res = await axios.put(`${API_BASE}/auth/user/${user.id}/name`, { name: newName });
+      updateUser(res.data);
+      setShowNameModal(false);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update name. Please try again.');
+    } finally {
+      setUpdatingName(false);
+    }
+  };
 
   // Automatic slider transition every 5 seconds
   useEffect(() => {
@@ -316,6 +341,38 @@ function Home() {
           </div>
         </div>
       </footer>
+
+      {/* RENAME MODAL */}
+      {showNameModal && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+          <div style={{ background: '#fff', borderRadius: '40px', padding: '3.5rem 3rem', maxWidth: '440px', width: '100%', textAlign: 'center', boxShadow: '0 40px 80px rgba(0,0,0,0.4)' }}>
+            <h2 style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-1px' }}>Welcome!</h2>
+            <p style={{ color: '#666', marginBottom: '2.5rem', fontWeight: 500, lineHeight: 1.5 }}>It looks like it's your first time here. Please enter your full name to continue.</p>
+            <form onSubmit={handleUpdateName}>
+              <input 
+                type="text" 
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                placeholder="Ex. John Doe"
+                style={{ width: '100%', padding: '1rem 1.25rem', borderRadius: '16px', border: '2px solid #E5E7EB', fontSize: '1.1rem', marginBottom: '1.5rem', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.2s' }}
+                onFocus={(e) => e.target.style.borderColor = '#000'}
+                onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
+                required
+              />
+              <button 
+                type="submit" 
+                disabled={updatingName}
+                style={{ width: '100%', padding: '1.1rem', borderRadius: '16px', background: '#000', color: '#fff', border: 'none', fontSize: '1.1rem', fontWeight: 800, cursor: updatingName ? 'not-allowed' : 'pointer', opacity: updatingName ? 0.7 : 1, transition: 'transform 0.1s' }}
+                onMouseDown={(e) => !updatingName && (e.target.style.transform = 'scale(0.98)')}
+                onMouseUp={(e) => !updatingName && (e.target.style.transform = 'scale(1)')}
+                onMouseLeave={(e) => !updatingName && (e.target.style.transform = 'scale(1)')}
+              >
+                {updatingName ? 'Saving...' : 'Save Name'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
