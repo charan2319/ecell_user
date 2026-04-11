@@ -331,12 +331,6 @@ function Home() {
               <a href="https://www.linkedin.com/company/e-cell-alliance-university/?originalSubdomain=in" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="LinkedIn">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="Facebook">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/600px-Facebook_Logo_%282019%29.png" alt="Facebook" />
-              </a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="X (Twitter)">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/X_logo_2023.svg/600px-X_logo_2023.svg.png" alt="X" />
-              </a>
             </div>
           </div>
         </div>
