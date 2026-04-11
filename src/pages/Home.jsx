@@ -301,7 +301,7 @@ function Home() {
           <div className="footer-cta">
             <h2 className="footer-cta-title">Do You Have A Startup Idea ?</h2>
             <p className="footer-cta-sub">Join E-Cell Community</p>
-            <a href="/login" className="footer-join-btn">Join Now</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSclOjbwdKMh5MWiGI-WDeGB_zsUSfztoTqcJ6_-8rugN0LgSw/viewform" target="_blank" rel="noreferrer" className="footer-join-btn">Join Now</a>
           </div>
 
           {/* Center - Quick Links */}
