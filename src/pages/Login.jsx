@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../CartContext';
 import axios from 'axios';
 import { API_BASE } from '../config';
-import { GoogleLogin } from '@react-oauth/google';
 
 function Login() {
   const { login } = useContext(AppContext);
@@ -40,33 +39,18 @@ function Login() {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await axios.post(`${API_BASE}/auth/google`, {
-        idToken: credentialResponse.credential
-      });
-      
-      if (res.data.token && res.data.user) {
-        localStorage.setItem('token', res.data.token);
-        login(res.data.user);
-        navigate('/');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Google Authentication failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleError = () => {
-    setError("Google Sign-In was unsuccessful. Please try again.");
-  };
 
   const handleSendOtp = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
     if (!email) return setError('Please enter your email.');
+    
+    // Client-side domain check
+    const domain = email.toLowerCase().split('@')[1];
+    const allowedDomains = ['alliance.edu.in', 'ced.alliance.edu.in'];
+    if (!allowedDomains.includes(domain)) {
+      setError('Please use your Alliance University email (@alliance.edu.in or @ced.alliance.edu.in)');
+      return;
+    }
     setLoading(true);
     setError('');
     setOtpArray(['', '', '', '']);
@@ -125,27 +109,6 @@ function Login() {
               <p style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>Student Login</p>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-              {loading ? (
-                <div style={{ padding: '1rem', color: '#6B7280', fontWeight: 700 }}>Checking...</div>
-              ) : (
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  ux_mode="popup"
-                  theme="filled_black"
-                  shape="pill"
-                  text="signin_with"
-                  width="300"
-                />
-              )}
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0' }}>
-              <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }}></div>
-              <span style={{ margin: '0 1rem', color: '#9CA3AF', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase' }}>or verify with otp</span>
-              <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }}></div>
-            </div>
 
             <form onSubmit={handleSendOtp}>
               <div style={{ marginBottom: '1rem' }}>
