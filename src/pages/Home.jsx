@@ -333,6 +333,9 @@ function Home() {
             </div>
           </div>
         </div>
+        <div className="footer-bottom">
+          <p>developed by MARUVENI CHARAN, T.S.G. MAHESH AND NASINA UDAY SANKAR</p>
+        </div>
       </footer>
 
       {/* RENAME MODAL */}

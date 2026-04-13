@@ -216,10 +216,14 @@ a {
 .hero-slide {
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .hero-nav-btn {
@@ -273,25 +277,11 @@ a {
   margin-top: 2.5rem;
 }
 
-@media (max-width: 768px) {
-  .section-title {
-    margin-top: 1.25rem !important;
-    margin-bottom: 0.75rem !important;
-    font-size: 1.4rem !important;
-  }
-}
 
 .category-pills {
   display: flex;
   gap: 1rem;
   margin-bottom: 1.25rem;
-}
-
-@media (max-width: 768px) {
-  .category-pills {
-    margin-bottom: 0.25rem !important;
-    padding-bottom: 0.5rem !important;
-  }
 }
 
 .pill {
@@ -608,42 +598,42 @@ a {
 @media (max-width: 768px) {
 
   /* ===== MOBILE HEADER LAYOUT ===== */
-  /* Brand + Location on left, Search icon + Cart + Profile on right */
   .navbar-main {
-    padding: 0.6rem 0.75rem;
+    padding: 0.6rem clamp(0.5rem, 2vw, 0.75rem);
     gap: 0.5rem;
     flex-wrap: nowrap !important;
     align-items: center;
   }
 
   .nav-brand-section {
-    gap: 0.5rem;
+    gap: clamp(0.25rem, 1.5vw, 0.5rem);
     flex: 1;
     min-width: 0;
     display: flex;
     align-items: center;
-    overflow: hidden; /* Prevent child overflow */
+    overflow: hidden;
   }
 
   .nav-brand-stylized {
-    transform: scale(0.7);
+    transform: scale(clamp(0.6, 0.18vw + 0.55, 0.75));
     transform-origin: left center;
     flex-shrink: 0;
   }
 
-  /* Show location on mobile */
+  /* Location — truncated with ".." like Flipkart, scales with screen */
   .nav-location-stylized {
     display: flex !important;
     gap: 4px !important;
     min-width: 0 !important;
     flex: 1 !important;
-    max-width: 120px !important; /* Strict limit like Flipkart */
-    overflow: hidden;
+    max-width: clamp(90px, 30vw, 160px) !important;
+    overflow: visible !important;
+    position: relative !important;
   }
 
   .nav-location-stylized svg {
-    width: 12px !important;
-    height: 12px !important;
+    width: clamp(10px, 3vw, 14px) !important;
+    height: clamp(10px, 3vw, 14px) !important;
     flex-shrink: 0;
   }
 
@@ -672,11 +662,23 @@ a {
   }
 
   .nav-location-text span:first-child {
-    font-size: 0.5rem !important;
+    font-size: clamp(0.4rem, 1.3vw, 0.55rem) !important;
   }
 
   .nav-location-text span:last-child {
-    font-size: 0.65rem !important;
+    font-size: clamp(0.55rem, 1.8vw, 0.7rem) !important;
+  }
+
+  /* Location dropdown — full-width on mobile */
+  .location-selector-dropdown {
+    position: fixed !important;
+    top: auto !important;
+    left: 4vw !important;
+    right: 4vw !important;
+    width: auto !important;
+    margin-top: 8px !important;
+    z-index: 10000 !important;
+    border-radius: 16px !important;
   }
 
   /* HIDE desktop search bar on mobile */
@@ -691,66 +693,83 @@ a {
 
   /* Cart & profile — right side */
   .nav-links {
-    gap: 0.6rem !important;
-    flex-shrink: 0 !important; /* Ensure icons don't move or hide */
+    gap: clamp(0.4rem, 1.5vw, 0.6rem) !important;
+    flex-shrink: 0 !important;
     margin-left: auto;
     display: flex !important;
     align-items: center !important;
   }
 
   .nav-link-item svg {
-    width: 22px !important;
-    height: 22px !important;
+    width: clamp(18px, 5.5vw, 24px) !important;
+    height: clamp(18px, 5.5vw, 24px) !important;
   }
 
   .cart-badge {
-    width: 15px !important;
-    height: 15px !important;
-    font-size: 0.6rem !important;
+    width: clamp(13px, 4vw, 16px) !important;
+    height: clamp(13px, 4vw, 16px) !important;
+    font-size: clamp(0.5rem, 1.5vw, 0.65rem) !important;
     top: -4px !important;
     right: -6px !important;
   }
 
   .navbar-top {
-    gap: 1rem !important;
-    font-size: 0.75rem !important;
+    gap: clamp(0.5rem, 3vw, 1.25rem) !important;
+    font-size: clamp(0.65rem, 2vw, 0.8rem) !important;
   }
 
-  /* ===== HERO SLIDER - CARD LOOK ON MOBILE ===== */
+  /* ===== HERO SLIDER — no whitespace, scales to any screen ===== */
   .hero-slider-container {
     height: auto !important;
-    aspect-ratio: auto !important; /* Let image drive aspect ratio */
-    border-radius: 20px !important;
-    margin: 0.75rem 0.75rem 1.5rem 0.75rem !important;
-    max-width: calc(100% - 1.5rem) !important;
-    width: calc(100% - 1.5rem) !important;
-    background: #fff;
+    aspect-ratio: unset !important;
+    border-radius: clamp(14px, 4vw, 22px) !important;
+    margin: 3vw !important;
+    margin-bottom: 5vw !important;
+    max-width: 94vw !important;
+    width: 94vw !important;
+    background: transparent !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: none !important;
     overflow: hidden !important;
+    padding: 0 !important;
+    line-height: 0 !important;
   }
 
   .hero-slide {
     height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: block !important;
+    line-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .hero-slide img {
     width: 100% !important;
     height: auto !important;
-    object-fit: contain !important;
+    object-fit: cover !important;
     display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* ===== ABOUT US SECTION - REDUCED HEIGHT ===== */
+  /* ===== SECTION CONTAINER — fluid padding ===== */
+  .section-container {
+    padding: 0 4vw !important;
+  }
+
+  .section-title {
+    margin-top: clamp(0.75rem, 3vw, 1.25rem) !important;
+    margin-bottom: clamp(0.5rem, 2vw, 0.75rem) !important;
+    font-size: clamp(1.1rem, 4.5vw, 1.5rem) !important;
+  }
+
+  /* ===== ABOUT US SECTION ===== */
   .about-section-container {
     flex-direction: column !important;
-    gap: 1rem !important;
-    padding: 1.5rem 1.25rem !important;
-    margin: 2rem 0.75rem !important;
-    border-radius: 18px !important;
+    gap: clamp(0.75rem, 2.5vw, 1rem) !important;
+    padding: clamp(1rem, 4vw, 1.5rem) !important;
+    margin: 2rem 3vw !important;
+    border-radius: clamp(14px, 4vw, 20px) !important;
     align-items: center !important;
     background: #1c1b18 !important;
   }
@@ -765,17 +784,17 @@ a {
   }
 
   .about-heading-box h2 {
-    font-size: 1.15rem !important;
+    font-size: clamp(1rem, 3.5vw, 1.2rem) !important;
     font-weight: 850 !important;
     letter-spacing: -0.5px !important;
   }
 
   .about-heading-box {
-    padding: 5px 18px !important;
+    padding: 5px clamp(14px, 4vw, 20px) !important;
   }
 
   .about-content-text {
-    font-size: 0.75rem !important;
+    font-size: clamp(0.68rem, 2.2vw, 0.8rem) !important;
     line-height: 1.35 !important;
     font-weight: 600 !important;
     text-align: center !important;
@@ -784,24 +803,24 @@ a {
   .about-visual-box {
     flex: none !important;
     width: 100% !important;
-    height: 180px !important;
+    height: clamp(140px, 45vw, 200px) !important;
     padding: 0 !important;
     margin-top: 0 !important;
   }
 
   .about-visual-box img {
-    border-radius: 12px !important;
+    border-radius: clamp(8px, 3vw, 14px) !important;
     object-fit: cover !important;
     width: 100% !important;
     height: 100% !important;
   }
 
-  /* Category Pills - Swipable & No Wrap */
+  /* ===== Category Pills — Swipable ===== */
   .category-pills {
     display: flex !important;
     overflow-x: auto !important;
     flex-wrap: nowrap !important;
-    gap: 0.75rem !important;
+    gap: clamp(0.5rem, 2vw, 0.75rem) !important;
     padding: 0.5rem 0 0.75rem !important;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -812,42 +831,42 @@ a {
   }
 
   .pill {
-    font-size: 0.82rem !important;
-    padding: 0.6rem 1.2rem !important;
+    font-size: clamp(0.72rem, 2.3vw, 0.85rem) !important;
+    padding: clamp(0.45rem, 1.5vw, 0.65rem) clamp(0.9rem, 3vw, 1.3rem) !important;
     flex-shrink: 0 !important;
     white-space: nowrap !important;
     border-radius: 12px !important;
   }
 
-  /* Earn VCs - compact on mobile */
+  /* ===== Earn VCs — compact ===== */
   .earn-box {
-    padding: 1.5rem 1rem !important;
-    margin: 2rem 0 !important;
-    border-radius: 16px !important;
+    padding: clamp(1rem, 4vw, 1.5rem) clamp(0.75rem, 3vw, 1rem) !important;
+    margin: clamp(1.25rem, 5vw, 2rem) 0 !important;
+    border-radius: clamp(12px, 4vw, 18px) !important;
   }
 
   .earn-title {
-    font-size: 1.2rem !important;
-    margin: 0 0 1.25rem 0 !important;
+    font-size: clamp(1rem, 3.5vw, 1.25rem) !important;
+    margin: 0 0 clamp(0.75rem, 3vw, 1.25rem) 0 !important;
   }
 
   .earn-grid {
     display: flex !important;
     justify-content: space-around !important;
-    gap: 0.5rem !important;
+    gap: clamp(0.25rem, 1.5vw, 0.5rem) !important;
   }
 
   .earn-item {
-    gap: 0.6rem !important;
+    gap: clamp(0.4rem, 1.5vw, 0.6rem) !important;
   }
 
   .earn-icon {
-    width: 32px !important;
-    height: 32px !important;
+    width: clamp(24px, 8vw, 36px) !important;
+    height: clamp(24px, 8vw, 36px) !important;
   }
 
   .earn-item-text {
-    font-size: 0.7rem !important;
+    font-size: clamp(0.6rem, 2vw, 0.75rem) !important;
   }
 
   /* Product Detail Grid */
@@ -858,18 +877,18 @@ a {
   }
 
   .product-detail-grid h1 {
-    font-size: 1.2rem !important;
+    font-size: clamp(1rem, 3.5vw, 1.3rem) !important;
   }
 
-  /* Horizontal Swipable Product Row - Clean Edge-to-Edge Swipe */
+  /* ===== Product Row — fluid, first card visible ===== */
   .product-grid,
   .product-row {
     display: flex !important;
     overflow-x: auto !important;
     flex-wrap: nowrap !important;
-    gap: 0.75rem !important;
-    padding: 0.5rem 2rem 1.5rem 2rem !important;
-    margin: 0 -2rem !important;
+    gap: clamp(0.5rem, 2vw, 0.75rem) !important;
+    padding: 0.5rem 4vw 1.5rem 4vw !important;
+    margin: 0 -4vw !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none !important;
@@ -884,87 +903,87 @@ a {
     display: none !important;
   }
 
+  /* Product card — 60vw so ~1.5 cards visible on any phone */
   .product-card {
-    width: 240px !important;
-    min-width: 240px !important;
+    width: clamp(200px, 60vw, 280px) !important;
+    min-width: clamp(200px, 60vw, 280px) !important;
     min-height: auto !important;
-    padding: 0.75rem !important;
-    border-radius: 20px !important;
+    padding: clamp(0.5rem, 2vw, 0.75rem) !important;
+    border-radius: clamp(14px, 4vw, 22px) !important;
     flex-shrink: 0 !important;
     scroll-snap-align: start !important;
   }
 
   .product-image-container {
-    height: 180px !important;
-    margin-bottom: 0.75rem !important;
-    border-radius: 12px !important;
+    height: clamp(130px, 42vw, 200px) !important;
+    margin-bottom: clamp(0.5rem, 2vw, 0.75rem) !important;
+    border-radius: clamp(8px, 3vw, 14px) !important;
   }
 
   .product-title {
-    font-size: 1.05rem !important;
+    font-size: clamp(0.9rem, 3vw, 1.1rem) !important;
     padding: 0 0.2rem !important;
-    margin-bottom: 0.4rem !important;
+    margin-bottom: clamp(0.25rem, 1vw, 0.4rem) !important;
   }
 
   .product-price {
-    font-size: 0.95rem !important;
+    font-size: clamp(0.82rem, 2.5vw, 1rem) !important;
     padding: 0 0.2rem !important;
-    margin-bottom: 0.75rem !important;
+    margin-bottom: clamp(0.5rem, 2vw, 0.75rem) !important;
   }
 
   .add-btn {
-    font-size: 1rem !important;
-    padding: 0.75rem !important;
-    border-radius: 10px !important;
+    font-size: clamp(0.85rem, 2.8vw, 1.05rem) !important;
+    padding: clamp(0.55rem, 2vw, 0.75rem) !important;
+    border-radius: clamp(8px, 2.5vw, 12px) !important;
     margin: auto 0 0 0 !important;
     width: 100% !important;
   }
 
-  /* Reduced Sides for Upcoming Event */
+  /* ===== Upcoming Event ===== */
   .banner-upcoming {
-    margin: 1.5rem 1rem !important;
-    padding: 1rem !important;
-    min-height: 160px !important;
-    border-radius: 20px !important;
+    margin: 1.5rem 3vw !important;
+    padding: clamp(0.75rem, 3vw, 1rem) !important;
+    min-height: clamp(120px, 40vw, 180px) !important;
+    border-radius: clamp(14px, 4vw, 22px) !important;
   }
 
   .banner-upcoming h2 {
-    font-size: 1.5rem !important;
+    font-size: clamp(1.1rem, 4vw, 1.6rem) !important;
   }
 
   .banner-upcoming p {
-    font-size: 0.9rem !important;
+    font-size: clamp(0.75rem, 2.5vw, 0.95rem) !important;
   }
 
-  /* Single row for 4 brands on mobile */
+  /* ===== Brands — always single row, fluid ===== */
   .brands-row {
-    gap: 0.5rem !important;
+    gap: clamp(0.25rem, 1.5vw, 0.5rem) !important;
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
   }
 
   .brand-box {
-    padding: 0.5rem !important;
+    padding: clamp(0.3rem, 1.5vw, 0.5rem) !important;
     min-width: 0 !important;
     width: 23% !important;
-    height: 50px !important;
-    border-radius: 8px !important;
+    height: clamp(38px, 12vw, 55px) !important;
+    border-radius: clamp(6px, 2vw, 10px) !important;
   }
 
   .brand-image {
-    height: 30px !important;
-    max-width: 90px !important;
+    height: clamp(22px, 7vw, 35px) !important;
+    max-width: clamp(60px, 20vw, 100px) !important;
   }
 
-  /* ===== FOOTER MOBILE - Quick Links & Contact left, rest centered ===== */
+  /* ===== FOOTER MOBILE ===== */
   .footer-inner {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 2rem 1.5rem !important;
-    padding: 2.5rem 1.5rem !important;
+    gap: clamp(1.25rem, 5vw, 2rem) clamp(1rem, 4vw, 1.5rem) !important;
+    padding: clamp(1.5rem, 6vw, 2.5rem) 4vw !important;
   }
 
-  /* Left-aligned Quick Links */
   .footer-links-col {
     grid-column: 1 / 2 !important;
     grid-row: 1 !important;
@@ -975,7 +994,6 @@ a {
     gap: 0.5rem !important;
   }
 
-  /* Left-aligned Contact Us */
   .footer-contact-col {
     grid-column: 2 / 3 !important;
     grid-row: 1 !important;
@@ -986,7 +1004,6 @@ a {
     gap: 0.5rem !important;
   }
 
-  /* Centered CTA */
   .footer-cta {
     grid-column: 1 / -1 !important;
     grid-row: 2 !important;
@@ -996,26 +1013,26 @@ a {
     text-align: center !important;
     border-right: none !important;
     border-top: 1px solid rgba(255,255,255,0.1) !important;
-    padding: 2rem 0 0 0 !important;
+    padding: clamp(1rem, 4vw, 2rem) 0 0 0 !important;
   }
 
   .footer-cta-title {
-    font-size: 1.3rem !important;
+    font-size: clamp(1.05rem, 3.8vw, 1.4rem) !important;
     margin-bottom: 0.3rem !important;
   }
 
   .footer-cta-sub {
     margin-bottom: 1rem !important;
-    font-size: 0.85rem !important;
+    font-size: clamp(0.75rem, 2.3vw, 0.9rem) !important;
   }
 
   .footer-join-btn {
-    font-size: 0.95rem !important;
-    padding: 0.7rem 2.5rem !important;
+    font-size: clamp(0.82rem, 2.5vw, 1rem) !important;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 6vw, 2.5rem) !important;
   }
 
   .footer-col-heading {
-    font-size: 0.8rem !important;
+    font-size: clamp(0.68rem, 2.2vw, 0.85rem) !important;
     letter-spacing: 1px !important;
     margin-bottom: 0.25rem !important;
     text-transform: uppercase !important;
@@ -1025,61 +1042,41 @@ a {
 
   .footer-links-col a,
   .footer-contact-item {
-    font-size: 0.82rem !important;
+    font-size: clamp(0.72rem, 2.2vw, 0.85rem) !important;
     color: rgba(255, 255, 255, 0.75) !important;
   }
 
   .footer-contact-item {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: clamp(4px, 2vw, 8px) !important;
   }
 
   .footer-contact-item svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: clamp(12px, 3.5vw, 16px) !important;
+    height: clamp(12px, 3.5vw, 16px) !important;
     flex-shrink: 0 !important;
   }
 
-  /* Social Links inside Contact Col */
   .footer-social-row {
     width: 100% !important;
     justify-content: flex-start !important;
     margin-top: 0.5rem !important;
-    gap: 1rem !important;
+    gap: clamp(0.5rem, 2.5vw, 1rem) !important;
     display: flex !important;
     padding-top: 0.5rem !important;
     border-top: none !important;
   }
 
   .footer-social-icon-img {
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 10px !important;
+    width: clamp(30px, 9vw, 40px) !important;
+    height: clamp(30px, 9vw, 40px) !important;
+    border-radius: clamp(8px, 2.5vw, 12px) !important;
   }
 
   .footer-social-icon-img img {
-    width: 22px !important;
-    height: 22px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .product-card {
-    min-height: 300px !important;
-  }
-
-  .product-image-container {
-    height: 140px !important;
-  }
-
-  .hero-slider-container {
-    aspect-ratio: 16 / 8 !important;
-    border-radius: 18px !important;
-    margin: 0.75rem 0.75rem 1.5rem 0.75rem !important;
-    max-width: calc(100% - 1.5rem) !important;
-    width: calc(100% - 1.5rem) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+    width: clamp(18px, 5.5vw, 24px) !important;
+    height: clamp(18px, 5.5vw, 24px) !important;
   }
 }
 
@@ -1212,6 +1209,33 @@ a {
   object-fit: contain;
   transition: transform 0.3s ease;
   filter: brightness(1.1);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 0;
+  text-align: center;
+  width: 100%;
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .footer-bottom {
+    padding: 1rem 0;
+  }
+  .footer-bottom p {
+    font-size: 0.65rem;
+    padding: 0 1rem;
+    line-height: 1.4;
+  }
 }
 
 .footer-social-icon-img:hover {
@@ -1585,7 +1609,7 @@ a {
 @media (max-width: 768px) {
   .cart-filled-layout {
     grid-template-columns: 1fr !important;
-    padding: 0 1rem !important;
+    padding: 0 4vw !important;
   }
 
   .cart-right-col {
@@ -1593,8 +1617,8 @@ a {
   }
 
   .cart-item-img-box {
-    width: 80px !important;
-    height: 80px !important;
+    width: clamp(60px, 20vw, 90px) !important;
+    height: clamp(60px, 20vw, 90px) !important;
   }
 }
 
@@ -1995,32 +2019,32 @@ a {
 
   /* Product Detail Page - PREMIUM MOBILE VIEW */
   .pd-page {
-    padding: 1rem !important;
+    padding: clamp(0.75rem, 3vw, 1.25rem) !important;
   }
 
   .pd-grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: 1.5rem !important;
+    gap: clamp(1rem, 4vw, 2rem) !important;
   }
 
   .pd-gallery {
     width: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 1rem !important;
+    gap: clamp(0.75rem, 3vw, 1.25rem) !important;
   }
 
   .pd-main-img-box {
-    height: 350px !important;
-    border-radius: 16px !important;
+    height: clamp(280px, 80vw, 450px) !important;
+    border-radius: clamp(12px, 4vw, 20px) !important;
   }
 
   .pd-thumbs-col {
     display: flex !important;
     flex-direction: row !important;
     overflow-x: auto !important;
-    gap: 0.75rem !important;
+    gap: clamp(0.5rem, 2vw, 1rem) !important;
     padding-bottom: 0.5rem !important;
   }
 
@@ -2219,8 +2243,8 @@ a {
   display: flex;
   align-items: center;
   background: #fff;
-  border-radius: 12px;
-  padding: 0 0.75rem;
+  border-radius: clamp(8px, 2.5vw, 14px);
+  padding: 0 clamp(0.5rem, 2vw, 0.75rem);
   gap: 0.5rem;
   position: relative;
 }
@@ -2234,8 +2258,8 @@ a {
   flex: 1;
   border: none;
   outline: none;
-  padding: 0.65rem 0;
-  font-size: 0.9rem;
+  padding: clamp(0.5rem, 2vw, 0.75rem) 0;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
   background: transparent;
   color: #000;
 }
@@ -2272,16 +2296,16 @@ a {
   .search-suggestions {
     border-radius: 12px;
     top: calc(100% + 4px);
-    max-height: 350px;
+    max-height: clamp(250px, 70vh, 450px);
   }
 
   .suggestion-img {
-    width: 35px;
-    height: 35px;
+    width: clamp(30px, 10vw, 45px);
+    height: clamp(30px, 10vw, 45px);
   }
 
   .suggestion-name {
-    font-size: 0.8rem;
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
   }
 }
 
@@ -2294,55 +2318,54 @@ a {
 @media (max-width: 768px) {
   /* Shop All Mobile Refinement */
   .shopall-container {
-    padding: 0 1rem !important;
+    padding: 0 4vw !important;
   }
 
   .shopall-header {
-    padding: 2rem 1rem 1.5rem !important;
+    padding: clamp(1.5rem, 6vw, 2.5rem) 2vw clamp(1rem, 4vw, 2rem) !important;
   }
 
   .shopall-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
+    gap: clamp(0.5rem, 2vw, 1rem) !important;
   }
 
   .product-card-simple {
-    padding: 8px !important;
+    padding: clamp(6px, 2vw, 12px) !important;
   }
 
   .pcs-add-btn {
-    padding: 0.6rem !important;
-    font-size: 0.85rem !important;
+    padding: clamp(0.5rem, 1.8vw, 0.75rem) !important;
+    font-size: clamp(0.75rem, 2.2vw, 0.95rem) !important;
   }
 
   .pcs-name {
-    font-size: 0.85rem !important;
+    font-size: clamp(0.75rem, 2.2vw, 0.85rem) !important;
     height: 2.6em !important;
   }
 }
 
 @media (max-width: 480px) {
   .nav-brand-section {
-    gap: 0.5rem;
+    gap: clamp(0.25rem, 1.5vw, 0.5rem);
   }
 
   .pd-main-img-box {
-    height: 300px !important;
-    /* Shorter image so price is visible */
+    height: clamp(240px, 70vw, 320px) !important;
   }
 
-  /* Hero Slider Mobile Scaling */
+  /* Hero — keep auto height, no fixed override */
   .hero-slide {
-    height: 250px !important;
+    height: auto !important;
   }
 
   .hero-slide h2 {
-    font-size: 1.5rem !important;
+    font-size: clamp(1.1rem, 4vw, 1.6rem) !important;
   }
 
   .hero-nav-btn {
-    width: 32px !important;
-    height: 32px !important;
+    width: clamp(26px, 8vw, 34px) !important;
+    height: clamp(26px, 8vw, 34px) !important;
   }
 }
 
@@ -2645,9 +2668,9 @@ a {
 
 @media (max-width: 768px) {
   .modal-content {
-    padding: 1.5rem;
-    border-radius: 24px;
-    margin: 0.5rem;
+    padding: clamp(1rem, 5vw, 2.5rem);
+    border-radius: clamp(16px, 6vw, 32px);
+    margin: clamp(0.25rem, 2vw, 1rem);
   }
 }
 
@@ -2781,49 +2804,49 @@ a {
 /* Profile Mobile */
 @media (max-width: 768px) {
   .profile-topbar {
-    padding: 1rem 1rem 0 !important;
+    padding: 3vw 3vw 0 !important;
   }
 
   .profile-identity {
-    padding: 1.5rem 1rem !important;
+    padding: clamp(1.25rem, 5vw, 2rem) 3vw !important;
   }
 
   .profile-identity-inner {
-    gap: 1rem !important;
+    gap: clamp(0.75rem, 3vw, 1.5rem) !important;
   }
 
   .profile-avatar {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 16px !important;
+    width: clamp(50px, 15vw, 80px) !important;
+    height: clamp(50px, 15vw, 80px) !important;
+    border-radius: clamp(12px, 3vw, 20px) !important;
   }
 
   .profile-avatar svg {
-    width: 28px !important;
-    height: 28px !important;
+    width: clamp(24px, 7vw, 36px) !important;
+    height: clamp(24px, 7vw, 36px) !important;
   }
 
   .profile-user-name {
-    font-size: 1.5rem !important;
+    font-size: clamp(1.25rem, 6vw, 2.25rem) !important;
     margin-bottom: 0.2rem !important;
   }
 
   .profile-user-email {
-    font-size: 0.85rem !important;
+    font-size: clamp(0.75rem, 2.5vw, 1rem) !important;
   }
 
   .profile-dashboard {
-    padding: 0 1rem 3rem !important;
+    padding: 0 3vw 3rem !important;
   }
 
   .profile-dashboard-grid {
     grid-template-columns: 1fr !important;
-    gap: 1.25rem !important;
+    gap: clamp(1rem, 4vw, 1.5rem) !important;
   }
 
   .profile-balance-card {
-    padding: 1.5rem !important;
-    border-radius: 20px !important;
+    padding: clamp(1rem, 4vw, 2rem) !important;
+    border-radius: clamp(16px, 4vw, 24px) !important;
     min-height: auto !important;
     gap: 1rem;
   }

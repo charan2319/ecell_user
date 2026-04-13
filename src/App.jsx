@@ -41,12 +41,17 @@ function App() {
   }, []);
 
   const reverseGeocode = async (lat, lon) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
     try {
       const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`, {
         headers: {
-          'User-Agent': "Founder's Mart User App"
-        }
+          'User-Agent': "FounderMartEcommerceApp/1.0"
+        },
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
       const data = await response.json();
       
       // Extract a clean address
@@ -56,8 +61,9 @@ function App() {
       
       return { name: cleanName, pincode, full: data.display_name, lat, lon };
     } catch (err) {
+      clearTimeout(timeoutId);
       console.error('Reverse geocoding failed', err);
-      return { name: "Current Location", pincode: "", lat, lon };
+      return { name: "Current Location", pincode: "", lat: lat, lon: lon };
     }
   };
 
@@ -76,9 +82,18 @@ function App() {
       setDetecting(false);
       setShowLocationDropdown(false);
     }, (error) => {
-      console.error(error);
-      alert("Unable to retrieve your location. Please check your permissions.");
+      console.error('Geolocation error:', error);
+      let errorMsg = "Unable to retrieve your location.";
+      if (error.code === 1) errorMsg = "Permission denied. Please allow location access in your browser settings.";
+      else if (error.code === 2) errorMsg = "Location unavailable. Please try again or check your GPS.";
+      else if (error.code === 3) errorMsg = "Location request timed out. Please try again.";
+      
+      alert(errorMsg);
       setDetecting(false);
+    }, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
     });
   };
 
