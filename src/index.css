@@ -651,7 +651,7 @@ a {
   }
 
   .nav-brand-stylized {
-    transform: scale(clamp(0.48, 0.15vw + 0.42, 0.62));
+    transform: scale(clamp(0.4, 0.12vw + 0.38, 0.52)) !important;
     transform-origin: left center;
     flex-shrink: 0;
   }
