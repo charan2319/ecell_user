@@ -77,7 +77,7 @@ function Login() {
     try {
       const res = await axios.post(`${API_BASE}/auth/verify-otp`, { otp: otpValue, otpToken });
       if (res.data.token && res.data.user) {
-        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userToken', res.data.token);
         login(res.data.user);
         navigate('/');
       }
