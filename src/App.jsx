@@ -54,16 +54,35 @@ function App() {
       clearTimeout(timeoutId);
       const data = await response.json();
       
-      // Extract a clean address
+      // Extract a high-quality address
       const address = data.address;
-      const cleanName = address.suburb || address.neighbourhood || address.road || address.city || "Current Location";
-      const pincode = address.postcode || "";
+      const area = address.suburb || address.neighbourhood || address.residential || address.city_district || "";
+      const city = address.city || address.town || address.village || "";
+      const road = address.road || "";
+      const postcode = address.postcode || "";
       
-      return { name: cleanName, pincode, full: data.display_name, lat, lon };
+      // Construct descriptive names
+      const cleanName = area && city ? `${area}, ${city}` : (area || city || road || "Current Location");
+      const shortArea = area || city || "Near You";
+      
+      return { 
+        name: cleanName, 
+        shortName: shortArea,
+        pincode: postcode, 
+        full: data.display_name, 
+        lat, 
+        lon 
+      };
     } catch (err) {
       clearTimeout(timeoutId);
       console.error('Reverse geocoding failed', err);
-      return { name: "Current Location", pincode: "", lat: lat, lon: lon };
+      return { 
+        name: "Current Location", 
+        shortName: "Current Location",
+        pincode: "", 
+        lat: lat, 
+        lon: lon 
+      };
     }
   };
 
@@ -101,21 +120,31 @@ function App() {
   // Close suggestions, location dropdown, and mobile search when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
+      // 1. Desktop search suggestions:
+      // Only close if we're not in mobile search mode and the click is truly outside
+      if (!mobileSearchOpen && suggestionRef.current && !suggestionRef.current.contains(event.target)) {
         setShowSuggestions(false);
       }
+      
+      // 2. Location dropdown:
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target)) {
         setShowLocationDropdown(false);
       }
-      if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target) && !event.target.closest('.mobile-search-trigger')) {
-        setMobileSearchOpen(false);
-        setSearchTerm('');
-        setShowSuggestions(false);
+      
+      // 3. Mobile search overlay:
+      // If mobile search is open, check if we're clicking outside the mobile ref AND not the trigger
+      if (mobileSearchOpen && mobileSearchRef.current) {
+        if (!mobileSearchRef.current.contains(event.target) && !event.target.closest('.mobile-search-trigger')) {
+          setMobileSearchOpen(false);
+          setSearchTerm('');
+          setShowSuggestions(false);
+        }
       }
     };
+    
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [mobileSearchOpen]);
 
   const filteredSuggestions = products.filter(p => 
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -185,48 +214,57 @@ function App() {
               </Link>
 
               <div 
-                className="nav-location-stylized" 
+                className="nav-location-wrapper" 
                 ref={locationDropdownRef}
-                onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                style={{ cursor: 'pointer', position: 'relative' }}
+                style={{ position: 'relative', flex: 1, minWidth: 0, display: 'flex' }}
               >
+                <div 
+                  className="nav-location-stylized" 
+                  onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+                  style={{ cursor: 'pointer', position: 'relative', width: '100%', display: 'flex', alignItems: 'center' }}
+                >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <MapPin size={20} strokeWidth={2} />
-                  <div className="nav-location-text" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <span style={{ fontSize: '0.65rem', opacity: 0.7 }}>
-                      {userLocation ? `Delivering to ${userLocation.name} ${userLocation.pincode}` : 'Set Location'}
+                  <div className={`nav-location-text ${detecting ? 'locating' : ''}`}>
+                    <span className="delivering-to-label">
+                      {detecting ? 'Scanning area...' : (userLocation ? `Delivering to ${userLocation.pincode}` : 'Select Location')}
                     </span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: '700' }}>
-                        {userLocation ? userLocation.name : 'Choose Location'}
+                    <div className="location-main-display">
+                      <span className="location-name-text">
+                        {detecting ? 'Locating...' : (userLocation ? userLocation.name : 'Choose Location')}
                       </span>
-                      <span style={{ fontSize: '10px', opacity: 0.6, transition: 'transform 0.2s', transform: showLocationDropdown ? 'rotate(180deg)' : 'none' }}>▼</span>
+                      <span className="dropdown-chevron" style={{ transition: 'transform 0.3s', transform: showLocationDropdown ? 'rotate(180deg)' : 'none' }}>▼</span>
                     </div>
                   </div>
                 </div>
-
-                {showLocationDropdown && (
-                  <div className="location-selector-dropdown">
+              </div>
+              {showLocationDropdown && (
+                  <>
+                    <div className="location-overlay" onClick={(e) => { e.stopPropagation(); setShowLocationDropdown(false); }}></div>
+                    <div className="location-selector-dropdown" onClick={(e) => e.stopPropagation()}>
                     <div className="dropdown-header">Set your delivery location</div>
                     <div className="location-list">
                       <div 
-                        className="location-item"
+                        className="location-item detect-btn"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDetectLocation();
                         }}
                       >
-                        <MapPin size={16} />
+                        <MapPin size={18} />
                         <div className="location-info">
-                          <div className="location-name" style={{ color: '#FFC700', fontWeight: '800' }}>
-                            {detecting ? 'Detecting...' : 'Use My Current Location'}
+                          <div className="location-name">
+                            {detecting ? 'Detecting your area...' : 'Use My Current Location'}
                           </div>
                           <div className="location-pin">Fast & accurate via browser</div>
                         </div>
                       </div>
                       {userLocation && (
-                        <div className="location-item active" style={{ marginTop: '0.5rem', borderTop: '1px solid #eee', paddingTop: '0.5rem' }}>
-                          <MapPin size={16} />
+                        <div 
+                          className="location-item active saved-location"
+                          onClick={() => setShowLocationDropdown(false)}
+                        >
+                          <MapPin size={18} />
                           <div className="location-info">
                             <div className="location-name">{userLocation.name}</div>
                             <div className="location-pin">{userLocation.pincode}</div>
@@ -235,7 +273,8 @@ function App() {
                       )}
                     </div>
                   </div>
-                )}
+                </>
+              )}
               </div>
             </div>
 

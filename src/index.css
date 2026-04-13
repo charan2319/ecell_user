@@ -62,7 +62,43 @@ header {
 .nav-location-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
+  line-height: 1.2;
+}
+
+.delivering-to-label {
+  font-size: 0.65rem;
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.location-main-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.location-name-text {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dropdown-chevron {
+  font-size: 8px;
+  opacity: 0.6;
+}
+
+/* Pulse animation for locating state */
+.nav-location-text.locating {
+  opacity: 0.6;
+  animation: locationPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes locationPulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
 }
 
 .nav-search-container {
@@ -615,7 +651,7 @@ a {
   }
 
   .nav-brand-stylized {
-    transform: scale(clamp(0.6, 0.18vw + 0.55, 0.75));
+    transform: scale(clamp(0.48, 0.15vw + 0.42, 0.62));
     transform-origin: left center;
     flex-shrink: 0;
   }
@@ -645,40 +681,53 @@ a {
     flex-direction: column !important;
   }
 
-  .nav-location-text span,
-  .nav-location-text div span {
+  /* Ellipsis for mobile - "Dots .." as requested */
+  .location-name-text {
     display: block !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    max-width: 100% !important;
+    max-width: 110px !important; /* Limit width on mobile to force dots */
+    font-size: clamp(0.65rem, 2vw, 0.75rem) !important;
   }
 
-  .nav-location-text div {
+  .delivering-to-label {
+    font-size: clamp(0.45rem, 1.5vw, 0.55rem) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100px !important;
+  }
+
+  .location-main-display {
     display: flex !important;
     align-items: center !important;
     min-width: 0 !important;
-    overflow: hidden !important;
   }
 
-  .nav-location-text span:first-child {
-    font-size: clamp(0.4rem, 1.3vw, 0.55rem) !important;
-  }
-
-  .nav-location-text span:last-child {
-    font-size: clamp(0.55rem, 1.8vw, 0.7rem) !important;
-  }
-
-  /* Location dropdown — full-width on mobile */
+  /* Location dropdown — centered modal style on mobile */
   .location-selector-dropdown {
     position: fixed !important;
     top: auto !important;
+    bottom: 20px !important;
     left: 4vw !important;
     right: 4vw !important;
     width: auto !important;
-    margin-top: 8px !important;
+    margin-top: 0 !important;
+    z-index: 10001 !important;
+    border-radius: 28px !important;
+    animation: slideUpMobile 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  @keyframes slideUpMobile {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .location-overlay {
+    display: block !important;
     z-index: 10000 !important;
-    border-radius: 16px !important;
   }
 
   /* HIDE desktop search bar on mobile */
@@ -887,8 +936,8 @@ a {
     overflow-x: auto !important;
     flex-wrap: nowrap !important;
     gap: clamp(0.5rem, 2vw, 0.75rem) !important;
-    padding: 0.5rem 4vw 1.5rem 4vw !important;
-    margin: 0 -4vw !important;
+    padding: 0.5rem 0 1.5rem 0 !important;
+    margin: 0 !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none !important;
@@ -2369,79 +2418,112 @@ a {
   }
 }
 
-/* Location Selector Dropdown - Premium Style */
+.location-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  animation: fadeInOverlay 0.3s ease;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Location Selector Dropdown - Re-refined Premium Style */
 .location-selector-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
-  margin-top: 15px;
-  width: 320px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-  border: 1px solid #eee;
-  z-index: 9999;
+  margin-top: 18px;
+  width: 340px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0,0,0,0.05);
+  border: none;
+  z-index: 10000;
   overflow: hidden;
-  animation: dropdownSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: dropdownFadeIn 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-@keyframes dropdownSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(15px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .dropdown-header {
-  padding: 1.5rem;
-  background: #f8fafc;
+  padding: 1.75rem 1.5rem 1rem 1.5rem;
+  background: transparent;
   color: #000;
-  font-weight: 800;
-  font-size: 0.95rem;
-  border-bottom: 1px solid #eee;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: -0.5px;
 }
 
 .location-list {
-  max-height: 400px;
-  overflow-y: auto;
-  background: #fff;
+  max-height: 420px;
+  padding: 0.5rem;
 }
 
 .location-item {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.25rem;
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #64748b;
+  gap: 14px;
+  border-radius: 16px;
+  color: #334155;
   cursor: pointer;
-  transition: all 0.2s;
-  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  margin-bottom: 4px;
 }
 
 .location-item:hover {
-  background: #FFFBEB;
+  background: #f8fafc;
+  transform: translateX(4px);
   color: #000;
 }
 
 .location-item.active {
-  background: #FFC700;
+  background: #FFFBE6;
+  border-color: #FFC700;
   color: #000;
 }
 
-.location-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  line-height: 1.2;
+.location-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.location-item.detect-btn {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+.location-item.detect-btn .location-name {
+  color: #FFC700;
+  font-weight: 850;
+}
+
+.location-item.saved-location {
+  margin-top: 0.5rem;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 1.25rem;
 }
 
 .location-pin {
   font-size: 0.75rem;
   opacity: 0.6;
+  font-weight: 500;
 }
 
 .no-locations {
