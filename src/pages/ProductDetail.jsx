@@ -6,6 +6,7 @@ import { AppContext } from '../CartContext';
 import '../index.css';
 
 import { API_BASE } from '../config';
+import coinImg from '../assets/coin.png';
 
 function ProductDetail() {
   const { id } = useParams();
@@ -84,9 +85,9 @@ function ProductDetail() {
           {/* Price Row */}
           <div className="pd-price-row">
             {product.original_price && (
-              <span className="pd-price-original">{product.original_price} Vc's</span>
+              <span className="pd-price-original">{product.original_price} <img src={coinImg} alt="VC" className="coin-icon" /></span>
             )}
-            <span className="pd-price">{product.price_vc} Vc's</span>
+            <span className="pd-price">{product.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></span>
           </div>
 
           {/* Description */}

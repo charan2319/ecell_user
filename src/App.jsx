@@ -14,6 +14,8 @@ import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
 import axios from 'axios';
 import './index.css';
+import headerImg from './assets/header.png';
+import coinImg from './assets/coin.png';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 function App() {
@@ -162,55 +164,8 @@ function App() {
           {/* Main Black Navbar - FULLY RESPONSIVE */}
           <div className="navbar-main">
             <div className="nav-brand-section">
-              <Link to="/" className="nav-brand-stylized" style={{ textDecoration: 'none' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-                  <div style={{ 
-                    fontSize: '1.2rem', 
-                    fontWeight: '950', 
-                    color: '#FFC107', 
-                    lineHeight: '0.9',
-                    letterSpacing: '-0.5px'
-                  }}>Founder's</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '-1px' }}>
-                    <span style={{ 
-                      fontSize: '1.5rem', 
-                      fontWeight: '950', 
-                      color: '#E5E7EB', 
-                      lineHeight: '0.8',
-                      letterSpacing: '-1px'
-                    }}>mart</span>
-                    <div style={{ 
-                      fontSize: '0.45rem', 
-                      color: '#fff', 
-                      border: '1.5px solid #FFC107', 
-                      borderRadius: '50px', 
-                      padding: '2px 8px', 
-                      fontWeight: '900', 
-                      letterSpacing: '0.5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '16px',
-                      marginTop: '2px'
-                    }}>BY E-CELL</div>
-                  </div>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '1.5px', 
-                    background: '#E5E7EB', 
-                    marginTop: '4px',
-                    opacity: 0.8
-                  }}></div>
-                  <div style={{ 
-                    fontSize: '0.6rem', 
-                    color: '#E5E7EB', 
-                    fontWeight: '800', 
-                    letterSpacing: '2px',
-                    marginTop: '4px',
-                    textAlign: 'center',
-                    textTransform: 'uppercase'
-                  }}>Alliance University</div>
-                </div>
+              <Link to="/" className="nav-brand-image">
+                <img src={headerImg} alt="Founder's Mart" className="nav-header-logo" />
               </Link>
 
               <div 
@@ -305,7 +260,7 @@ function App() {
                         <img src={p.image_url} alt="" className="suggestion-img" />
                         <div className="suggestion-info">
                           <div className="suggestion-name">{p.name}</div>
-                          <div className="suggestion-price">{p.price_vc} Vc's</div>
+                          <div className="suggestion-price">{p.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></div>
                         </div>
                       </div>
                     ))
@@ -380,7 +335,7 @@ function App() {
                         <img src={p.image_url} alt="" className="suggestion-img" />
                         <div className="suggestion-info">
                           <div className="suggestion-name">{p.name}</div>
-                          <div className="suggestion-price">{p.price_vc} Vc's</div>
+                          <div className="suggestion-price">{p.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></div>
                         </div>
                       </div>
                     ))

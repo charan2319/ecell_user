@@ -5,6 +5,7 @@ import { ChevronLeft, Package, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { API_BASE } from '../config';
+import coinImg from '../assets/coin.png';
 
 function OrderHistory() {
   const { user } = useContext(AppContext);
@@ -95,7 +96,7 @@ function OrderHistory() {
                     <Clock size={16} /> {new Date(order.created_at).toLocaleDateString()}
                   </div>
                   <div>•</div>
-                  <div>Total Spent: <strong>{order.total_vc} Vc's</strong></div>
+                  <div>Total Spent: <strong>{order.total_vc} <img src={coinImg} alt="VC" className="coin-icon" /></strong></div>
                 </div>
                 {order.delivery_location && (
                   <div style={{ marginTop: '10px', fontSize: '0.85rem', color: '#888', fontStyle: 'italic' }}>
@@ -143,16 +144,16 @@ function OrderHistory() {
                   <img src={item.image_url} alt="" style={{ width: '70px', height: '70px', borderRadius: '15px', objectFit: 'cover' }} />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 850, fontSize: '1.25rem', marginBottom: '4px', color: '#000' }}>{item.name}</div>
-                    <div style={{ color: '#666', fontSize: '1rem', fontWeight: 500 }}>{item.price_vc} Vc's × {item.quantity}</div>
+                    <div style={{ color: '#666', fontSize: '1rem', fontWeight: 500 }}>{item.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /> × {item.quantity}</div>
                   </div>
-                  <div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{item.price_vc * item.quantity} Vc's</div>
+                  <div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{item.price_vc * item.quantity} <img src={coinImg} alt="VC" className="coin-icon" /></div>
                 </div>
               ))}
             </div>
 
             <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '2px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ color: '#666', fontWeight: 700 }}>Total Order Value</div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{selectedOrder.total_vc} Vc's</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 900 }}>{selectedOrder.total_vc} <img src={coinImg} alt="VC" className="coin-icon" /></div>
             </div>
           </div>
         </div>

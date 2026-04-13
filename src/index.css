@@ -96,9 +96,17 @@ header {
 }
 
 @keyframes locationPulse {
-  0% { opacity: 0.5; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0.5; }
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
 }
 
 .nav-search-container {
@@ -687,7 +695,8 @@ a {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    max-width: 110px !important; /* Limit width on mobile to force dots */
+    max-width: 110px !important;
+    /* Limit width on mobile to force dots */
     font-size: clamp(0.65rem, 2vw, 0.75rem) !important;
   }
 
@@ -721,8 +730,15 @@ a {
   }
 
   @keyframes slideUpMobile {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .location-overlay {
@@ -1061,7 +1077,7 @@ a {
     align-items: center !important;
     text-align: center !important;
     border-right: none !important;
-    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: clamp(1rem, 4vw, 2rem) 0 0 0 !important;
   }
 
@@ -1280,6 +1296,7 @@ a {
   .footer-bottom {
     padding: 1rem 0;
   }
+
   .footer-bottom p {
     font-size: 0.65rem;
     padding: 0 1rem;
@@ -2276,6 +2293,7 @@ a {
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -2365,6 +2383,7 @@ a {
 }
 
 @media (max-width: 768px) {
+
   /* Shop All Mobile Refinement */
   .shopall-container {
     padding: 0 4vw !important;
@@ -2431,8 +2450,13 @@ a {
 }
 
 @keyframes fadeInOverlay {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Location Selector Dropdown - Re-refined Premium Style */
@@ -2445,7 +2469,7 @@ a {
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
   border-radius: 24px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0,0,0,0.05);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
   border: none;
   z-index: 10000;
   overflow: hidden;
@@ -2453,8 +2477,15 @@ a {
 }
 
 @keyframes dropdownFadeIn {
-  from { opacity: 0; transform: translateY(15px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .dropdown-header {
@@ -2815,7 +2846,7 @@ a {
   flex-direction: column;
   justify-content: space-between;
   min-height: 280px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
   border: 1px solid #eee;
 }
 
@@ -2848,7 +2879,7 @@ a {
   background: #fff;
   border-color: #FFC700;
   transform: translateX(10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .profile-action-icon {
@@ -2864,7 +2895,7 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(10px);
   z-index: 9999;
   display: flex;
@@ -2880,7 +2911,7 @@ a {
   max-width: 480px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
 }
 
 /* Profile Mobile */
@@ -2983,6 +3014,7 @@ a {
     margin-bottom: 2rem !important;
   }
 }
+
 /* ============================================================
    PREMIUM LOGIN REDESIGN (Elite Light Theme)
    ============================================================ */
@@ -3004,7 +3036,8 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8fafc; /* Very light clean background */
+  background: #f8fafc;
+  /* Very light clean background */
   padding: 2rem;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow: hidden;
@@ -3037,8 +3070,15 @@ a {
 }
 
 @keyframes eliteFadeIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .premium-logo-badge {
@@ -3056,9 +3096,19 @@ a {
 }
 
 @keyframes badgeEntrance {
-  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
-  60% { transform: scale(1.1) rotate(5deg); }
-  100% { transform: scale(1) rotate(-5deg); opacity: 1; }
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(-5deg);
+    opacity: 1;
+  }
 }
 
 .premium-auth-title {
@@ -3200,14 +3250,31 @@ a {
   font-size: 0.9rem;
   font-weight: 700;
   margin-top: 2rem;
-  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 @keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 @media (max-width: 480px) {
@@ -3215,15 +3282,55 @@ a {
     padding: 1rem;
     background: #ffffff;
   }
+
   .premium-auth-card {
     padding: 2.5rem 1.5rem;
     border-radius: 32px;
     box-shadow: none;
     border: none;
   }
+
   .premium-otp-input {
     width: 3rem !important;
     height: 4rem !important;
     font-size: 1.75rem !important;
+  }
+}
+
+.coin-icon {
+  height: 1.4em;
+  vertical-align: middle;
+  margin-left: 2px;
+  transform: translateY(-1px);
+}
+
+.nav-brand-image {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  margin-left: -2px;
+  margin-right: 15px;
+}
+
+.nav-header-logo {
+  height: 38px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  transform: scale(1.25);
+  transform-origin: left center;
+}
+
+@media (max-width: 768px) {
+  .nav-header-logo {
+    height: 32px;
+    transform: none;
+    margin-bottom: 2px;
+  }
+  .nav-brand-image {
+    margin-right: 20px;
+    margin-left: 0px;
   }
 }

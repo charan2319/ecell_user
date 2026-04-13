@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../CartContext';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Package, Clock, LogOut, User, Wallet, ChevronRight } from 'lucide-react';
+import coinImg from '../assets/coin.png';
 
 function Profile() {
    const { user, logout, refreshUser } = useContext(AppContext);
@@ -64,7 +65,7 @@ function Profile() {
                 <span style={{ fontWeight: 800, fontSize: '1rem', letterSpacing: '1px', textTransform: 'uppercase' }}>Available Balance</span>
               </div>
               <div className="profile-balance-amount">
-                {user.points} <span className="profile-balance-unit">VC'S</span>
+                {user.points} <span className="profile-balance-unit"><img src={coinImg} alt="VC" className="coin-icon" /></span>
               </div>
             </div>
             <div style={{ fontSize: '1rem', color: '#999', fontWeight: 500 }}>
@@ -100,7 +101,7 @@ function Profile() {
                   <Clock size={28} color="#000" />
                 </div>
                 <div>
-                  <h3 style={{ margin: '0 0 4px 0', fontSize: '1.25rem', fontWeight: 850 }}>VC's History</h3>
+                  <h3 style={{ margin: '0 0 4px 0', fontSize: '1.25rem', fontWeight: 850 }}><img src={coinImg} alt="VC" className="coin-icon" /> History</h3>
                   <p style={{ margin: 0, color: '#666', fontSize: '0.95rem', fontWeight: 500 }}>Points earned and points spent history</p>
                 </div>
               </div>

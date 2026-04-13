@@ -6,7 +6,7 @@ import axios from 'axios';
 import { CustomCartIcon } from '../components/Icons';
 import { API_BASE } from '../config';
 import checkmarkImage from '../assets/checkmark.png';
-
+import coinImg from '../assets/coin.png';
 
 function Cart() {
   const { cart, removeFromCart, clearCart, user, updateUser } = useContext(AppContext);
@@ -193,7 +193,7 @@ function Cart() {
 
                   {/* Price */}
                   <div className="cart-item-price-row">
-                    <span className="cart-item-price">{item.price_vc * getQty(item.id)} Vc's</span>
+                    <span className="cart-item-price">{item.price_vc * getQty(item.id)} <img src={coinImg} alt="VC" className="coin-icon" /></span>
                   </div>
                 </div>
 
@@ -209,16 +209,16 @@ function Cart() {
               <h3 className="cart-price-panel-title">Price Details</h3>
               <div className="cart-price-row">
                 <span className="cart-price-label">MRP</span>
-                <span className="cart-price-value">{total} Vc's</span>
+                <span className="cart-price-value">{total} <img src={coinImg} alt="VC" className="coin-icon" /></span>
               </div>
               <div className="cart-price-row">
                 <span className="cart-price-label">Discount</span>
-                <span className="cart-discount-val">— Vc's</span>
+                <span className="cart-discount-val">— <img src={coinImg} alt="VC" className="coin-icon" /></span>
               </div>
               <div className="cart-price-divider" />
               <div className="cart-price-row cart-total-row">
                 <span className="cart-price-label">Total Amount</span>
-                <span className="cart-price-value">{total} Vc's</span>
+                <span className="cart-price-value">{total} <img src={coinImg} alt="VC" className="coin-icon" /></span>
               </div>
             </div>
 
@@ -229,7 +229,7 @@ function Cart() {
 
             {/* Place Order */}
             <div className="cart-place-order-bar">
-              <span className="cart-place-order-total">{total} Vc's</span>
+              <span className="cart-place-order-total">{total} <img src={coinImg} alt="VC" className="coin-icon" /></span>
               <button className="cart-place-order-btn" onClick={handleCheckout}>
                 Place Order
               </button>

@@ -4,6 +4,7 @@ import { AppContext } from '../CartContext';
 import { Clock, ArrowUpRight, ArrowDownLeft, ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { API_BASE } from '../config';
+import coinImg from '../assets/coin.png';
 
 function VcHistory() {
   const { user, refreshUser } = useContext(AppContext);
@@ -40,7 +41,7 @@ function VcHistory() {
         <div style={{ background: '#000', padding: '12px', borderRadius: '12px' }}>
           <Clock size={32} color="#fff" />
         </div>
-        <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: 800 }}>Vc's History</h1>
+        <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: 800 }}><img src={coinImg} alt="VC" className="coin-icon" /> History</h1>
       </div>
 
       <p style={{ color: '#666', marginBottom: '3rem', fontSize: '1.1rem' }}>Track all your point earnings and deductions here.</p>
@@ -90,7 +91,7 @@ function VcHistory() {
                     fontWeight: 850, 
                     color: isAdded ? '#10B981' : '#EF4444' 
                   }}>
-                    {isAdded ? '+' : '-'}{item.amount} Vc's
+                    {isAdded ? '+' : '-'}{item.amount} <img src={coinImg} alt="VC" className="coin-icon" />
                   </span>
                   <p style={{ margin: 0, fontSize: '0.8rem', opacity: 0.5 }}>Ref: #{item.id}</p>
                 </div>

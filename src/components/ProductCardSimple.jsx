@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import coinImg from '../assets/coin.png';
 
 export default function ProductCardSimple({ product, onAddToCart }) {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function ProductCardSimple({ product, onAddToCart }) {
       </div>
       <div className="pcs-info">
         <h3 className="pcs-name" title={product.name}>{product.name}</h3>
-        <div className="pcs-price">{product.price_vc} Vc's</div>
+        <div className="pcs-price">{product.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></div>
       </div>
       <button 
         className="pcs-add-btn" 

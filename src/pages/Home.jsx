@@ -5,6 +5,7 @@ import { AppContext } from '../CartContext';
 import { useNavigate } from 'react-router-dom';
 
 import { API_BASE } from '../config';
+import coinImg from '../assets/coin.png';
 
 // Auto-rotating product card
 function ProductCard({ product, onNavigate, onAddToCart }) {
@@ -43,7 +44,7 @@ function ProductCard({ product, onNavigate, onAddToCart }) {
         )}
       </div>
       <div className="product-title" title={product.name}>{product.name}</div>
-      <div className="product-price">{product.price_vc} Vc's</div>
+      <div className="product-price">{product.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></div>
       <button className="add-btn" onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}>Add To Cart</button>
     </div>
   );
@@ -242,7 +243,7 @@ function Home() {
         {/* Earn Vc's Section */}
         <section className="earn-box">
           <div className="earn-header">
-            <h2 className="earn-title">How to earn Vc's</h2>
+            <h2 className="earn-title">How to earn <img src={coinImg} alt="VC" className="coin-icon" /></h2>
           </div>
           <div className="earn-grid">
             <div className="earn-item">
