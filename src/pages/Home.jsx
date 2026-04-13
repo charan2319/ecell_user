@@ -142,10 +142,9 @@ function Home() {
       <section className="hero-slider-container">
         {heroImages.length > 0 ? (
           <>
-            <div
-              className="hero-slide"
-              style={{ backgroundImage: `url(${heroImages[currentHero].image_url})` }}
-            ></div>
+            <div className="hero-slide">
+              <img src={heroImages[currentHero].image_url} alt="hero" />
+            </div>
 
             {heroImages.length > 1 && (
               <>

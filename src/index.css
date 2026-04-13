@@ -607,7 +607,8 @@ a {
 
 @media (max-width: 768px) {
 
-  /* Compact single-row mobile header */
+  /* ===== MOBILE HEADER LAYOUT ===== */
+  /* Brand + Location on left, Search icon + Cart + Profile on right */
   .navbar-main {
     padding: 0.6rem 0.75rem;
     gap: 0.5rem;
@@ -616,46 +617,85 @@ a {
   }
 
   .nav-brand-section {
-    gap: 0.6rem;
-    flex-shrink: 0;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* Prevent child overflow */
   }
 
   .nav-brand-stylized {
-    transform: scale(0.75);
+    transform: scale(0.7);
     transform-origin: left center;
+    flex-shrink: 0;
   }
 
-  /* Compact location on mobile */
+  /* Show location on mobile */
   .nav-location-stylized {
-    display: none !important;
-    /* Hide location from main row on mobile - shown in yellow bar area or as overlay */
+    display: flex !important;
+    gap: 4px !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    max-width: 120px !important; /* Strict limit like Flipkart */
+    overflow: hidden;
   }
 
-  /* Search bar inline - takes remaining space */
-  .nav-search-container {
+  .nav-location-stylized svg {
+    width: 12px !important;
+    height: 12px !important;
+    flex-shrink: 0;
+  }
+
+  .nav-location-text {
     flex: 1 !important;
     min-width: 0 !important;
-    max-width: none !important;
-    margin: 0 0.25rem !important;
-    order: 0;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
-  .nav-search {
-    padding: 0.55rem 0.75rem 0.55rem 2.4rem !important;
-    font-size: 0.78rem !important;
-    border-radius: 20px !important;
+  .nav-location-text span,
+  .nav-location-text div span {
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
   }
 
-  .search-icon {
-    left: 0.75rem !important;
-    width: 15px !important;
-    height: 15px !important;
+  .nav-location-text div {
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 
-  /* Cart & profile compact */
+  .nav-location-text span:first-child {
+    font-size: 0.5rem !important;
+  }
+
+  .nav-location-text span:last-child {
+    font-size: 0.65rem !important;
+  }
+
+  /* HIDE desktop search bar on mobile */
+  .desktop-search {
+    display: none !important;
+  }
+
+  /* Show mobile search trigger button */
+  .mobile-search-trigger {
+    display: flex !important;
+  }
+
+  /* Cart & profile — right side */
   .nav-links {
-    gap: 0.75rem !important;
-    flex-shrink: 0;
+    gap: 0.6rem !important;
+    flex-shrink: 0 !important; /* Ensure icons don't move or hide */
+    margin-left: auto;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .nav-link-item svg {
@@ -676,62 +716,84 @@ a {
     font-size: 0.75rem !important;
   }
 
-  /* Hero Slider - Full width with safe margins on mobile */
+  /* ===== HERO SLIDER - CARD LOOK ON MOBILE ===== */
   .hero-slider-container {
     height: auto !important;
-    aspect-ratio: 16 / 7;
-    border-radius: 16px !important;
+    aspect-ratio: auto !important; /* Let image drive aspect ratio */
+    border-radius: 20px !important;
     margin: 0.75rem 0.75rem 1.5rem 0.75rem !important;
     max-width: calc(100% - 1.5rem) !important;
     width: calc(100% - 1.5rem) !important;
-    background: #f3f4f6;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden !important;
   }
 
   .hero-slide {
-    background-size: contain !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
+  .hero-slide img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  /* ===== ABOUT US SECTION - REDUCED HEIGHT ===== */
   .about-section-container {
-    flex-direction: row !important;
-    gap: 1.5rem !important;
-    padding: 2.5rem 1.5rem !important;
-    margin: 2rem 1rem !important;
-    border-radius: 20px !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    padding: 1.5rem 1.25rem !important;
+    margin: 2rem 0.75rem !important;
+    border-radius: 18px !important;
     align-items: center !important;
-    /* Forces side-by-side centered alignment */
     background: #1c1b18 !important;
-    /* Ensuring same background */
   }
 
   .about-text-column {
-    flex: 1.3 !important;
+    flex: none !important;
+    width: 100% !important;
+  }
+
+  .about-heading-wrapper {
+    margin-bottom: 0.6rem !important;
   }
 
   .about-heading-box h2 {
-    font-size: 1.25rem !important;
+    font-size: 1.15rem !important;
     font-weight: 850 !important;
-    letter-spacing: -1px !important;
+    letter-spacing: -0.5px !important;
   }
 
   .about-heading-box {
-    padding: 6px 15px !important;
-    margin-bottom: 0.8rem !important;
+    padding: 5px 18px !important;
   }
 
   .about-content-text {
-    font-size: 0.825rem !important;
-    line-height: 1.4 !important;
-    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.35 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
   }
 
   .about-visual-box {
-    flex: 1 !important;
-    min-width: 120px !important;
-    height: 150px !important;
-    padding: 10px !important;
+    flex: none !important;
+    width: 100% !important;
+    height: 180px !important;
+    padding: 0 !important;
     margin-top: 0 !important;
+  }
+
+  .about-visual-box img {
+    border-radius: 12px !important;
+    object-fit: cover !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   /* Category Pills - Swipable & No Wrap */
@@ -808,7 +870,6 @@ a {
     gap: 0.75rem !important;
     padding: 0.5rem 2rem 1.5rem 2rem !important;
     margin: 0 -2rem !important;
-    /* Clean Edge-to-Edge Swipe with shadow space */
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none !important;
@@ -821,12 +882,6 @@ a {
   .product-grid::-webkit-scrollbar,
   .product-row::-webkit-scrollbar {
     display: none !important;
-  }
-
-  .product-grid::-webkit-scrollbar,
-  .product-row::-webkit-scrollbar {
-    display: none !important;
-    /* Hide for Chrome/Safari */
   }
 
   .product-card {
@@ -901,19 +956,47 @@ a {
     max-width: 90px !important;
   }
 
-  /* Footer Mobile - Clean stacked vertical layout */
+  /* ===== FOOTER MOBILE - Quick Links & Contact left, rest centered ===== */
   .footer-inner {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1.5rem !important;
-    padding: 2rem 1.5rem !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem 1.5rem !important;
+    padding: 2.5rem 1.5rem !important;
   }
 
+  /* Left-aligned Quick Links */
+  .footer-links-col {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Left-aligned Contact Us */
+  .footer-contact-col {
+    grid-column: 2 / 3 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Centered CTA */
   .footer-cta {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-    padding: 0 0 1.5rem 0 !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
     text-align: center !important;
+    border-right: none !important;
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 2rem 0 0 0 !important;
   }
 
   .footer-cta-title {
@@ -929,15 +1012,6 @@ a {
   .footer-join-btn {
     font-size: 0.95rem !important;
     padding: 0.7rem 2.5rem !important;
-  }
-
-  /* Quick links + Contact side by side */
-  .footer-links-col,
-  .footer-contact-col {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.5rem !important;
-    min-width: 0 !important;
   }
 
   .footer-col-heading {
@@ -967,13 +1041,15 @@ a {
     flex-shrink: 0 !important;
   }
 
+  /* Social Links inside Contact Col */
   .footer-social-row {
-    justify-content: center !important;
+    width: 100% !important;
+    justify-content: flex-start !important;
     margin-top: 0.5rem !important;
     gap: 1rem !important;
     display: flex !important;
-    padding-top: 1rem !important;
-    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    padding-top: 0.5rem !important;
+    border-top: none !important;
   }
 
   .footer-social-icon-img {
@@ -989,11 +1065,6 @@ a {
 }
 
 @media (max-width: 480px) {
-  .nav-search {
-    padding: 0.5rem 0.5rem 0.5rem 2.2rem !important;
-    font-size: 0.75rem !important;
-  }
-
   .product-card {
     min-height: 300px !important;
   }
@@ -1003,11 +1074,12 @@ a {
   }
 
   .hero-slider-container {
-    height: 180px !important;
-    border-radius: 16px !important;
+    aspect-ratio: 16 / 8 !important;
+    border-radius: 18px !important;
     margin: 0.75rem 0.75rem 1.5rem 0.75rem !important;
     max-width: calc(100% - 1.5rem) !important;
     width: calc(100% - 1.5rem) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
   }
 }
 
@@ -2098,6 +2170,104 @@ a {
   background: #f1f1f1;
 }
 
+/* Mobile Search Trigger - HIDDEN on desktop */
+.mobile-search-trigger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.mobile-search-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Search Overlay */
+.mobile-search-overlay {
+  display: none;
+  background: #1c1b18;
+  padding: 0.5rem 0.75rem 0.75rem;
+  position: relative;
+  z-index: 999;
+  animation: mobileSearchSlide 0.25s ease-out;
+}
+
+@keyframes mobileSearchSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-search-overlay {
+    display: block;
+  }
+}
+
+.mobile-search-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 0.75rem;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.mobile-search-bar-icon {
+  color: #6B7280;
+  flex-shrink: 0;
+}
+
+.mobile-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.65rem 0;
+  font-size: 0.9rem;
+  background: transparent;
+  color: #000;
+}
+
+.mobile-search-input::placeholder {
+  color: #9CA3AF;
+}
+
+.mobile-search-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #6B7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.mobile-search-close:hover {
+  color: #111;
+}
+
+.mobile-suggestions {
+  position: static !important;
+  margin-top: 0.5rem;
+  border-radius: 12px !important;
+  max-height: 60vh !important;
+}
+
 @media (max-width: 768px) {
   .search-suggestions {
     border-radius: 12px;
@@ -2122,78 +2292,6 @@ a {
 }
 
 @media (max-width: 768px) {
-  .navbar-main {
-    padding: 0.8rem 1rem;
-    gap: 1rem;
-    flex-direction: row;
-    justify-content: flex-start;
-  }
-
-  .nav-brand-section {
-    gap: 1rem;
-  }
-
-  .nav-location-text {
-    display: flex;
-    /* Show location as requested */
-  }
-
-  .nav-location-stylized {
-    gap: 4px !important;
-  }
-
-  .nav-location-stylized svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-
-  .nav-location-text span:first-child {
-    font-size: 0.5rem !important;
-    /* Extremely small sub-text on mobile */
-  }
-
-  .nav-location-text span:last-child {
-    font-size: 0.65rem !important;
-    /* Smaller main location text */
-  }
-
-  .nav-search-container {
-    order: 3;
-    /* Move search to bottom row */
-    max-width: 100%;
-    margin: 0;
-    width: 100%;
-    flex: none;
-  }
-
-  .nav-links {
-    margin-left: auto;
-    gap: 1.5rem;
-  }
-
-  .navbar-top {
-    justify-content: flex-start;
-    gap: 2rem;
-  }
-
-  .category-pills {
-    display: flex !important;
-    overflow-x: auto !important;
-    padding-bottom: 0.5rem !important;
-    width: 100% !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 0.75rem !important;
-  }
-
-  .category-pills::-webkit-scrollbar {
-    display: none;
-  }
-
-  .category-pills .pill {
-    flex-shrink: 0 !important;
-    margin: 0 !important;
-  }
-
   /* Shop All Mobile Refinement */
   .shopall-container {
     padding: 0 1rem !important;
@@ -2205,7 +2303,6 @@ a {
 
   .shopall-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    /* 2-column grid on mobile */
     gap: 0.75rem !important;
   }
 

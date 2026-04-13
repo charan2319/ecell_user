@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -9,7 +9,7 @@ import VcHistory from './pages/VcHistory';
 import ProductDetail from './pages/ProductDetail';
 import ShopAll from './pages/ShopAll';
 import VerifyEmail from './pages/VerifyEmail';
-import { Search, MapPin } from 'lucide-react';
+import { Search, MapPin, X } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
 import axios from 'axios';
@@ -23,8 +23,10 @@ function App() {
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [detecting, setDetecting] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const suggestionRef = useRef(null);
   const locationDropdownRef = useRef(null);
+  const mobileSearchRef = useRef(null);
 
   // Initialize location from localStorage
   useEffect(() => {
@@ -81,7 +83,7 @@ function App() {
   };
 
 
-  // Close suggestions and location dropdown when clicking outside
+  // Close suggestions, location dropdown, and mobile search when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
@@ -89,6 +91,11 @@ function App() {
       }
       if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target)) {
         setShowLocationDropdown(false);
+      }
+      if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target) && !event.target.closest('.mobile-search-trigger')) {
+        setMobileSearchOpen(false);
+        setSearchTerm('');
+        setShowSuggestions(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -217,7 +224,8 @@ function App() {
               </div>
             </div>
 
-            <div className="nav-search-container" ref={suggestionRef}>
+            {/* Desktop Search Bar */}
+            <div className="nav-search-container desktop-search" ref={suggestionRef}>
               <Search className="search-icon" size={18} />
               <input 
                 type="text" 
@@ -259,7 +267,15 @@ function App() {
               )}
             </div>
 
+            {/* Mobile: Search icon trigger + Cart + Profile (RIGHT side) */}
             <div className="nav-links">
+              <button 
+                className="mobile-search-trigger" 
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                aria-label="Search"
+              >
+                <Search size={22} />
+              </button>
               <Link to="/cart" className="nav-link-item">
                 <CustomCartIcon size={28} />
                 {cart.length > 0 && (
@@ -273,6 +289,59 @@ function App() {
               </Link>
             </div>
           </div>
+
+          {/* Mobile Search Overlay */}
+          {mobileSearchOpen && (
+            <div className="mobile-search-overlay" ref={mobileSearchRef}>
+              <div className="mobile-search-bar">
+                <Search size={18} className="mobile-search-bar-icon" />
+                <input 
+                  type="text" 
+                  className="mobile-search-input" 
+                  placeholder="Search for products..." 
+                  value={searchTerm}
+                  onChange={e => {
+                    setSearchTerm(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  autoFocus
+                />
+                <button 
+                  className="mobile-search-close"
+                  onClick={() => { setMobileSearchOpen(false); setSearchTerm(''); setShowSuggestions(false); }}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              {showSuggestions && searchTerm.length > 0 && (
+                <div className="search-suggestions mobile-suggestions">
+                  {filteredSuggestions.length > 0 ? (
+                    filteredSuggestions.map(p => (
+                      <div 
+                        key={p.id} 
+                        className="suggestion-item"
+                        onClick={() => { handleSuggestionClick(p.id); setMobileSearchOpen(false); }}
+                      >
+                        <img src={p.image_url} alt="" className="suggestion-img" />
+                        <div className="suggestion-info">
+                          <div className="suggestion-name">{p.name}</div>
+                          <div className="suggestion-price">{p.price_vc} Vc's</div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="suggestion-no-results">No products found</div>
+                  )}
+                  {filteredSuggestions.length > 0 && (
+                     <div className="suggestion-view-all" onClick={() => { navigate('/'); setShowSuggestions(false); setMobileSearchOpen(false); }}>
+                       View all results for "{searchTerm}"
+                     </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Top Yellow Navbar - NOW BELOW BLACK BAR WITH FUNCTIONAL LINKS */}
           <div className="navbar-top" style={{ padding: '0.6rem 0', background: '#FFC700', color: '#000', display:'flex', gap: '3.5rem', justifyContent: 'center', fontWeight:'700', fontSize: '0.85rem' }}>
