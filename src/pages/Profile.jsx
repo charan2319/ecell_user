@@ -12,18 +12,23 @@ function Profile() {
     if (!user) {
       navigate('/login');
     }
+  }, [user, navigate]);
+
+  // Refresh user data once on mount
+  useEffect(() => {
     if (user) {
       refreshUser();
     }
     window.scrollTo(0, 0);
-  }, [user, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!user) return null;
 
   return (
     <div className="profile-page-v3" style={{ minHeight: '100vh', background: '#fff', color: '#000' }}>
       {/* ── 1. CLEAN TOP BAR ── */}
-      <div className="section-container" style={{ padding: '2rem 2rem 0' }}>
+      <div className="section-container profile-topbar">
         <button 
           onClick={() => navigate('/')} 
           style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#666', fontWeight: 600, padding: '0', transition: 'color 0.2s' }}
@@ -35,31 +40,31 @@ function Profile() {
       </div>
 
       {/* ── 2. IDENTITY SECTION ── */}
-      <div className="section-container" style={{ padding: '4rem 2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <div style={{ width: '100px', height: '100px', borderRadius: '24px', background: '#FFC700', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      <div className="section-container profile-identity">
+        <div className="profile-identity-inner">
+          <div className="profile-avatar">
             <User size={48} color="#000" />
           </div>
-          <div>
-            <h1 style={{ fontSize: '3rem', fontWeight: 900, margin: '0 0 0.5rem 0', letterSpacing: '-1px' }}>{user.name}</h1>
-            <p style={{ fontSize: '1.2rem', color: '#666', margin: 0, fontWeight: 500 }}>{user.email}</p>
+          <div className="profile-user-info">
+            <h1 className="profile-user-name">{user.name}</h1>
+            <p className="profile-user-email">{user.email}</p>
           </div>
         </div>
       </div>
 
       {/* ── 3. MAIN DASHBOARD GRID ── */}
-      <div className="section-container" style={{ padding: '0 2rem 6rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
+      <div className="section-container profile-dashboard">
+        <div className="profile-dashboard-grid">
           
-          {/* BALANCE CARD - CLEAN PREMIUM LOOK */}
-          <div style={{ background: '#fff', borderRadius: '32px', padding: '3rem', color: '#000', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '280px', boxShadow: '0 20px 40px rgba(0,0,0,0.03)', border: '1px solid #eee' }}>
+          {/* BALANCE CARD */}
+          <div className="profile-balance-card">
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#666', marginBottom: '1.5rem' }}>
                 <Wallet size={24} />
                 <span style={{ fontWeight: 800, fontSize: '1rem', letterSpacing: '1px', textTransform: 'uppercase' }}>Available Balance</span>
               </div>
-              <div style={{ fontSize: '5rem', fontWeight: 900, lineHeight: 1, letterSpacing: '-2px' }}>
-                {user.points} <span style={{ fontSize: '1.5rem', color: '#FFC700', fontWeight: 600 }}>VC'S</span>
+              <div className="profile-balance-amount">
+                {user.points} <span className="profile-balance-unit">VC'S</span>
               </div>
             </div>
             <div style={{ fontSize: '1rem', color: '#999', fontWeight: 500 }}>
@@ -72,12 +77,10 @@ function Profile() {
             
             <div 
               onClick={() => navigate('/orders')}
-              style={{ background: '#F8F9FA', borderRadius: '24px', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.3s', border: '1px solid transparent' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#FFC700'; e.currentTarget.style.transform = 'translateX(10px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              className="profile-action-card"
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                <div style={{ background: '#FFC700', padding: '15px', borderRadius: '16px' }}>
+                <div className="profile-action-icon">
                   <Package size={28} color="#000" />
                 </div>
                 <div>
@@ -90,12 +93,10 @@ function Profile() {
 
             <div 
               onClick={() => navigate('/vc-history')}
-              style={{ background: '#F8F9FA', borderRadius: '24px', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.3s', border: '1px solid transparent' }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#FFC700'; e.currentTarget.style.transform = 'translateX(10px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              className="profile-action-card"
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                <div style={{ background: '#FFC700', padding: '15px', borderRadius: '16px' }}>
+                <div className="profile-action-icon">
                   <Clock size={28} color="#000" />
                 </div>
                 <div>
@@ -106,7 +107,7 @@ function Profile() {
               <ChevronRight size={24} color="#000" />
             </div>
 
-            {/* LOGOUT BUTTON - INTEGRATED */}
+            {/* LOGOUT BUTTON */}
             <div 
               onClick={() => setShowLogoutConfirm(true)}
               style={{ background: '#FFF5F5', borderRadius: '24px', padding: '1.5rem 2rem', display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', transition: 'all 0.2s', marginTop: 'auto' }}
@@ -122,8 +123,8 @@ function Profile() {
       </div>
       {/* LOGOUT CONFIRMATION MODAL */}
       {showLogoutConfirm && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }} onClick={() => setShowLogoutConfirm(false)}>
-          <div style={{ background: '#fff', borderRadius: '40px', padding: '4rem 3rem 3.5rem', maxWidth: '480px', width: '100%', textAlign: 'center', boxShadow: '0 40px 80px rgba(0,0,0,0.4)' }} onClick={e => e.stopPropagation()}>
+        <div className="profile-logout-overlay" onClick={() => setShowLogoutConfirm(false)}>
+          <div className="profile-logout-modal" onClick={e => e.stopPropagation()}>
             <div style={{ width: '80px', height: '80px', borderRadius: '28px', background: '#FEF2F2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2.5rem' }}>
               <LogOut size={36} color="#EF4444" />
             </div>
