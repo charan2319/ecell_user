@@ -89,191 +89,101 @@ function Login() {
   };
 
   return (
-    <div className="auth-container" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F9FAFB' }}>
-      <div className="auth-card" style={{ 
-        background: '#fff', 
-        boxShadow: '0 20px 50px rgba(0,0,0,0.08)', 
-        borderRadius: 32, 
-        padding: '3rem', 
-        textAlign: 'left',
-        maxWidth: '480px',
-        width: '90%'
-      }}>
+    <div className="premium-auth-container">
+      <div className="premium-auth-card">
         {!showOtpField ? (
           <>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <div style={{ background: '#FFC700', width: '70px', height: '70px', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', transform: 'rotate(-10deg)' }}>
-                <span style={{ fontSize: '2rem', fontWeight: 900, color: '#000' }}>A</span>
-              </div>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px', marginBottom: '0.5rem' }}>Welcome!</h2>
-              <p style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>Student Login</p>
+            <div className="premium-logo-badge">
+              <span style={{ fontSize: '2rem', fontWeight: 900, color: '#000' }}>A</span>
             </div>
-
+            
+            <h2 className="premium-auth-title">Welcome!</h2>
+            <p className="premium-auth-subtitle">Student Exclusive Access</p>
 
             <form onSubmit={handleSendOtp}>
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: 700, color: '#111827' }}>College Email</label>
+              <div className="premium-input-group">
+                <label className="premium-input-label">College Email Address</label>
                 <input 
                   type="email" 
+                  className="premium-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Ex. you@alliance.edu.in"
-                  style={{
-                    width: '100%',
-                    padding: '0.85rem 1rem',
-                    borderRadius: '12px',
-                    border: '1px solid #D1D5DB',
-                    fontSize: '1rem',
-                    outline: 'none',
-                    transition: 'border-color 0.2s',
-                    boxSizing: 'border-box'
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = '#000'}
-                  onBlur={(e) => e.target.style.borderColor = '#D1D5DB'}
+                  placeholder="name@alliance.edu.in"
                   required
                 />
               </div>
 
               <button 
                 type="submit" 
+                className="premium-btn-primary"
                 disabled={loading}
-                style={{
-                  width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '12px',
-                  border: 'none',
-                  background: '#000',
-                  color: '#fff',
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  opacity: loading ? 0.7 : 1,
-                  transition: 'transform 0.1s',
-                }}
               >
-                {loading ? 'Processing...' : 'Send OTP'}
+                {loading ? 'Authenticating...' : 'Send OTP'}
               </button>
             </form>
           </>
         ) : (
-          <div>
-            <div style={{ marginBottom: '2rem' }}>
-               <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#000', marginBottom: '0.2rem' }}>Verify With OTP</h2>
-               <p style={{ color: '#9CA3AF', fontSize: '1rem', fontWeight: 500 }}>Sent to the email</p>
+          <div className="fade-in">
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+               <h2 className="premium-auth-title" style={{ fontSize: '2rem' }}>Verify OTP</h2>
+               <p className="premium-auth-subtitle" style={{ marginBottom: 0 }}>Sent to your college inbox</p>
             </div>
 
             <form onSubmit={handleVerifyOtp}>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-                {otpArray.map((data, index) => {
-                  return (
-                    <input
-                      className="otp-input"
-                      type="text"
-                      name="otp"
-                      maxLength="1"
-                      key={index}
-                      value={data}
-                      onChange={e => handleOtpChange(e.target, index)}
-                      onKeyDown={e => handleOtpKeyDown(e, index)}
-                      onFocus={e => e.target.select()}
-                      style={{
-                        width: '3.5rem',
-                        height: '4rem',
-                        fontSize: '1.8rem',
-                        textAlign: 'center',
-                        fontWeight: 700,
-                        border: '1px solid #D1D5DB',
-                        borderRadius: '4px',
-                        outline: 'none',
-                        color: '#000',
-                        boxSizing: 'border-box'
-                      }}
-                      onFocusCapture={(e) => {
-                         e.target.style.borderColor = '#000';
-                         e.target.select();
-                      }}
-                      onBlurCapture={(e) => e.target.style.borderColor = '#D1D5DB'}
-                    />
-                  );
-                })}
+              <div className="premium-otp-grid">
+                {otpArray.map((data, index) => (
+                  <input
+                    key={index}
+                    className="premium-otp-input"
+                    type="text"
+                    maxLength="1"
+                    value={data}
+                    onChange={e => handleOtpChange(e.target, index)}
+                    onKeyDown={e => handleOtpKeyDown(e, index)}
+                    onFocus={e => e.target.select()}
+                  />
+                ))}
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
                  <button 
                    type="button"
+                   className="premium-resend-btn"
                    onClick={(e) => { e.preventDefault(); handleSendOtp(); }}
-                   style={{
-                     background: 'none',
-                     border: 'none',
-                     color: '#000',
-                     fontSize: '0.95rem',
-                     fontWeight: 600,
-                     cursor: 'pointer',
-                     padding: 0
-                   }}
                  >
-                   Resend OTP
-                 </button>
-                 
-                 <button 
-                   type="button"
-                   onClick={() => { setShowOtpField(false); setError(''); setOtpArray(['','','','']); }}
-                   style={{
-                     background: 'none',
-                     border: 'none',
-                     color: '#6B7280',
-                     fontSize: '0.85rem',
-                     fontWeight: 500,
-                     cursor: 'pointer',
-                     textDecoration: 'underline'
-                   }}
-                 >
-                   Change Email
+                   Resend Security Code
                  </button>
               </div>
 
               <button 
                 type="submit" 
+                className="premium-btn-primary"
                 disabled={loading}
-                style={{
-                  width: '100%',
-                  padding: '1rem',
-                  borderRadius: '12px',
-                  border: 'none',
-                  background: '#000',
-                  color: '#fff',
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  opacity: loading ? 0.7 : 1,
-                  transition: 'transform 0.1s',
-                }}
               >
-                {loading ? 'Processing...' : 'Verify'}
+                {loading ? 'Verifying...' : 'Unlock Account'}
               </button>
+              
+              <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                <button 
+                  type="button"
+                  onClick={() => { setShowOtpField(false); setError(''); setOtpArray(['','','','']); }}
+                  style={{ background: 'none', border: 'none', color: '#666', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Use a different email
+                </button>
+              </div>
             </form>
           </div>
         )}
 
         {error && (
-          <div style={{ 
-            background: '#FEF2F2', 
-            color: '#DC2626', 
-            padding: '1rem', 
-            borderRadius: '12px', 
-            fontSize: '0.85rem', 
-            fontWeight: 700,
-            marginTop: '1.5rem',
-            border: '1px solid #FEE2E2'
-          }}>
+          <div className="premium-error-toast">
             {error}
           </div>
         )}
 
-        <div style={{ marginTop: '2rem', borderTop: '1px solid #F3F4F6', paddingTop: '1.5rem' }}>
-          <p style={{ color: '#9CA3AF', fontSize: '0.8rem', fontWeight: 500 }}>
-            By signing in, you agree to the E-Cell Alliance University terms and conditions.
-          </p>
+        <div className="premium-footer-text">
+          By continuing, you agree to the Founder's Mart <br/> terms of service and community guidelines.
         </div>
       </div>
     </div>
