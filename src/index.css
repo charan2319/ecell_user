@@ -247,13 +247,13 @@ a {
 .hero-slider-container {
   position: relative;
   width: 100%;
-  max-width: 1100px;
-  /* Reduced from 1400px for a more compact feel */
-  margin: 1.5rem auto 3rem auto;
-  /* Slightly tighter spacing */
+  max-width: 1300px;
+  /* Increased from 1100px for a more expansive feel */
+  margin: 1.5rem auto 3.5rem auto;
+  /* Slightly more spacing */
   height: auto;
-  max-height: 550px;
-  /* Prevents extremely tall images from taking over */
+  max-height: 650px;
+  /* Increased max-height for wider footprint */
   min-height: 200px;
   border-radius: 40px;
   overflow: hidden;
