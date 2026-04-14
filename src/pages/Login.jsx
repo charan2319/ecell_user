@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../CartContext';
 import axios from 'axios';
 import { API_BASE } from '../config';
+import ecellLogo from '../assets/ecell logo.jpeg';
 
 function Login() {
   const { login } = useContext(AppContext);
@@ -93,8 +94,8 @@ function Login() {
       <div className="premium-auth-card">
         {!showOtpField ? (
           <>
-            <div className="premium-logo-badge">
-              <span style={{ fontSize: '2rem', fontWeight: 900, color: '#000' }}>A</span>
+            <div className="premium-logo-badge" style={{ padding: 0, overflow: 'hidden', background: '#fff', border: '1px solid #E5E7EB' }}>
+              <img src={ecellLogo} alt="E-Cell" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             
             <h2 className="premium-auth-title">Welcome!</h2>
