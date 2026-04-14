@@ -326,6 +326,16 @@ a {
   display: flex;
   gap: 1rem;
   margin-bottom: 1.25rem;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none;
 }
 
 .pill {
