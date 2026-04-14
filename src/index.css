@@ -2387,12 +2387,16 @@ a {
 @media (max-width: 768px) {
 
   /* Shop All Mobile Refinement */
+  .shopall-page {
+    padding-top: 0.5rem !important;
+  }
+
   .shopall-container {
     padding: 0 4vw !important;
   }
 
   .shopall-header {
-    padding: clamp(1.5rem, 6vw, 2.5rem) 2vw clamp(1rem, 4vw, 2rem) !important;
+    padding: clamp(0.5rem, 3vw, 1rem) 2vw clamp(1rem, 4vw, 2rem) !important;
   }
 
   .shopall-grid {
