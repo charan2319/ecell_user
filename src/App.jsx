@@ -19,104 +19,17 @@ import coinImg from './assets/coin.png';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 function App() {
-  const { cart, searchTerm, setSearchTerm, user, products } = useContext(AppContext);
+  const { 
+    cart, searchTerm, setSearchTerm, user, products,
+    userLocation, detecting, handleDetectLocation 
+  } = useContext(AppContext);
   const navigate = useNavigate();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
-  const [detecting, setDetecting] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const suggestionRef = useRef(null);
   const locationDropdownRef = useRef(null);
   const mobileSearchRef = useRef(null);
-
-  // Initialize location from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('userLocation');
-    if (saved) {
-      try {
-        setUserLocation(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved location');
-      }
-    }
-  }, []);
-
-  const reverseGeocode = async (lat, lon) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
-
-    try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`, {
-        headers: {
-          'User-Agent': "FounderMartEcommerceApp/1.0"
-        },
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-      const data = await response.json();
-      
-      // Extract a high-quality address
-      const address = data.address;
-      const area = address.suburb || address.neighbourhood || address.residential || address.city_district || "";
-      const city = address.city || address.town || address.village || "";
-      const road = address.road || "";
-      const postcode = address.postcode || "";
-      
-      // Construct descriptive names
-      const cleanName = area && city ? `${area}, ${city}` : (area || city || road || "Current Location");
-      const shortArea = area || city || "Near You";
-      
-      return { 
-        name: cleanName, 
-        shortName: shortArea,
-        pincode: postcode, 
-        full: data.display_name, 
-        lat, 
-        lon 
-      };
-    } catch (err) {
-      clearTimeout(timeoutId);
-      console.error('Reverse geocoding failed', err);
-      return { 
-        name: "Current Location", 
-        shortName: "Current Location",
-        pincode: "", 
-        lat: lat, 
-        lon: lon 
-      };
-    }
-  };
-
-  const handleDetectLocation = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
-      return;
-    }
-
-    setDetecting(true);
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const { latitude, longitude } = position.coords;
-      const locationData = await reverseGeocode(latitude, longitude);
-      setUserLocation(locationData);
-      localStorage.setItem('userLocation', JSON.stringify(locationData));
-      setDetecting(false);
-      setShowLocationDropdown(false);
-    }, (error) => {
-      console.error('Geolocation error:', error);
-      let errorMsg = "Unable to retrieve your location.";
-      if (error.code === 1) errorMsg = "Permission denied. Please allow location access in your browser settings.";
-      else if (error.code === 2) errorMsg = "Location unavailable. Please try again or check your GPS.";
-      else if (error.code === 3) errorMsg = "Location request timed out. Please try again.";
-      
-      alert(errorMsg);
-      setDetecting(false);
-    }, {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    });
-  };
 
 
   // Close suggestions, location dropdown, and mobile search when clicking outside

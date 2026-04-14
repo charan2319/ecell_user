@@ -11,7 +11,7 @@ import coinImg from '../assets/coin.png';
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useContext(AppContext);
+  const { addToCart, userLocation } = useContext(AppContext);
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -98,23 +98,19 @@ function ProductDetail() {
           <div style={{ flexGrow: 1 }}></div>
 
           {/* Delivery Details */}
-          {(product.delivery_location || product.delivery_time) && (
-            <div className="pd-delivery-section">
-              <div className="pd-delivery-title">Delivery Details</div>
-              <div className="pd-delivery-tags">
-                {product.delivery_location && (
-                  <span className="pd-delivery-tag">
-                    <MapPin size={18} /> {product.delivery_location}
-                  </span>
-                )}
-                {product.delivery_time && (
-                  <span className="pd-delivery-tag">
-                    <Truck size={18} /> Delivery In {product.delivery_time}
-                  </span>
-                )}
-              </div>
+          <div className="pd-delivery-section">
+            <div className="pd-delivery-title">Delivery Details</div>
+            <div className="pd-delivery-tags">
+              <span className="pd-delivery-tag">
+                <MapPin size={18} /> {userLocation ? userLocation.full : 'Set delivery location in header'}
+              </span>
+              {product.delivery_time && (
+                <span className="pd-delivery-tag">
+                  <Truck size={18} /> Delivery In {product.delivery_time}
+                </span>
+              )}
             </div>
-          )}
+          </div>
 
           {/* Action Buttons */}
           <div className="pd-btn-row">

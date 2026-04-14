@@ -134,7 +134,7 @@ function Home() {
     return matchesSearch && matchesCategory;
   });
 
-  const mainProducts = filteredProducts.slice(0, 20); // Show up to 20 items in the main list
+  const mainProducts = filteredProducts; // Show all products that match search/category
   const newProducts = products.filter(p => p.is_new_arrival === true || p.is_new_arrival === 'true');
 
   return (
