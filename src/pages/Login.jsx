@@ -94,7 +94,7 @@ function Login() {
       <div className="premium-auth-card">
         {!showOtpField ? (
           <>
-            <div className="premium-logo-badge" style={{ padding: 0, overflow: 'hidden', background: '#fff', border: '1px solid #E5E7EB' }}>
+            <div className="premium-logo-badge">
               <img src={ecellLogo} alt="E-Cell" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             
