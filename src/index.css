@@ -334,6 +334,8 @@ a {
   border-radius: 20px;
   font-weight: 500;
   font-size: 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   border: 1px solid transparent;
