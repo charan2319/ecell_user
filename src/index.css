@@ -247,14 +247,17 @@ a {
 .hero-slider-container {
   position: relative;
   width: 100%;
-  max-width: 1400px;
-  /* Constrain width for premium feel */
-  margin: 2rem auto 4rem auto;
-  /* Added spacing at top/sides */
-  height: 480px;
-  border-radius: 48px;
+  max-width: 1100px;
+  /* Reduced from 1400px for a more compact feel */
+  margin: 1.5rem auto 3rem auto;
+  /* Slightly tighter spacing */
+  height: auto;
+  max-height: 550px;
+  /* Prevents extremely tall images from taking over */
+  min-height: 200px;
+  border-radius: 40px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
 
 .hero-slide {
@@ -265,8 +268,8 @@ a {
 
 .hero-slide img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
@@ -387,9 +390,9 @@ a {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
   border: none;
-  width: 280px;
+  width: 240px;
+  /* Reduced from 280px */
   flex-shrink: 0;
-  /* Increased from 250px as requested */
   cursor: pointer;
 }
 
@@ -401,7 +404,8 @@ a {
 .product-image-container {
   background: #fff;
   border-radius: 12px;
-  height: 220px;
+  height: 190px;
+  /* Adjusted for smaller card width */
   width: 100%;
   overflow: hidden;
   flex-shrink: 0;
@@ -636,7 +640,7 @@ a {
 
 @media (max-width: 1024px) {
   .hero-slider-container {
-    height: 280px;
+    height: auto;
     border-radius: 24px;
     margin: 1rem 1.5rem 2rem 1.5rem;
     max-width: calc(100% - 3rem);
@@ -798,12 +802,15 @@ a {
   /* ===== HERO SLIDER — no whitespace, scales to any screen ===== */
   .hero-slider-container {
     height: auto !important;
+    max-height: 380px !important;
+    /* Added max-height for mobile sizing */
     aspect-ratio: unset !important;
     border-radius: clamp(14px, 4vw, 22px) !important;
-    margin: 3vw !important;
+    margin: 3.5vw auto !important;
     margin-bottom: 5vw !important;
-    max-width: 94vw !important;
-    width: 94vw !important;
+    max-width: 90vw !important;
+    /* Reduced from 94vw */
+    width: 90vw !important;
     background: transparent !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
     border: none !important;
@@ -823,7 +830,7 @@ a {
   .hero-slide img {
     width: 100% !important;
     height: auto !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
     display: block !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -982,8 +989,9 @@ a {
 
   /* Product card — 60vw so ~1.5 cards visible on any phone */
   .product-card {
-    width: clamp(200px, 60vw, 280px) !important;
-    min-width: clamp(200px, 60vw, 280px) !important;
+    width: clamp(180px, 55vw, 240px) !important;
+    /* Reduced from 200px/60vw/280px */
+    min-width: clamp(180px, 55vw, 240px) !important;
     min-height: auto !important;
     padding: clamp(0.5rem, 2vw, 0.75rem) !important;
     border-radius: clamp(14px, 4vw, 22px) !important;
@@ -992,7 +1000,8 @@ a {
   }
 
   .product-image-container {
-    height: clamp(130px, 42vw, 200px) !important;
+    height: clamp(120px, 40vw, 180px) !important;
+    /* Slightly reduced for compact cards */
     margin-bottom: clamp(0.5rem, 2vw, 0.75rem) !important;
     border-radius: clamp(8px, 3vw, 14px) !important;
   }
