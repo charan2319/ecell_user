@@ -3161,13 +3161,13 @@ a {
 
 .premium-btn-primary {
   width: 100%;
-  background: var(--gold-gradient);
+  background: #FFC700;
+  color: #000;
   border: none;
   border-radius: 18px;
   padding: 1.1rem;
-  color: #000;
   font-size: 1.1rem;
-  font-weight: 850;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 10px 25px var(--gold-glow);
