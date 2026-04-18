@@ -85,15 +85,65 @@ function ProductDetail() {
           {/* Price Row */}
           <div className="pd-price-row">
             {product.original_price && (
-              <span className="pd-price-original">{product.original_price} <img src={coinImg} alt="VC" className="coin-icon" /></span>
+              <span className="pd-price-original">
+                <img src={coinImg} alt="VC" className="coin-icon" />
+                <span className="pd-price-num">{product.original_price}</span>
+              </span>
             )}
-            <span className="pd-price">{product.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></span>
+            <span className="pd-price">
+              <img src={coinImg} alt="VC" className="coin-icon" />
+              <span className="pd-price-num">{product.price_vc}</span>
+            </span>
           </div>
 
           {/* Description */}
           {product.description && (
             <p className="pd-description">{product.description}</p>
           )}
+
+          {/* Amazon-Style Specifications Table */}
+          {(() => {
+            // Check if product has specs, or mock it if it's the HP Victus to show how it looks
+            const specs = product.specifications || (
+              product.name?.toLowerCase().includes('victus') 
+              ? [
+                  { label: "Brand", value: "HP" },
+                  { label: "Manufacturer", value: "HP Inc." },
+                  { label: "Series", value: "Victus 15" },
+                  { label: "Form Factor", value: "Laptop" },
+                  { label: "Item Height", value: "24 Millimeters" },
+                  { label: "Item Width", value: "25.5 Centimeters" },
+                  { label: "Standing screen display size", value: "39.6 Centimetres" },
+                  { label: "Screen Resolution", value: "1920 x 1080 pixels" },
+                  { label: "Processor Brand", value: "Intel" },
+                  { label: "Processor Type", value: "Core i5" },
+                  { label: "RAM Size", value: "8 GB" },
+                  { label: "Memory Technology", value: "DDR4" },
+                  { label: "Hard Drive Size", value: "512 GB" },
+                  { label: "Hard Disk Description", value: "SSD" },
+                  { label: "Audio Details", value: "Headphones, Speakers" },
+                  { label: "Graphics Coprocessor", value: "NVIDIA GeForce RTX 3050" },
+                  { label: "Operating System", value: "Windows 11 Home" }
+                ] 
+              : null
+            );
+
+            if (!specs) return null;
+
+            return (
+              <div className="pd-specs-section">
+                <h3 className="pd-specs-title">Technical Details</h3>
+                <div className="pd-specs-table">
+                  {specs.map((spec, idx) => (
+                    <div className="pd-spec-row" key={idx}>
+                      <div className="pd-spec-label">{spec.label}</div>
+                      <div className="pd-spec-value">{spec.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
           <div style={{ flexGrow: 1 }}></div>
 
