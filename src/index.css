@@ -1206,6 +1206,7 @@ a {
   margin: 0 0 0.3rem 0;
   color: #fff;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .footer-cta-sub {
