@@ -3428,20 +3428,20 @@ a {
 }
 
 .nav-header-logo {
-  height: 60px;
-  width: 60px;
-  border-radius: 14px;
+  height: 80px;
+  width: 80px;
+  border-radius: 16px;
   object-fit: contain;
   display: block;
   background: white;
-  padding: 5px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 2px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 768px) {
   .nav-header-logo {
-    height: 45px;
-    width: 45px;
+    height: 55px;
+    width: 55px;
     margin-bottom: 2px;
   }
 
