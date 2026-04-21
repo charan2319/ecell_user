@@ -193,7 +193,7 @@ function Cart() {
 
                   {/* Price */}
                   <div className="cart-item-price-row">
-                    <span className="cart-item-price">{item.price_vc * getQty(item.id)} <img src={coinImg} alt="VC" className="coin-icon" /></span>
+                    <span className="cart-item-price"><img src={coinImg} alt="VC" className="coin-icon" /> {item.price_vc * getQty(item.id)}</span>
                   </div>
                 </div>
 
@@ -209,7 +209,7 @@ function Cart() {
               <h3 className="cart-price-panel-title">Price Details</h3>
               <div className="cart-price-row">
                 <span className="cart-price-label">MRP</span>
-                <span className="cart-price-value">{total} <img src={coinImg} alt="VC" className="coin-icon" /></span>
+                <span className="cart-price-value"><img src={coinImg} alt="VC" className="coin-icon" /> {total}</span>
               </div>
               <div className="cart-price-row">
                 <span className="cart-price-label">Discount</span>
@@ -218,7 +218,7 @@ function Cart() {
               <div className="cart-price-divider" />
               <div className="cart-price-row cart-total-row">
                 <span className="cart-price-label">Total Amount</span>
-                <span className="cart-price-value">{total} <img src={coinImg} alt="VC" className="coin-icon" /></span>
+                <span className="cart-price-value"><img src={coinImg} alt="VC" className="coin-icon" /> {total}</span>
               </div>
             </div>
 
@@ -229,7 +229,7 @@ function Cart() {
 
             {/* Place Order */}
             <div className="cart-place-order-bar">
-              <span className="cart-place-order-total">{total} <img src={coinImg} alt="VC" className="coin-icon" /></span>
+              <span className="cart-place-order-total"><img src={coinImg} alt="VC" className="coin-icon" /> {total}</span>
               <button className="cart-place-order-btn" onClick={handleCheckout}>
                 Place Order
               </button>

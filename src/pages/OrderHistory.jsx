@@ -96,7 +96,7 @@ function OrderHistory() {
                     <Clock size={16} /> {new Date(order.created_at).toLocaleDateString()}
                   </div>
                   <div>•</div>
-                  <div>Total Spent: <strong>{order.total_vc} <img src={coinImg} alt="VC" className="coin-icon" /></strong></div>
+                  <div>Total Spent: <strong><img src={coinImg} alt="VC" className="coin-icon" /> {order.total_vc}</strong></div>
                 </div>
                 {order.delivery_location && (
                   <div style={{ marginTop: '10px', fontSize: '0.85rem', color: '#888', fontStyle: 'italic' }}>
