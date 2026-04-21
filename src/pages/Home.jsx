@@ -242,7 +242,7 @@ function Home() {
         {/* Earn Vc's Section */}
         <section className="earn-box">
           <div className="earn-header">
-            <h2 className="earn-title">How to earn <img src={coinImg} alt="VC" className="coin-icon" /></h2>
+            <h2 className="earn-title">How to earn Vc's</h2>
           </div>
           <div className="earn-grid">
             <div className="earn-item">

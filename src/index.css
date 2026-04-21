@@ -494,14 +494,12 @@ a {
 
 /* Earn Vc's (Updated for Reference Image) */
 .earn-box {
-  background: #f1f1ef;
-  /* Matches the clean warm light grey in image */
-  border: 1px solid #d1d1cf;
-  border-radius: 20px;
+  background: #eeeeee;
+  border: 1px solid #000000;
+  border-radius: 12px;
   padding: 4rem 3rem;
   text-align: center;
   margin: 5rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 .earn-title {
