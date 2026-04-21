@@ -1,9 +1,9 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 import { API_BASE } from './config';
 
-export const AppContext = createContext();
+export const AppContext = createContext(); // eslint-disable-line react-refresh/only-export-components
 
 export const AppProvider = ({ children }) => {
     const [cart, setCart] = useState(() => {
@@ -22,7 +22,7 @@ export const AppProvider = ({ children }) => {
     const [userLocation, setUserLocation] = useState(() => {
         const saved = localStorage.getItem('userLocation');
         if (saved) {
-            try { return JSON.parse(saved); } catch (e) { return null; }
+            try { return JSON.parse(saved); } catch { return null; }
         }
         return null;
     });
@@ -46,7 +46,7 @@ export const AppProvider = ({ children }) => {
             const cleanName = area && city ? `${area}, ${city}` : (area || city || road || "Current Location");
             const shortArea = area || city || "Near You";
             return { name: cleanName, shortName: shortArea, pincode: postcode, full: data.display_name, lat, lon };
-        } catch (err) {
+        } catch {
             clearTimeout(timeoutId);
             return { name: "Current Location", shortName: "Current Location", pincode: "", lat, lon };
         }
@@ -75,7 +75,7 @@ export const AppProvider = ({ children }) => {
         }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
     };
 
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
             setLoading(true);
             const res = await axios.get(`${API_BASE}/products`);
@@ -85,12 +85,12 @@ export const AppProvider = ({ children }) => {
             console.error('Error fetching products from context:', err);
             setLoading(false);
         }
-    };
+    }, []);
 
     // Initial auth check
     useEffect(() => {
-        fetchProducts();
-    }, []);
+        fetchProducts(); // eslint-disable-line react-hooks/set-state-in-effect
+    }, [fetchProducts]);
 
     // Sync cart to localStorage
     useEffect(() => {

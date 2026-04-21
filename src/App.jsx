@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Cart from './pages/Cart';
@@ -12,7 +12,6 @@ import VerifyEmail from './pages/VerifyEmail';
 import { Search, MapPin, X } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
-import axios from 'axios';
 import './index.css';
 const headerImg = "https://ecell-store-images.s3.ap-south-1.amazonaws.com/founders_mart/images/1775904783271-Logo%20on%20white%20.png";
 import coinImg from './assets/coin.png';
@@ -59,7 +58,7 @@ function App() {
     
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [mobileSearchOpen]);
+  }, [mobileSearchOpen, setSearchTerm]);
 
   const filteredSuggestions = products.filter(p => 
     p.name.toLowerCase().includes(searchTerm.toLowerCase())

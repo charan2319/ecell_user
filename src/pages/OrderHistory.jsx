@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { AppContext } from '../CartContext';
 import { ChevronLeft, Package, Clock, CheckCircle } from 'lucide-react';
@@ -17,12 +17,12 @@ function OrderHistory() {
     try {
       const parsed = JSON.parse(locStr);
       return parsed.full || `${parsed.name} ${parsed.pincode}`.trim();
-    } catch (e) {
+    } catch {
       return locStr || 'Not Specified';
     }
   };
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/orders/user/${user.id}`);
       // Sort orders by latest first
@@ -33,22 +33,22 @@ function OrderHistory() {
       console.error(err);
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const fetchOrderDetails = async (id) => {
     try {
       const res = await axios.get(`${API_BASE}/orders/${id}`);
       setSelectedOrder(res.data);
-    } catch (err) {
+    } catch {
       alert('Failed to load order details');
     }
   };
 
   useEffect(() => {
     if (user) {
-      fetchOrders();
+      fetchOrders(); // eslint-disable-line react-hooks/set-state-in-effect
     }
-  }, [user]);
+  }, [user, fetchOrders]);
 
   if (!user) return <div className="section-container" style={{padding: '4rem 0'}}>Please login to view order history.</div>;
 

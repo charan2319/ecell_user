@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { AppContext } from '../CartContext';
 import { Clock, ArrowUpRight, ArrowDownLeft, ChevronLeft } from 'lucide-react';
@@ -11,7 +11,7 @@ function VcHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/auth/points-history/${user.id}`);
       setHistory(res.data);
@@ -20,14 +20,14 @@ function VcHistory() {
       console.error(err);
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (user) {
       refreshUser();
-      fetchHistory();
+      fetchHistory(); // eslint-disable-line react-hooks/set-state-in-effect
     }
-  }, []);
+  }, [user, refreshUser, fetchHistory]);
 
   if (!user) return <div className="section-container" style={{padding: '4rem 0'}}>Please login to view history.</div>;
 

@@ -64,7 +64,7 @@ function Cart() {
       const locationObj = savedLocation ? JSON.parse(savedLocation) : null;
       const deliveryLocation = locationObj ? JSON.stringify(locationObj) : 'Processing';
 
-      const response = await axios.post(`${API_BASE}/orders`, {
+      await axios.post(`${API_BASE}/orders`, {
         user_id: user.id,
         total_vc: total,
         items: itemsToCheckout.map(i => ({ ...i, quantity: getQty(i.id) })),

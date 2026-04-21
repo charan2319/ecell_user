@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { UserPlus, Calendar, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AppContext } from '../CartContext';
@@ -51,7 +51,7 @@ function ProductCard({ product, onNavigate, onAddToCart }) {
 }
 
 function Home() {
-  const { addToCart, searchTerm, products, loading, setLoading, fetchProducts, user, updateUser } = useContext(AppContext);
+  const { addToCart, searchTerm, products, loading, setLoading, user, updateUser } = useContext(AppContext);
   const navigate = useNavigate();
   const [heroImages, setHeroImages] = useState([]);
   const [currentHero, setCurrentHero] = useState(0);
@@ -73,9 +73,28 @@ function Home() {
     }
   }, [user]);
 
+  const fetchData = useCallback(async () => {
+    try {
+      const [hRes, eRes, bRes, aRes] = await Promise.all([
+        axios.get(`${API_BASE}/hero`),
+        axios.get(`${API_BASE}/events`),
+        axios.get(`${API_BASE}/brands`),
+        axios.get(`${API_BASE}/about-image`)
+      ]);
+      setHeroImages(hRes.data);
+      if (eRes.data.length > 0) setEvent(eRes.data[0]);
+      setBrands(bRes.data);
+      setAboutImage(aRes.data);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
+  }, [setLoading]);
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleUpdateName = async (e) => {
     e.preventDefault();
@@ -102,26 +121,6 @@ function Home() {
       return () => clearInterval(timer);
     }
   }, [heroImages]);
-
-  const fetchData = async () => {
-    try {
-      const [hRes, eRes, bRes, aRes] = await Promise.all([
-        axios.get(`${API_BASE}/hero`),
-        axios.get(`${API_BASE}/events`),
-        axios.get(`${API_BASE}/brands`),
-        axios.get(`${API_BASE}/about-image`)
-      ]);
-      // fetchProducts(); // We can call this if we want to ensure fresh data on home mount, or trust CartContext
-      setHeroImages(hRes.data);
-      if (eRes.data.length > 0) setEvent(eRes.data[0]);
-      setBrands(bRes.data);
-      setAboutImage(aRes.data);
-      setLoading(false);
-    } catch (err) {
-      console.error(err);
-      setLoading(false);
-    }
-  };
 
   const nextHero = () => setCurrentHero((currentHero + 1) % heroImages.length);
   const prevHero = () => setCurrentHero((currentHero - 1 + heroImages.length) % heroImages.length);
