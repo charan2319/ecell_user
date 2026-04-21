@@ -91,7 +91,7 @@ function VcHistory() {
                     fontWeight: 850, 
                     color: isAdded ? '#10B981' : '#EF4444' 
                   }}>
-                    {isAdded ? '+' : '-'}<img src={coinImg} alt="VC" className="coin-icon" /> {item.amount}
+                    {isAdded ? '+' : '-'}<img src={coinImg} alt="VC" className="coin-icon" /> {Number(item.amount).toLocaleString('en-IN')}
                   </span>
                   <p style={{ margin: 0, fontSize: '0.8rem', opacity: 0.5 }}>Ref: #{item.id}</p>
                 </div>

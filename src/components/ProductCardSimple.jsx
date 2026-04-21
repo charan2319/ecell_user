@@ -12,7 +12,7 @@ export default function ProductCardSimple({ product, onAddToCart }) {
       </div>
       <div className="pcs-info">
         <h3 className="pcs-name" title={product.name}>{product.name}</h3>
-        <div className="pcs-price">{product.price_vc} <img src={coinImg} alt="VC" className="coin-icon" /></div>
+        <div className="pcs-price"><img src={coinImg} alt="VC" className="coin-icon" /> {Number(product.price_vc).toLocaleString('en-IN')}</div>
       </div>
       <button 
         className="pcs-add-btn" 

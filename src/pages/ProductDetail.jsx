@@ -87,12 +87,12 @@ function ProductDetail() {
             {product.original_price && (
               <span className="pd-price-original">
                 <img src={coinImg} alt="VC" className="coin-icon" />
-                <span className="pd-price-num">{product.original_price}</span>
+                <span className="pd-price-num">{Number(product.original_price).toLocaleString('en-IN')}</span>
               </span>
             )}
             <span className="pd-price">
               <img src={coinImg} alt="VC" className="coin-icon" />
-              <span className="pd-price-num">{product.price_vc}</span>
+              <span className="pd-price-num">{Number(product.price_vc).toLocaleString('en-IN')}</span>
             </span>
           </div>
 
