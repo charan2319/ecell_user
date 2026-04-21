@@ -622,24 +622,25 @@ a {
 
 .brand-box {
   background: white;
-  padding: 2rem 3rem;
-  border-radius: 24px;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f1f5f9;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 200px;
+  border: 1px solid #000000;
+  transition: all 0.3s ease;
+  width: 200px;
+  height: 100px;
+  flex-shrink: 0;
 }
 
 .brand-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
 }
 
 .brand-image {
-  height: 50px;
-  max-width: 160px;
+  height: 65%;
+  width: 85%;
   object-fit: contain;
   transition: all 0.3s;
 }
