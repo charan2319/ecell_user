@@ -494,7 +494,7 @@ a {
 
 /* Earn Vc's (Updated for Reference Image) */
 .earn-box {
-  background: #eeeeee;
+  background: #f8f9fa;
   border: 1px solid #000000;
   border-radius: 12px;
   padding: 4rem 3rem;
@@ -616,7 +616,7 @@ a {
 
 .brand-box {
   background: white;
-  padding: 1.5rem;
+  padding: 2rem 3rem;
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -624,29 +624,22 @@ a {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   border: 1px solid #f1f5f9;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 220px;
-  height: 110px;
-  flex-shrink: 0;
+  min-width: 200px;
 }
 
 .brand-box:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
 
 .brand-image {
-  max-height: 45px;
+  height: 50px;
   max-width: 160px;
   object-fit: contain;
   transition: all 0.3s;
-  filter: grayscale(1);
-  opacity: 0.7;
 }
 
 .brand-box:hover .brand-image {
   transform: scale(1.05);
-  filter: grayscale(0);
-  opacity: 1;
 }
 
 /* Mobile "Laptop-Like" Refinement */

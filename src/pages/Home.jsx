@@ -328,7 +328,7 @@ function Home() {
                 <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" />
               </a>
               <a href="https://www.linkedin.com/company/e-cell-alliance-university/?originalSubdomain=in" target="_blank" rel="noreferrer" className="footer-social-icon-img" aria-label="LinkedIn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />
+                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" />
               </a>
             </div>
           </div>
