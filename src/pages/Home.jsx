@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { API_BASE } from '../config';
 import coinImg from '../assets/coin.png';
+import referralImg from '../assets/Referal to a friend.png';
+import attendanceImg from '../assets/Attending an Event.png';
+import winningImg from '../assets/Winning an event.png';
 
 // Auto-rotating product card
 function ProductCard({ product, onNavigate, onAddToCart }) {
@@ -246,15 +249,15 @@ function Home() {
           </div>
           <div className="earn-grid">
             <div className="earn-item">
-              <UserPlus className="earn-icon" size={64} color="#000" strokeWidth={2.5} />
+              <img src={referralImg} alt="Referral" className="earn-icon-img" />
               <h3 className="earn-item-text">Referal to a friend</h3>
             </div>
             <div className="earn-item">
-              <Calendar className="earn-icon" size={64} color="#000" strokeWidth={2.5} />
+              <img src={attendanceImg} alt="Attendance" className="earn-icon-img" />
               <h3 className="earn-item-text">Attending an event</h3>
             </div>
             <div className="earn-item">
-              <Trophy className="earn-icon" size={64} color="#000" strokeWidth={2.5} />
+              <img src={winningImg} alt="Winning" className="earn-icon-img" />
               <h3 className="earn-item-text">Winning an event</h3>
             </div>
           </div>
