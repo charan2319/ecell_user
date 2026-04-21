@@ -639,8 +639,8 @@ a {
 }
 
 .brand-image {
-  height: 90%;
-  width: 90%;
+  height: 95%;
+  width: 95%;
   object-fit: contain;
   transition: all 0.3s;
 }
@@ -3428,21 +3428,20 @@ a {
 }
 
 .nav-header-logo {
-  height: 38px;
-  width: auto;
-  max-width: 200px;
-  border-radius: 10px;
+  height: 60px;
+  width: 60px;
+  border-radius: 14px;
   object-fit: contain;
   display: block;
-  transform: scale(1.3);
-  transform-origin: left center;
-  margin-left: -15px;
+  background: white;
+  padding: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 @media (max-width: 768px) {
   .nav-header-logo {
-    height: 32px;
-    transform: none;
+    height: 45px;
+    width: 45px;
     margin-bottom: 2px;
   }
 
