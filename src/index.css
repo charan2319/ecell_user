@@ -622,7 +622,7 @@ a {
 
 .brand-box {
   background: white;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -639,8 +639,8 @@ a {
 }
 
 .brand-image {
-  height: 85%;
-  width: 92%;
+  height: 95%;
+  width: 95%;
   object-fit: contain;
   transition: all 0.3s;
 }
