@@ -639,8 +639,8 @@ a {
 }
 
 .brand-image {
-  height: 65%;
-  width: 85%;
+  height: 85%;
+  width: 92%;
   object-fit: contain;
   transition: all 0.3s;
 }
