@@ -1909,6 +1909,7 @@ a {
   max-width: 100%;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
+  white-space: pre-wrap;
 }
 
 /* Amazon-style Specs Table */
