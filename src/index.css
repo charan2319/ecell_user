@@ -3428,20 +3428,19 @@ a {
 }
 
 .nav-header-logo {
-  height: 70px;
-  width: 70px;
-  border-radius: 14px;
+  height: 60px;
+  width: auto;
+  max-width: 250px;
+  border-radius: 0;
   object-fit: contain;
   display: block;
-  background: white;
-  padding: 3px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 @media (max-width: 768px) {
   .nav-header-logo {
-    height: 50px;
-    width: 50px;
+    height: 45px;
+    width: auto;
+    max-width: 180px;
     margin-bottom: 2px;
   }
 

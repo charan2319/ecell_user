@@ -13,7 +13,8 @@ import { Search, MapPin, X } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
 import './index.css';
-const headerImg = "https://ecell-store-images.s3.ap-south-1.amazonaws.com/founders_mart/images/1775904783271-Logo%20on%20white%20.png";
+import foundersMartLogo from "./assets/Founder'smart.png";
+const headerImg = foundersMartLogo;
 import coinImg from './assets/coin.png';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
