@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MapPin, Truck, ArrowLeft } from 'lucide-react';
@@ -17,6 +17,8 @@ function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showToggle, setShowToggle] = useState(false);
+  const descriptionRef = useRef(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -32,6 +34,13 @@ function ProductDetail() {
     fetchProduct();
     window.scrollTo(0, 0);
   }, [id]);
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      // 160 is the max-height from CSS
+      setShowToggle(descriptionRef.current.scrollHeight > 160);
+    }
+  }, [product, product?.description, loading]);
 
   if (loading) return <div className="pd-loading">Loading...</div>;
   if (!product) return <div className="pd-error">Product not found.</div>;
@@ -101,12 +110,15 @@ function ProductDetail() {
           {product.description && (
             <div className="pd-description-container">
               <h3 className="pd-section-title">About this item</h3>
-              <ul className={`pd-description-list ${isExpanded ? 'expanded' : ''}`}>
+              <ul 
+                ref={descriptionRef}
+                className={`pd-description-list ${isExpanded ? 'expanded' : ''}`}
+              >
                 {product.description.split('\n').filter(line => line.trim()).map((line, idx) => (
                   <li key={idx}>{line.trim().replace(/\bHp\b/g, 'HP')}</li>
                 ))}
               </ul>
-              {product.description.split('\n').filter(line => line.trim()).length > 4 && (
+              {showToggle && (
                 <button 
                   className="pd-description-toggle" 
                   onClick={() => setIsExpanded(!isExpanded)}
