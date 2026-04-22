@@ -46,7 +46,7 @@ function ProductCard({ product, onNavigate, onAddToCart }) {
           </div>
         )}
       </div>
-      <div className="product-title" title={product.name}>{product.name}</div>
+      <div className="product-title" title={product.name}>{product.name.replace(/\bHp\b/g, 'HP')}</div>
       <div className="product-price"><img src={coinImg} alt="VC" className="coin-icon" /> {Number(product.price_vc).toLocaleString('en-IN')}</div>
       <button className="add-btn" onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}>Add To Cart</button>
     </div>

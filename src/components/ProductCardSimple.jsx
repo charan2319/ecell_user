@@ -11,7 +11,7 @@ export default function ProductCardSimple({ product, onAddToCart }) {
         <img src={product.image_url} alt={product.name} />
       </div>
       <div className="pcs-info">
-        <h3 className="pcs-name" title={product.name}>{product.name}</h3>
+        <h3 className="pcs-name" title={product.name}>{product.name.replace(/\bHp\b/g, 'HP')}</h3>
         <div className="pcs-price"><img src={coinImg} alt="VC" className="coin-icon" /> {Number(product.price_vc).toLocaleString('en-IN')}</div>
       </div>
       <button 

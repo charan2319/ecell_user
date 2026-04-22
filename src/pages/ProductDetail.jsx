@@ -80,7 +80,7 @@ function ProductDetail() {
           {product.brand && <h2 className="pd-brand">{product.brand}</h2>}
 
           {/* Product Name */}
-          <h1 className="pd-name">{product.name}</h1>
+          <h1 className="pd-name">{product.name?.replace(/\bHp\b/g, 'HP')}</h1>
 
           {/* Price Row */}
           <div className="pd-price-row">
@@ -98,7 +98,7 @@ function ProductDetail() {
 
           {/* Description */}
           {product.description && (
-            <p className="pd-description">{product.description}</p>
+            <p className="pd-description">{product.description.replace(/\bHp\b/g, 'HP')}</p>
           )}
 
           {/* Amazon-Style Specifications Table */}
