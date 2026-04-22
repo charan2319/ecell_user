@@ -16,6 +16,7 @@ function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -98,7 +99,22 @@ function ProductDetail() {
 
           {/* Description */}
           {product.description && (
-            <p className="pd-description">{product.description.replace(/\bHp\b/g, 'HP')}</p>
+            <div className="pd-description-container">
+              <h3 className="pd-section-title">About this item</h3>
+              <ul className={`pd-description-list ${isExpanded ? 'expanded' : ''}`}>
+                {product.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+                  <li key={idx}>{line.trim().replace(/\bHp\b/g, 'HP')}</li>
+                ))}
+              </ul>
+              {product.description.split('\n').filter(line => line.trim()).length > 4 && (
+                <button 
+                  className="pd-description-toggle" 
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? 'Show Less' : 'Show More'}
+                </button>
+              )}
+            </div>
           )}
 
 
