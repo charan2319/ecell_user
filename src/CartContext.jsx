@@ -79,7 +79,19 @@ export const AppProvider = ({ children }) => {
         try {
             setLoading(true);
             const res = await axios.get(`${API_BASE}/products`);
-            setProducts(res.data);
+            const electronicsSubcats = [
+                'laptops', 'headphones', 'earbuds', 'laptop accessories', 
+                'mobile accessories', 'camera accessories', 'lighting', 
+                'smartwatches', 'speakers', 'power banks', 'tablets', 
+                'monitors', 'keyboards', 'mice', 'chargers', 'cables'
+            ];
+            const mappedProducts = res.data.map(p => {
+                if (p.category && electronicsSubcats.includes(p.category.toLowerCase().trim())) {
+                    return { ...p, category: 'Electronics', original_category: p.category };
+                }
+                return p;
+            });
+            setProducts(mappedProducts);
             setLoading(false);
         } catch (err) {
             console.error('Error fetching products from context:', err);

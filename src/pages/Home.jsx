@@ -242,26 +242,7 @@ function Home() {
           ))}
         </div>
 
-        {/* Earn Vc's Section */}
-        <section className="earn-box">
-          <div className="earn-header">
-            <h2 className="earn-title">How to earn Vc's</h2>
-          </div>
-          <div className="earn-grid">
-            <div className="earn-item">
-              <img src={referralImg} alt="Referral" className="earn-icon-img" />
-              <h3 className="earn-item-text">Referal to a friend</h3>
-            </div>
-            <div className="earn-item">
-              <img src={attendanceImg} alt="Attendance" className="earn-icon-img" />
-              <h3 className="earn-item-text">Attending an event</h3>
-            </div>
-            <div className="earn-item">
-              <img src={winningImg} alt="Winning" className="earn-icon-img" />
-              <h3 className="earn-item-text">Winning an event</h3>
-            </div>
-          </div>
-        </section>
+
       </div>
 
       {/* 5. About Us (Stylized according to reference image) */}
