@@ -1062,17 +1062,29 @@ a {
 
   /* ===== Brands — always single row, fluid ===== */
   .brands-row {
-    gap: clamp(0.25rem, 1.5vw, 0.5rem) !important;
+    gap: clamp(0.5rem, 2vw, 1rem) !important;
     flex-wrap: nowrap !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  .brands-row::-webkit-scrollbar {
+    display: none !important;
   }
 
   .brand-box {
     padding: clamp(0.3rem, 1.5vw, 0.5rem) !important;
-    min-width: 0 !important;
-    width: 23% !important;
-    height: clamp(38px, 12vw, 55px) !important;
+    min-width: clamp(120px, 35vw, 160px) !important;
+    width: clamp(120px, 35vw, 160px) !important;
+    height: clamp(45px, 14vw, 60px) !important;
     border-radius: clamp(6px, 2vw, 10px) !important;
+    flex-shrink: 0 !important;
+    scroll-snap-align: start !important;
   }
 
   .brand-image {
