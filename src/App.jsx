@@ -9,6 +9,7 @@ import VcHistory from './pages/VcHistory';
 import ProductDetail from './pages/ProductDetail';
 import ShopAll from './pages/ShopAll';
 import VerifyEmail from './pages/VerifyEmail';
+import HowToEarnVc from './pages/HowToEarnVc';
 import { Search, MapPin, X } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
@@ -30,7 +31,6 @@ function App() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [showEarnBuyModal, setShowEarnBuyModal] = useState(false);
   const suggestionRef = useRef(null);
   const locationDropdownRef = useRef(null);
   const mobileSearchRef = useRef(null);
@@ -274,7 +274,7 @@ function App() {
             <Link to="/shop-all" style={{ textDecoration: 'none', color: '#000' }}>Shop All</Link>
             <a href="/#about" style={{ textDecoration: 'none', color: '#000' }}>About Us</a>
             <a href="/#support" style={{ textDecoration: 'none', color: '#000' }}>Customer Support</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); setShowEarnBuyModal(true); }} style={{ textDecoration: 'none', color: '#000' }}>How to Earn and Buy</a>
+            <Link to="/how-to-earn-vc" style={{ textDecoration: 'none', color: '#000' }}>How To Earn VC</Link>
           </div>
         </header>
 
@@ -289,40 +289,10 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/shop-all" element={<ShopAll />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/how-to-earn-vc" element={<HowToEarnVc />} />
           </Routes>
         </main>
 
-        {showEarnBuyModal && (
-          <div className="earn-modal-overlay" onClick={() => setShowEarnBuyModal(false)} style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
-          }}>
-            <div className="earn-modal-content" onClick={e => e.stopPropagation()} style={{
-              background: '#fff', padding: '2rem', borderRadius: '12px', maxWidth: '600px', width: '90%', position: 'relative'
-            }}>
-              <button onClick={() => setShowEarnBuyModal(false)} style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
-              <section className="earn-box" style={{ boxShadow: 'none', margin: 0, padding: 0 }}>
-                <div className="earn-header">
-                  <h2 className="earn-title">How to earn and buy Vc's</h2>
-                </div>
-                <div className="earn-grid">
-                  <div className="earn-item">
-                    <img src={referralImg} alt="Referral" className="earn-icon-img" />
-                    <h3 className="earn-item-text">Referal to a friend</h3>
-                  </div>
-                  <div className="earn-item">
-                    <img src={attendanceImg} alt="Attendance" className="earn-icon-img" />
-                    <h3 className="earn-item-text">Attending an event</h3>
-                  </div>
-                  <div className="earn-item">
-                    <img src={winningImg} alt="Winning" className="earn-icon-img" />
-                    <h3 className="earn-item-text">Winning an event</h3>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-        )}
       </div>
   );
 }

@@ -1,0 +1,81 @@
+.earn-vc-page {
+  background-color: #f0f0f0;
+  min-height: calc(100vh - 130px); /* Adjust for header */
+  padding: 0;
+  width: 100%;
+}
+
+.earn-vc-header {
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.earn-vc-back-btn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  color: #000;
+}
+
+.earn-vc-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  margin-top: 2px;
+}
+
+.earn-vc-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.earn-vc-card {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #4a4a4a;
+  border-radius: 12px;
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.earn-vc-icon {
+  color: #000;
+  flex-shrink: 0;
+}
+
+.earn-vc-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #111;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .earn-vc-card {
+    padding: 1rem 1.5rem;
+    gap: 1.5rem;
+  }
+  .earn-vc-text {
+    font-size: 1rem;
+  }
+  .earn-vc-header {
+    padding: 1rem 1.5rem;
+  }
+  .earn-vc-content {
+    padding: 1rem 1.5rem;
+  }
+}
