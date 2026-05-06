@@ -99,11 +99,12 @@ function Login() {
             </div>
             
             <h2 className="premium-auth-title">Welcome!</h2>
-            <p className="premium-auth-subtitle">Student Exclusive Access</p>
+            <p className="premium-auth-subtitle" style={{ marginBottom: '1.5rem' }}>Student Exclusive Access</p>
+            <div style={{ width: '32px', height: '3px', background: '#FFC700', margin: '0 auto 2.5rem', borderRadius: '2px' }}></div>
 
             <form onSubmit={handleSendOtp}>
               <div className="premium-input-group">
-                <label className="premium-input-label">College Email Address</label>
+                <label className="premium-input-label">COLLEGE EMAIL ADDRESS</label>
                 <input 
                   type="email" 
                   className="premium-input"
@@ -184,7 +185,7 @@ function Login() {
         )}
 
         <div className="premium-footer-text">
-          By continuing, you agree to the Founder's Mart <br/> terms of service and community guidelines.
+          By continuing, you agree to the Founder's Mart <br/> <span style={{textDecoration: 'underline'}}>terms of service</span> and <span style={{textDecoration: 'underline'}}>community guidelines</span>.
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef, useCallback } from 'react';
 import axios from 'axios';
-import { UserPlus, Calendar, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { UserPlus, Calendar, Trophy, ChevronLeft, ChevronRight, Lightbulb, BookOpen, Rocket } from 'lucide-react';
 import { AppContext } from '../CartContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import coinImg from '../assets/coin.png';
 import referralImg from '../assets/Referal to a friend.png';
 import attendanceImg from '../assets/Attending an Event.png';
 import winningImg from '../assets/Winning an event.png';
+import foundersMartLogo from "../assets/Founder'smart.png";
 
 // Auto-rotating product card
 function ProductCard({ product, onNavigate, onAddToCart }) {
@@ -247,20 +248,57 @@ function Home() {
 
       {/* 5. About Us (Stylized according to reference image) */}
       <section className="about-section-container" id="about">
-        <div className="about-text-column">
-          <div className="about-heading-wrapper">
-            <div className="about-heading-box">
-              <h2>About Us</h2>
+        <div className="about-header-row">
+          <img src={foundersMartLogo} alt="Founder's Mart" className="about-logo" />
+          <div className="about-title-box">
+            <h2>ABOUT US</h2>
+          </div>
+        </div>
+
+        <p className="about-main-text">
+          The Entrepreneurship Cell (E-Cell) of Alliance University is a student-led initiative that fosters innovation and an entrepreneurial mindset among students. It provides a platform for aspiring entrepreneurs to develop ideas, gain mentorship, and access valuable resources.
+        </p>
+
+        <div className="about-content-split">
+          {/* Left Column: Metrics */}
+          <div className="about-metrics-col">
+            <div className="about-metric-card">
+              <span className="metric-number">5K+</span>
+              <span className="metric-label">Innovation Community Members</span>
+            </div>
+            <div className="about-metric-card">
+              <span className="metric-number">350+</span>
+              <span className="metric-label">Student & Research-Led Startups Supported</span>
+            </div>
+            <div className="about-metric-card">
+              <span className="metric-number">110+</span>
+              <span className="metric-label">Pre-incubated Student Entrepreneurs</span>
+            </div>
+            <div className="about-metric-card">
+              <span className="metric-number">₹2L+</span>
+              <span className="metric-label">In Grants Enabled for Early-Stage Innovation</span>
             </div>
           </div>
-          <p className="about-content-text">
-            Ecell is the entrepreneurial Cell of Alliance University where it
-            supports Entrepreneurship and student entrepreneurs. It also conducts
-            events related to Entrepreneurship to provide knowledge and inspire students
-          </p>
-        </div>
-        <div className="about-visual-box">
-          {aboutImage && <img src={aboutImage.image_url} alt="About E-Cell" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />}
+
+          {/* Right Column: Features */}
+          <div className="about-features-col">
+            <h3 className="features-title">What E-Cell Do ?</h3>
+            
+            <div className="feature-item">
+              <Lightbulb size={32} strokeWidth={1.5} className="feature-icon" />
+              <p className="feature-text">Inspires entrepreneurial thinking through events<br/>and workshops</p>
+            </div>
+            
+            <div className="feature-item">
+              <BookOpen size={32} strokeWidth={1.5} className="feature-icon" />
+              <p className="feature-text">Provides mentorship<br/>and expert guidance</p>
+            </div>
+            
+            <div className="feature-item">
+              <Rocket size={32} strokeWidth={1.5} className="feature-icon" />
+              <p className="feature-text">Supports startups from<br/>idea to launch</p>
+            </div>
+          </div>
         </div>
       </section>
 
