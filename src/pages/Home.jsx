@@ -256,7 +256,7 @@ function Home() {
         </div>
 
         <p className="about-main-text">
-          The Entrepreneurship Cell (E-Cell) of Alliance University is a student-led initiative that fosters innovation and an entrepreneurial mindset among students. It provides a platform for aspiring entrepreneurs to develop ideas, gain mentorship, and access valuable resources.
+          The Entrepreneurship Cell (E-Cell) of Alliance University is an initiative that fosters innovation and an entrepreneurial mindset among students. It provides a platform for aspiring entrepreneurs to develop ideas, gain mentorship, and access valuable resources.
         </p>
 
         <div className="about-content-split">
