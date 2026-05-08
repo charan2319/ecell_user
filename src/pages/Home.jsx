@@ -289,17 +289,17 @@ function Home() {
             
             <div className="feature-item">
               <img src={bulbImg} alt="Bulb" className="about-feature-icon" />
-              <p className="feature-text">Inspires entrepreneurial thinking through events<br/>and workshops</p>
+              <p className="feature-text">Inspires entrepreneurial thinking through events and workshops</p>
             </div>
             
             <div className="feature-item">
               <img src={bookImg} alt="Book" className="about-feature-icon" />
-              <p className="feature-text">Provides mentorship<br/>and expert guidance</p>
+              <p className="feature-text">Provides mentorship and expert guidance</p>
             </div>
             
             <div className="feature-item">
               <img src={rocketImg} alt="Rocket" className="about-feature-icon" />
-              <p className="feature-text">Supports startups from<br/>idea to launch</p>
+              <p className="feature-text">Supports startups from idea to launch</p>
             </div>
           </div>
         </div>
