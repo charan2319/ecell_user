@@ -4,6 +4,7 @@ import { AppContext } from '../CartContext';
 import axios from 'axios';
 import { API_BASE } from '../config';
 import ecellLogo from '../assets/ecell logo.jpeg';
+import rocketImg from '../assets/rocoket login.png';
 
 function Login() {
   const { login } = useContext(AppContext);
@@ -94,8 +95,12 @@ function Login() {
       <div className="premium-auth-card">
         {!showOtpField ? (
           <>
-            <div className="premium-logo-badge">
-              <img src={ecellLogo} alt="E-Cell" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <div className="premium-logo-vertical">
+              <img src={rocketImg} alt="Rocket" className="login-rocket-icon" />
+              <div className="login-ecell-text-group">
+                <div className="login-ecell-main">E-CELL</div>
+                <div className="login-ecell-sub">ALLIANCE UNIVERSITY</div>
+              </div>
             </div>
             
             <h2 className="premium-auth-title">Welcome!</h2>

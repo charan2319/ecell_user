@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef, useCallback } from 'react';
 import axios from 'axios';
-import { UserPlus, Calendar, Trophy, ChevronLeft, ChevronRight, Lightbulb, BookOpen, Rocket } from 'lucide-react';
+import { UserPlus, Calendar, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AppContext } from '../CartContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,9 @@ import referralImg from '../assets/Referal to a friend.png';
 import attendanceImg from '../assets/Attending an Event.png';
 import winningImg from '../assets/Winning an event.png';
 import foundersMartLogo from "../assets/Founder'smart.png";
+import bulbImg from '../assets/buld.png';
+import bookImg from '../assets/book.png';
+import rocketImg from '../assets/rocket.png';
 
 // Auto-rotating product card
 function ProductCard({ product, onNavigate, onAddToCart }) {
@@ -285,17 +288,17 @@ function Home() {
             <h3 className="features-title">What E-Cell Do ?</h3>
             
             <div className="feature-item">
-              <Lightbulb size={32} strokeWidth={1.5} className="feature-icon" />
+              <img src={bulbImg} alt="Bulb" className="about-feature-icon" />
               <p className="feature-text">Inspires entrepreneurial thinking through events<br/>and workshops</p>
             </div>
             
             <div className="feature-item">
-              <BookOpen size={32} strokeWidth={1.5} className="feature-icon" />
+              <img src={bookImg} alt="Book" className="about-feature-icon" />
               <p className="feature-text">Provides mentorship<br/>and expert guidance</p>
             </div>
             
             <div className="feature-item">
-              <Rocket size={32} strokeWidth={1.5} className="feature-icon" />
+              <img src={rocketImg} alt="Rocket" className="about-feature-icon" />
               <p className="feature-text">Supports startups from<br/>idea to launch</p>
             </div>
           </div>
@@ -305,13 +308,19 @@ function Home() {
       {/* 6. Brands (Centered Container) */}
       <div className="section-container" style={{ marginBottom: '5rem' }} id="support">
         <h2 className="section-title" style={{ textAlign: 'center' }}>Trusted Brands</h2>
-        <div className="brands-row">
-          {brands.map(b => (
-            <div key={b.id} className="brand-box">
-              <img src={b.image_url} alt="" className="brand-image" />
-            </div>
-          ))}
-          {brands.length === 0 && <p style={{ opacity: 0.5 }}>Syncing trusted partners...</p>}
+        <div className="brands-marquee">
+          <div className="brands-row">
+            {brands.length > 0 ? (
+              // Duplicate brands list for seamless loop
+              [...brands, ...brands].map((b, idx) => (
+                <div key={`${b.id}-${idx}`} className="brand-box">
+                  <img src={b.image_url} alt="" className="brand-image" />
+                </div>
+              ))
+            ) : (
+              <p style={{ opacity: 0.5, textAlign: 'center', width: '100%' }}>Syncing trusted partners...</p>
+            )}
+          </div>
         </div>
       </div>
 

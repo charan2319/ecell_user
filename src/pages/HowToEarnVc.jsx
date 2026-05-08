@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, UserPlus, Trophy, Calendar } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import './HowToEarnVc.css';
+
+import referralImg from '../assets/Referal to a friend.png';
+import winningImg from '../assets/Winning an event.png';
+import attendanceImg from '../assets/Attending an Event.png';
 
 export default function HowToEarnVc() {
   const navigate = useNavigate();
@@ -21,21 +25,21 @@ export default function HowToEarnVc() {
 
       <div className="earn-vc-content">
         <div className="earn-vc-card">
-          <UserPlus size={36} strokeWidth={2} className="earn-vc-icon" />
+          <img src={referralImg} alt="Referral" className="earn-vc-img-icon" />
           <p className="earn-vc-text">
             Invite a friend to join us and attend an event together to earn VC's.
           </p>
         </div>
 
         <div className="earn-vc-card">
-          <Trophy size={36} strokeWidth={2} className="earn-vc-icon" />
+          <img src={winningImg} alt="Winning" className="earn-vc-img-icon" />
           <p className="earn-vc-text">
             Compete in events and give your best—winning earns you additional VC's.
           </p>
         </div>
 
         <div className="earn-vc-card">
-          <Calendar size={36} strokeWidth={2} className="earn-vc-icon" />
+          <img src={attendanceImg} alt="Attendance" className="earn-vc-img-icon" />
           <p className="earn-vc-text">
             Participate in our regular events and stay actively involved.
           </p>

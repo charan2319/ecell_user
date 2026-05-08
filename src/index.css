@@ -652,8 +652,10 @@ a {
   margin-bottom: 2rem;
 }
 
-.feature-icon {
-  color: #fff;
+.about-feature-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -673,12 +675,23 @@ a {
   }
   
   .about-header-row {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: flex-start;
   }
   
   .about-title-box {
-    width: 100%;
+    width: auto;
+    flex: 1;
+  }
+
+  .about-logo {
+    height: 45px;
+  }
+
+  .about-title-box h2 {
+    font-size: 1.8rem;
   }
 }
 
@@ -697,12 +710,34 @@ a {
   }
 }
 
+.brands-marquee {
+  overflow: hidden;
+  width: 100%;
+  padding: 1rem 0;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
 .brands-row {
   display: flex;
-  justify-content: center;
   gap: 2.5rem;
   margin-top: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: max-content;
+  animation: brandsScroll 40s linear infinite;
+}
+
+.brands-row:hover {
+  animation-play-state: paused;
+}
+
+@keyframes brandsScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .brand-box {
@@ -957,8 +992,26 @@ a {
     padding: clamp(1rem, 4vw, 1.5rem) !important;
     margin: 2rem 3vw !important;
     border-radius: clamp(14px, 4vw, 20px) !important;
-    align-items: center !important;
+    align-items: flex-start !important;
     background: #1c1b18 !important;
+  }
+
+  .about-header-row {
+    width: 100%;
+    gap: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .about-logo {
+    height: 35px !important;
+  }
+
+  .about-title-box {
+    padding: 0.5rem !important;
+  }
+
+  .about-title-box h2 {
+    font-size: 1.25rem !important;
   }
 
   .about-text-column {
@@ -3343,17 +3396,43 @@ a {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.premium-logo-badge {
-  background: transparent;
-  width: 210px;
-  height: auto;
-  border-radius: 0;
+.premium-logo-vertical {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 3rem;
-  box-shadow: none;
-  transform: none;
+  margin: 0 auto 3.5rem;
+  text-align: center;
+}
+
+.login-rocket-icon {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+}
+
+.login-ecell-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.login-ecell-main {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #000;
+  letter-spacing: -1px;
+}
+
+.login-ecell-sub {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 1.2px;
+  margin-top: 0.2rem;
+  opacity: 0.85;
 }
 
 .premium-auth-title {
