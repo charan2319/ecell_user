@@ -1028,7 +1028,7 @@ a {
   .about-main-text {
     font-size: 1.05rem !important;
     line-height: 1.5 !important;
-    text-align: justify !important;
+    text-align: left !important;
     margin-bottom: 2rem !important;
     color: #fff !important;
     width: 100% !important;
