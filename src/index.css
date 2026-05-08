@@ -992,43 +992,46 @@ a {
     padding: 2rem 1.5rem !important;
     margin: 2rem 3vw !important;
     border-radius: 20px !important;
-    align-items: center !important;
+    align-items: flex-start !important;
     background: #1c1b18 !important;
   }
 
   .about-header-row {
     width: 100%;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
-    gap: 1.25rem !important;
+    gap: 1rem !important;
     margin-bottom: 1.5rem !important;
+    justify-content: space-between !important;
   }
 
   .about-logo {
-    height: 45px !important;
+    height: 40px !important;
     width: auto !important;
   }
 
   .about-title-box {
-    width: 100% !important;
-    padding: 0.75rem !important;
+    flex: 1 !important;
+    padding: 0.6rem !important;
     border: 1px solid #FFC700 !important;
     border-radius: 8px !important;
+    margin-left: 0.5rem !important;
   }
 
   .about-title-box h2 {
-    font-size: 1.5rem !important;
+    font-size: 1.1rem !important;
     text-align: center !important;
     margin: 0 !important;
   }
 
   .about-main-text {
-    font-size: 1rem !important;
-    line-height: 1.6 !important;
-    text-align: center !important;
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+    text-align: justify !important;
     margin-bottom: 2rem !important;
     color: #fff !important;
+    width: 100% !important;
   }
 
   .about-content-split {
@@ -1043,27 +1046,27 @@ a {
   }
 
   .about-metric-card {
-    padding: 1rem !important;
-    justify-content: center !important;
-    text-align: center !important;
-    flex-direction: column !important;
-    gap: 0.5rem !important;
+    padding: 1rem 1.5rem !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    flex-direction: row !important;
+    gap: 1.5rem !important;
   }
 
   .metric-number {
     font-size: 1.75rem !important;
-    min-width: 0 !important;
+    min-width: 80px !important;
   }
 
   .about-features-col {
-    align-items: center !important;
+    align-items: flex-start !important;
   }
 
   .feature-item {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 0.75rem !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 1.25rem !important;
   }
 
   .about-visual-box img {
