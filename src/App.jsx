@@ -21,7 +21,7 @@ import referralImg from './assets/Referal to a friend.png';
 import attendanceImg from './assets/Attending an Event.png';
 import winningImg from './assets/Winning an event.png';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://3.111.186.227:5001/api';
 function App() {
   const { 
     cart, searchTerm, setSearchTerm, user, products,
