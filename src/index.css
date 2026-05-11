@@ -3686,3 +3686,335 @@ a {
     margin-left: 0px;
   }
 }
+
+/* ============================================================
+   ADDRESS BOOK — Navbar Dropdown & Cart Panel
+   ============================================================ */
+
+/* Saved address list inside location dropdown */
+.addr-saved-list {
+  margin-bottom: 0.5rem;
+}
+
+.addr-list-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 1.2px;
+  padding: 0.4rem 1.25rem 0.2rem;
+}
+
+.addr-card {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.addr-type-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  background: #FFC700;
+  color: #000;
+  border-radius: 6px;
+  padding: 2px 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.addr-remove-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+.addr-remove-btn:hover { color: #ef4444; }
+
+.addr-edit-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+.addr-edit-btn:hover { color: #3b82f6; }
+
+/* ShopAll category count badge */
+.shopall-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #666;
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 3px 12px;
+  margin-left: auto;
+}
+
+/* "Add New Address" button in dropdown */
+.addr-add-new-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: calc(100% - 1rem);
+  margin: 0.75rem 0.5rem 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.addr-add-new-btn:hover {
+  background: #FFFBE6;
+  border-color: #FFC700;
+}
+
+/* Address Form (shared between navbar dropdown & cart) */
+.addr-form {
+  padding: 0.75rem 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.addr-form-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.addr-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.addr-form input,
+.addr-form select,
+.cart-addr-form input,
+.cart-addr-form select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #111;
+  background: #f9fafb;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.addr-form input:focus,
+.addr-form select:focus,
+.cart-addr-form input:focus,
+.cart-addr-form select:focus {
+  border-color: #FFC700;
+  background: #fff;
+}
+
+.addr-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.addr-cancel-btn {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.addr-cancel-btn:hover { background: #f3f4f6; }
+
+.addr-save-btn {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 10px;
+  background: #FFC700;
+  color: #000;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.addr-save-btn:hover { background: #e6b300; }
+
+/* ── Cart Page: Delivery Address Panel ── */
+.cart-addr-panel {
+  background: #fff;
+  border-radius: 20px;
+  border: 1.5px solid #e5e7eb;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+
+.cart-addr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.cart-addr-header:hover { background: #f8fafc; }
+
+.cart-addr-header-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.3px;
+}
+
+.cart-addr-selected {
+  padding: 0 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.cart-addr-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #000;
+  margin-top: 6px;
+}
+
+.cart-addr-detail {
+  font-size: 0.8rem;
+  color: #555;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.cart-addr-phone {
+  font-size: 0.78rem;
+  color: #888;
+  font-weight: 600;
+}
+
+.cart-addr-empty {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.75rem 1.25rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FFC700;
+  cursor: pointer;
+  border-top: 1px solid #f1f5f9;
+}
+
+.cart-addr-dropdown {
+  border-top: 1px solid #f1f5f9;
+  padding: 0.5rem 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.cart-addr-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cart-addr-option:hover { background: #f8fafc; border-color: #e5e7eb; }
+.cart-addr-option.selected { background: #FFFBE6; border-color: #FFC700; }
+
+.cart-addr-opt-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #111;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cart-addr-opt-detail {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 500;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.cart-addr-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.65rem 1rem;
+  margin-top: 4px;
+  background: transparent;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #000;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.cart-addr-add-btn:hover { background: #FFFBE6; border-color: #FFC700; }
+
+.cart-addr-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0.5rem 0.25rem;
+}
+
+/* Make the location-selector-dropdown scrollable when address form is open */
+.location-selector-dropdown .location-list {
+  overflow-y: auto;
+  max-height: 520px;
+}
+
+@media (max-width: 768px) {
+  .addr-form-row {
+    grid-template-columns: 1fr;
+  }
+  .cart-addr-panel {
+    margin-bottom: 1rem;
+  }
+  .cart-addr-dropdown {
+    max-height: 250px;
+  }
+}

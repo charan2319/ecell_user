@@ -10,7 +10,7 @@ import ProductDetail from './pages/ProductDetail';
 import ShopAll from './pages/ShopAll';
 import VerifyEmail from './pages/VerifyEmail';
 import HowToEarnVc from './pages/HowToEarnVc';
-import { Search, MapPin, X } from 'lucide-react';
+import { Search, MapPin, X, Plus, Trash2, CheckCircle2, Pencil } from 'lucide-react';
 import { AppContext } from './CartContext';
 import { CustomCartIcon, CustomProfileIcon } from './components/Icons';
 import './index.css';
@@ -25,15 +25,60 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api
 function App() {
   const { 
     cart, searchTerm, setSearchTerm, user, products,
-    userLocation, detecting, handleDetectLocation 
+    userLocation, detecting, handleDetectLocation,
+    savedAddresses, selectedAddressId, addAddress, removeAddress, editAddress, selectAddress, getSelectedAddress
   } = useContext(AppContext);
+
+  // Compute what to display in navbar: saved address takes priority over GPS
+  const selectedAddr = getSelectedAddress();
+  const navLabel = detecting
+    ? 'Scanning area...'
+    : (selectedAddressId && selectedAddr)
+      ? `${selectedAddr.type || 'Home'} · ${selectedAddr.pincode}`
+      : userLocation
+        ? `Delivering to ${userLocation.pincode}`
+        : 'Select Location';
+  const navName = (selectedAddressId && selectedAddr)
+      ? selectedAddr.name
+      : userLocation
+        ? userLocation.name
+        : 'Choose Location';
   const navigate = useNavigate();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [editingAddrId, setEditingAddrId] = useState(null); // navbar edit mode
+  const [addrForm, setAddrForm] = useState({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' });
   const suggestionRef = useRef(null);
   const locationDropdownRef = useRef(null);
   const mobileSearchRef = useRef(null);
+
+  const handleAddrChange = e => setAddrForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const startEditAddr = (e, addr) => {
+    e.stopPropagation();
+    setEditingAddrId(addr.id);
+    setAddrForm({ name: addr.name, phone: addr.phone, house: addr.house, area: addr.area, city: addr.city, state: addr.state, pincode: addr.pincode, type: addr.type || 'Home' });
+    setShowAddressForm(false);
+  };
+
+  const handleAddAddress = (e) => {
+    e.preventDefault();
+    const { name, phone, house, area, city, state, pincode } = addrForm;
+    if (!name || !phone || !house || !area || !city || !state || !pincode) {
+      alert('Please fill in all address fields.');
+      return;
+    }
+    if (editingAddrId) {
+      editAddress(editingAddrId, addrForm);
+      setEditingAddrId(null);
+    } else {
+      addAddress(addrForm);
+    }
+    setAddrForm({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' });
+    setShowAddressForm(false);
+  };
 
 
   // Close suggestions, location dropdown, and mobile search when clicking outside
@@ -98,50 +143,132 @@ function App() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <MapPin size={20} strokeWidth={2} />
                   <div className={`nav-location-text ${detecting ? 'locating' : ''}`}>
-                    <span className="delivering-to-label">
-                      {detecting ? 'Scanning area...' : (userLocation ? `Delivering to ${userLocation.pincode}` : 'Select Location')}
-                    </span>
+                    <span className="delivering-to-label">{navLabel}</span>
                     <div className="location-main-display">
-                      <span className="location-name-text">
-                        {detecting ? 'Locating...' : (userLocation ? userLocation.name : 'Choose Location')}
-                      </span>
+                      <span className="location-name-text">{navName}</span>
                       <span className="dropdown-chevron" style={{ transition: 'transform 0.3s', transform: showLocationDropdown ? 'rotate(180deg)' : 'none' }}>▼</span>
                     </div>
                   </div>
                 </div>
               </div>
               {showLocationDropdown && (
-                  <>
-                    <div className="location-overlay" onClick={(e) => { e.stopPropagation(); setShowLocationDropdown(false); }}></div>
-                    <div className="location-selector-dropdown" onClick={(e) => e.stopPropagation()}>
-                    <div className="dropdown-header">Set your delivery location</div>
+                <>
+                  <div className="location-overlay" onClick={(e) => { e.stopPropagation(); setShowLocationDropdown(false); setShowAddressForm(false); }}></div>
+                  <div className="location-selector-dropdown" onClick={(e) => e.stopPropagation()}>
+                    <div className="dropdown-header">Choose Delivery Location</div>
                     <div className="location-list">
-                      <div 
-                        className="location-item detect-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDetectLocation();
-                        }}
-                      >
+
+                      {/* GPS detect */}
+                      <div className="location-item detect-btn" onClick={(e) => { e.stopPropagation(); handleDetectLocation(); }}>
                         <MapPin size={18} />
                         <div className="location-info">
-                          <div className="location-name">
-                            {detecting ? 'Detecting your area...' : 'Use My Current Location'}
-                          </div>
-                          <div className="location-pin">Fast & accurate via browser</div>
+                          <div className="location-name">{detecting ? 'Detecting...' : 'Use My Current Location'}</div>
+                          <div className="location-pin">Fast & accurate via GPS</div>
                         </div>
                       </div>
+
+                      {/* Saved addresses */}
+                      {savedAddresses.length > 0 && (
+                        <div className="addr-saved-list">
+                          <div className="addr-list-label">SAVED ADDRESSES</div>
+                          {savedAddresses.map(addr => (
+                            editingAddrId === addr.id ? (
+                              <form key={addr.id} className="addr-form" onSubmit={handleAddAddress}>
+                                <div className="addr-form-title">Edit Address</div>
+                                <div className="addr-form-row">
+                                  <input name="name" placeholder="Full Name *" value={addrForm.name} onChange={handleAddrChange} required />
+                                  <input name="phone" placeholder="Phone *" value={addrForm.phone} onChange={handleAddrChange} required />
+                                </div>
+                                <input name="house" placeholder="House / Flat / Block No. *" value={addrForm.house} onChange={handleAddrChange} required />
+                                <input name="area" placeholder="Street / Area / Colony *" value={addrForm.area} onChange={handleAddrChange} required />
+                                <div className="addr-form-row">
+                                  <input name="city" placeholder="City *" value={addrForm.city} onChange={handleAddrChange} required />
+                                  <input name="state" placeholder="State *" value={addrForm.state} onChange={handleAddrChange} required />
+                                </div>
+                                <div className="addr-form-row">
+                                  <input name="pincode" placeholder="Pincode *" value={addrForm.pincode} onChange={handleAddrChange} required />
+                                  <select name="type" value={addrForm.type} onChange={handleAddrChange}>
+                                    <option value="Home">Home</option>
+                                    <option value="Work">Work</option>
+                                    <option value="Other">Other</option>
+                                  </select>
+                                </div>
+                                <div className="addr-form-actions">
+                                  <button type="button" className="addr-cancel-btn" onClick={() => { setEditingAddrId(null); setAddrForm({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' }); }}>Cancel</button>
+                                  <button type="submit" className="addr-save-btn">Update</button>
+                                </div>
+                              </form>
+                            ) : (
+                              <div
+                                key={addr.id}
+                                className={`location-item addr-card ${selectedAddressId === addr.id ? 'active' : ''}`}
+                                onClick={() => { selectAddress(addr.id); setShowLocationDropdown(false); }}
+                              >
+                                <div className="addr-type-badge">{addr.type || 'Home'}</div>
+                                <div className="location-info" style={{flex:1}}>
+                                  <div className="location-name">{addr.name} · {addr.phone}</div>
+                                  <div className="location-pin">{addr.house}, {addr.area}, {addr.city} - {addr.pincode}</div>
+                                </div>
+                                {selectedAddressId === addr.id && <CheckCircle2 size={16} color="#FFC700" />}
+                                <button className="addr-edit-btn" onClick={(e) => startEditAddr(e, addr)}>
+                                  <Pencil size={13} />
+                                </button>
+                                <button className="addr-remove-btn" onClick={(e) => { e.stopPropagation(); removeAddress(addr.id); }}>
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
+                            )
+                          ))}
+                        </div>
+                      )}
+
+                      {/* GPS detected location — selectable */}
                       {userLocation && (
-                        <div 
-                          className="location-item active saved-location"
-                          onClick={() => setShowLocationDropdown(false)}
+                        <div
+                          className={`location-item saved-location ${!selectedAddressId ? 'active' : ''}`}
+                          onClick={() => { selectAddress(null); setShowLocationDropdown(false); }}
                         >
                           <MapPin size={18} />
                           <div className="location-info">
                             <div className="location-name">{userLocation.name}</div>
-                            <div className="location-pin">{userLocation.pincode}</div>
+                            <div className="location-pin">{userLocation.pincode} · GPS Location</div>
                           </div>
+                          {!selectedAddressId && <CheckCircle2 size={16} color="#FFC700" />}
                         </div>
+                      )}
+
+                      {/* Add new address button / form */}
+                      {!showAddressForm && !editingAddrId && (
+                        <button className="addr-add-new-btn" onClick={() => setShowAddressForm(true)}>
+                          <Plus size={15} /> Add New Address
+                        </button>
+                      )}
+                      {showAddressForm && (
+                        <form className="addr-form" onSubmit={handleAddAddress}>
+                          <div className="addr-form-title">Add New Address</div>
+                          <div className="addr-form-row">
+                            <input name="name" placeholder="Full Name *" value={addrForm.name} onChange={handleAddrChange} required />
+                            <input name="phone" placeholder="Phone *" value={addrForm.phone} onChange={handleAddrChange} required />
+                          </div>
+                          <input name="house" placeholder="House / Flat / Block No. *" value={addrForm.house} onChange={handleAddrChange} required />
+                          <input name="area" placeholder="Street / Area / Colony *" value={addrForm.area} onChange={handleAddrChange} required />
+                          <div className="addr-form-row">
+                            <input name="city" placeholder="City *" value={addrForm.city} onChange={handleAddrChange} required />
+                            <input name="state" placeholder="State *" value={addrForm.state} onChange={handleAddrChange} required />
+                          </div>
+                          <div className="addr-form-row">
+                            <input name="pincode" placeholder="Pincode *" value={addrForm.pincode} onChange={handleAddrChange} required />
+                            <select name="type" value={addrForm.type} onChange={handleAddrChange}>
+                              <option value="Home">Home</option>
+                              <option value="Work">Work</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                          <div className="addr-form-actions">
+                            <button type="button" className="addr-cancel-btn" onClick={() => setShowAddressForm(false)}>Cancel</button>
+                            <button type="submit" className="addr-save-btn">Save Address</button>
+                          </div>
+                        </form>
                       )}
                     </div>
                   </div>

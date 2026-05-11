@@ -16,6 +16,11 @@ function OrderHistory() {
   const parseLocation = (locStr) => {
     try {
       const parsed = JSON.parse(locStr);
+      if (parsed.house) {
+        // Structured saved address: { name, phone, house, area, city, state, pincode, type }
+        return `${parsed.name} — ${parsed.house}, ${parsed.area}, ${parsed.city}, ${parsed.state} - ${parsed.pincode}`;
+      }
+      // GPS detected: { name, pincode, full }
       return parsed.full || `${parsed.name} ${parsed.pincode}`.trim();
     } catch {
       return locStr || 'Not Specified';

@@ -28,6 +28,74 @@ export const AppProvider = ({ children }) => {
     });
     const [detecting, setDetecting] = useState(false);
 
+    // ── Saved Addresses (Amazon/Flipkart-style) ──
+    const [savedAddresses, setSavedAddresses] = useState(() => {
+        const saved = localStorage.getItem('savedAddresses');
+        try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    });
+    const [selectedAddressId, setSelectedAddressId] = useState(() => {
+        return localStorage.getItem('selectedAddressId') || null;
+    });
+
+    useEffect(() => {
+        localStorage.setItem('savedAddresses', JSON.stringify(savedAddresses));
+    }, [savedAddresses]);
+
+    useEffect(() => {
+        if (selectedAddressId) localStorage.setItem('selectedAddressId', selectedAddressId);
+    }, [selectedAddressId]);
+
+    const addAddress = (addressData) => {
+        const newAddr = {
+            id: Date.now().toString(),
+            ...addressData,
+            createdAt: new Date().toISOString()
+        };
+        setSavedAddresses(prev => {
+            const updated = [...prev, newAddr];
+            localStorage.setItem('savedAddresses', JSON.stringify(updated));
+            return updated;
+        });
+        setSelectedAddressId(newAddr.id);
+        localStorage.setItem('selectedAddressId', newAddr.id);
+        return newAddr;
+    };
+
+    const removeAddress = (id) => {
+        setSavedAddresses(prev => {
+            const remaining = prev.filter(a => a.id !== id);
+            localStorage.setItem('savedAddresses', JSON.stringify(remaining));
+            if (selectedAddressId === id) {
+                const newSelected = remaining.length > 0 ? remaining[0].id : null;
+                setSelectedAddressId(newSelected);
+                if (newSelected) localStorage.setItem('selectedAddressId', newSelected);
+                else localStorage.removeItem('selectedAddressId');
+            }
+            return remaining;
+        });
+    };
+
+    const selectAddress = (id) => {
+        setSelectedAddressId(id);
+        if (id) {
+            localStorage.setItem('selectedAddressId', id);
+        } else {
+            localStorage.removeItem('selectedAddressId');
+        }
+    };
+
+    const editAddress = (id, updatedData) => {
+        setSavedAddresses(prev => {
+            const updated = prev.map(a => a.id === id ? { ...a, ...updatedData } : a);
+            localStorage.setItem('savedAddresses', JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const getSelectedAddress = () => {
+        return savedAddresses.find(a => a.id === selectedAddressId) || savedAddresses[0] || null;
+    };
+
     const reverseGeocode = async (lat, lon) => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -167,7 +235,9 @@ export const AppProvider = ({ children }) => {
             user, login, logout, updateUser, refreshUser, 
             searchTerm, setSearchTerm, 
             products, loading, setLoading, fetchProducts,
-            userLocation, detecting, handleDetectLocation
+            userLocation, detecting, handleDetectLocation,
+            savedAddresses, selectedAddressId,
+            addAddress, removeAddress, editAddress, selectAddress, getSelectedAddress
         }}>
             {children}
         </AppContext.Provider>

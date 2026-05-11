@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../CartContext';
-import { ArrowLeft, ShoppingCart, Truck } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Truck, MapPin, Plus, CheckCircle2, ChevronDown, ChevronUp, Trash2, Pencil } from 'lucide-react';
 import axios from 'axios';
 import { CustomCartIcon } from '../components/Icons';
 import { API_BASE } from '../config';
@@ -9,8 +9,35 @@ import checkmarkImage from '../assets/checkmark.png';
 import coinImg from '../assets/coin.png';
 
 function Cart() {
-  const { cart, removeFromCart, clearCart, user, updateUser } = useContext(AppContext);
+  const { cart, removeFromCart, clearCart, user, updateUser, savedAddresses, selectedAddressId, selectAddress, addAddress, editAddress, getSelectedAddress, userLocation } = useContext(AppContext);
   const navigate = useNavigate();
+  const [showAddressPanel, setShowAddressPanel] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingAddrId, setEditingAddrId] = useState(null);
+  const [addrForm, setAddrForm] = useState({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' });
+
+  const handleAddrChange = e => setAddrForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const startEditAddr = (addr) => {
+    setEditingAddrId(addr.id);
+    setAddrForm({ name: addr.name, phone: addr.phone, house: addr.house, area: addr.area, city: addr.city, state: addr.state, pincode: addr.pincode, type: addr.type || 'Home' });
+    setShowAddForm(false);
+  };
+
+  const handleSaveAddr = (e) => {
+    e.preventDefault();
+    const { name, phone, house, area, city, state, pincode } = addrForm;
+    if (!name || !phone || !house || !area || !city || !state || !pincode) { alert('Fill all fields'); return; }
+    if (editingAddrId) {
+      editAddress(editingAddrId, addrForm);
+      setEditingAddrId(null);
+    } else {
+      addAddress(addrForm);
+    }
+    setAddrForm({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' });
+    setShowAddForm(false);
+    setShowAddressPanel(false);
+  };
   const [orderConfirmed, setOrderConfirmed] = useState(false);
 
   // Track qty per item locally (starts from cart qty)
@@ -59,11 +86,14 @@ function Cart() {
       alert("Insufficient Vc's balance!");
       return;
     }
+    const selAddr = getSelectedAddress();
+    if (!selAddr) {
+      alert('Please select or add a delivery address before placing the order.');
+      setShowAddressPanel(true);
+      return;
+    }
     try {
-      const savedLocation = localStorage.getItem('userLocation');
-      const locationObj = savedLocation ? JSON.parse(savedLocation) : null;
-      const deliveryLocation = locationObj ? JSON.stringify(locationObj) : 'Processing';
-
+      const deliveryLocation = JSON.stringify(selAddr);
       await axios.post(`${API_BASE}/orders`, {
         user_id: user.id,
         total_vc: total,
@@ -203,8 +233,95 @@ function Cart() {
             ))}
           </div>
 
-          {/* RIGHT — Price Summary */}
+          {/* RIGHT — Delivery Address + Price Summary */}
           <div className="cart-right-col">
+
+            {/* ── Delivery Address Panel ── */}
+            <div className="cart-addr-panel">
+              <div className="cart-addr-header" onClick={() => setShowAddressPanel(p => !p)}>
+                <div style={{display:'flex', alignItems:'center', gap:8}}>
+                  <MapPin size={16} color="#FFC700" />
+                  <span className="cart-addr-header-title">Deliver To</span>
+                </div>
+                {showAddressPanel ? <ChevronUp size={16}/> : <ChevronDown size={16}/>}
+              </div>
+
+              {(() => {
+                const sel = getSelectedAddress();
+                return sel ? (
+                  <div className="cart-addr-selected">
+                    <span className="cart-addr-type-tag">{sel.type}</span>
+                    <span className="cart-addr-name">{sel.name}</span>
+                    <span className="cart-addr-detail">{sel.house}, {sel.area}, {sel.city}, {sel.state} - {sel.pincode}</span>
+                    <span className="cart-addr-phone">{sel.phone}</span>
+                  </div>
+                ) : (
+                  <div className="cart-addr-empty" onClick={() => setShowAddressPanel(true)}>
+                    <Plus size={14}/> Add delivery address
+                  </div>
+                );
+              })()}
+
+              {showAddressPanel && (
+                <div className="cart-addr-dropdown">
+                  {savedAddresses.map(addr => (
+                    editingAddrId === addr.id ? (
+                      <form key={addr.id} className="cart-addr-form" onSubmit={handleSaveAddr}>
+                        <div style={{fontWeight:800, fontSize:'0.82rem', color:'#000', marginBottom:4}}>Edit Address</div>
+                        <div className="addr-form-row"><input name="name" placeholder="Full Name *" value={addrForm.name} onChange={handleAddrChange}/><input name="phone" placeholder="Phone *" value={addrForm.phone} onChange={handleAddrChange}/></div>
+                        <input name="house" placeholder="House / Flat No. *" value={addrForm.house} onChange={handleAddrChange}/>
+                        <input name="area" placeholder="Street / Area *" value={addrForm.area} onChange={handleAddrChange}/>
+                        <div className="addr-form-row"><input name="city" placeholder="City *" value={addrForm.city} onChange={handleAddrChange}/><input name="state" placeholder="State *" value={addrForm.state} onChange={handleAddrChange}/></div>
+                        <div className="addr-form-row">
+                          <input name="pincode" placeholder="Pincode *" value={addrForm.pincode} onChange={handleAddrChange}/>
+                          <select name="type" value={addrForm.type} onChange={handleAddrChange}><option>Home</option><option>Work</option><option>Other</option></select>
+                        </div>
+                        <div className="addr-form-actions">
+                          <button type="button" className="addr-cancel-btn" onClick={() => { setEditingAddrId(null); setAddrForm({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' }); }}>Cancel</button>
+                          <button type="submit" className="addr-save-btn">Update</button>
+                        </div>
+                      </form>
+                    ) : (
+                      <div
+                        key={addr.id}
+                        className={`cart-addr-option ${selectedAddressId === addr.id ? 'selected' : ''}`}
+                        onClick={() => { selectAddress(addr.id); setShowAddressPanel(false); }}
+                      >
+                        <div style={{display:'flex', alignItems:'center', gap:6, flex:1}}>
+                          {selectedAddressId === addr.id && <CheckCircle2 size={14} color="#FFC700"/>}
+                          <div>
+                            <div className="cart-addr-opt-name"><span className="cart-addr-type-tag">{addr.type}</span> {addr.name} &middot; {addr.phone}</div>
+                            <div className="cart-addr-opt-detail">{addr.house}, {addr.area}, {addr.city}, {addr.state} - {addr.pincode}</div>
+                          </div>
+                        </div>
+                        <button className="addr-edit-btn" onClick={(e) => { e.stopPropagation(); startEditAddr(addr); }}>
+                          <Pencil size={13}/>
+                        </button>
+                      </div>
+                    )
+                  ))}
+                  {!showAddForm && !editingAddrId ? (
+                    <button className="cart-addr-add-btn" onClick={() => setShowAddForm(true)}><Plus size={14}/> Add New Address</button>
+                  ) : showAddForm ? (
+                    <form className="cart-addr-form" onSubmit={handleSaveAddr}>
+                      <div className="addr-form-row"><input name="name" placeholder="Full Name *" value={addrForm.name} onChange={handleAddrChange}/><input name="phone" placeholder="Phone *" value={addrForm.phone} onChange={handleAddrChange}/></div>
+                      <input name="house" placeholder="House / Flat No. *" value={addrForm.house} onChange={handleAddrChange}/>
+                      <input name="area" placeholder="Street / Area *" value={addrForm.area} onChange={handleAddrChange}/>
+                      <div className="addr-form-row"><input name="city" placeholder="City *" value={addrForm.city} onChange={handleAddrChange}/><input name="state" placeholder="State *" value={addrForm.state} onChange={handleAddrChange}/></div>
+                      <div className="addr-form-row">
+                        <input name="pincode" placeholder="Pincode *" value={addrForm.pincode} onChange={handleAddrChange}/>
+                        <select name="type" value={addrForm.type} onChange={handleAddrChange}><option>Home</option><option>Work</option><option>Other</option></select>
+                      </div>
+                      <div className="addr-form-actions">
+                        <button type="button" className="addr-cancel-btn" onClick={() => setShowAddForm(false)}>Cancel</button>
+                        <button type="submit" className="addr-save-btn">Save</button>
+                      </div>
+                    </form>
+                  ) : null}
+                </div>
+              )}
+            </div>
+
             <div className="cart-price-panel">
               <h3 className="cart-price-panel-title">Price Details</h3>
               <div className="cart-price-row">

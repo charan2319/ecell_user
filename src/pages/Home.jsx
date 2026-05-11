@@ -65,7 +65,6 @@ function Home() {
   const [event, setEvent] = useState(null);
   const [brands, setBrands] = useState([]);
   const [aboutImage, setAboutImage] = useState(null);
-  const [activeCategory, setActiveCategory] = useState('All products');
 
   // Name Modal State
   const [showNameModal, setShowNameModal] = useState(false);
@@ -132,16 +131,22 @@ function Home() {
   const nextHero = () => setCurrentHero((currentHero + 1) % heroImages.length);
   const prevHero = () => setCurrentHero((currentHero - 1 + heroImages.length) % heroImages.length);
 
-  const categories = ['All products', ...new Set(products.map(p => p.category))];
+  const categories = ['All products', ...new Set(products.map(p => p.category).filter(Boolean))];
 
-  const filteredProducts = products.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = activeCategory === 'All products' || p.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredProducts = searchTerm
+    ? products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    : products;
 
-  const mainProducts = filteredProducts; // Show all products that match search/category
+  const mainProducts = filteredProducts;
   const newProducts = products.filter(p => p.is_new_arrival === true || p.is_new_arrival === 'true');
+
+  const handleCategoryClick = (cat) => {
+    if (cat === 'All products') {
+      navigate('/shop-all');
+    } else {
+      navigate(`/shop-all?category=${encodeURIComponent(cat)}`);
+    }
+  };
 
   return (
     <div className="home-layout">
@@ -189,8 +194,8 @@ function Home() {
           {categories.map(cat => (
             <button
               key={cat}
-              className={`pill ${activeCategory === cat ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat)}
+              className="pill"
+              onClick={() => handleCategoryClick(cat)}
             >
               {cat}
             </button>
