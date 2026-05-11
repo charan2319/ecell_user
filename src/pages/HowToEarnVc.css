@@ -1,14 +1,18 @@
 .earn-vc-page {
-  background-color: #f0f0f0;
-  min-height: calc(100vh - 130px); /* Adjust for header */
-  padding: 0;
-  width: 100%;
+  background-color: #ededed;
+  min-height: 100vh;
+  padding: 1.5rem 2rem 5rem 2rem;
+  font-family: 'Inter', sans-serif;
+  color: #000;
+}
+
+.earn-vc-container {
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .earn-vc-header {
-  padding: 1.5rem 2.5rem;
-  display: flex;
-  align-items: center;
+  margin-bottom: 2rem;
 }
 
 .earn-vc-back-btn {
@@ -16,68 +20,122 @@
   border: none;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.6rem;
   cursor: pointer;
   padding: 0;
   color: #000;
-}
-
-.earn-vc-title {
-  font-size: 1.1rem;
   font-weight: 700;
-  font-family: 'Inter', sans-serif;
-  margin-top: 2px;
+  font-size: 0.9rem;
 }
 
-.earn-vc-content {
+.earn-vc-intro {
+  margin-bottom: 3.5rem;
+}
+
+.section-header-text {
+  font-size: 2.2rem;
+  font-weight: 850;
+  margin-bottom: 1.25rem;
+  color: #000;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.intro-paragraph {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #000;
+  font-weight: 500;
+  max-width: 950px;
+}
+
+.main-page-title {
+  font-size: 1.85rem;
+  font-weight: 850;
+  margin-bottom: 2.5rem;
+  color: #000;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.vc-reward-section {
+  margin-bottom: 3.5rem;
+}
+
+.vc-reward-tier-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #000;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.vc-reward-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.vc-reward-card {
+  background-color: #242424;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  padding: 2rem 2.5rem;
-  max-width: 900px;
-  margin: 0 auto;
+  justify-content: center;
+  text-align: center;
+  min-height: 180px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.earn-vc-card {
-  width: 100%;
-  background: transparent;
-  border: 1px solid #4a4a4a;
-  border-radius: 12px;
-  padding: 1.5rem 3rem;
+.vc-reward-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.vc-reward-icon-box {
+  margin-bottom: 1.5rem;
+  color: #FFC700;
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  justify-content: center;
 }
 
-.earn-vc-img-icon {
-  width: 80px;
-  height: 80px;
+.vc-reward-img-icon {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  flex-shrink: 0;
 }
 
-.earn-vc-text {
-  font-size: 1.25rem;
+.vc-reward-card-text {
+  color: #fff;
+  font-size: 0.9rem;
   font-weight: 500;
-  color: #111;
+  line-height: 1.4;
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
-  .earn-vc-card {
-    padding: 1rem 1.5rem;
-    gap: 1.5rem;
+  .earn-vc-page {
+    padding: 1rem;
   }
-  .earn-vc-text {
-    font-size: 1rem;
+  .vc-reward-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
   }
-  .earn-vc-header {
-    padding: 1rem 1.5rem;
+  .vc-reward-card {
+    padding: 1.5rem 1rem;
+    min-height: 150px;
   }
-  .earn-vc-content {
-    padding: 1rem 1.5rem;
+  .section-header-text {
+    font-size: 1.8rem;
+  }
+  .main-page-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .vc-reward-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }

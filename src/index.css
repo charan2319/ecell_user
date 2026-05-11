@@ -724,7 +724,7 @@ a {
   margin-top: 2rem;
   flex-wrap: nowrap;
   width: max-content;
-  animation: brandsScroll 40s linear infinite;
+  animation: brandsScroll 12s linear infinite;
 }
 
 .brands-row:hover {
