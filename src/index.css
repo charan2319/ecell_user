@@ -722,7 +722,7 @@ a {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: brandsScroll 20s linear infinite;
+  animation: brandsScroll 50s linear infinite;
   transform: translateZ(0); /* force GPU layer */
   backface-visibility: hidden;
 }
