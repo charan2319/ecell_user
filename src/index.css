@@ -331,7 +331,7 @@ a {
   font-weight: 800;
   margin-bottom: 1.5rem;
   margin-top: 2.5rem;
-  font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Value Sans Pro', 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 
@@ -983,6 +983,7 @@ a {
     margin-top: clamp(0.75rem, 3vw, 1.25rem) !important;
     margin-bottom: clamp(0.5rem, 2vw, 0.75rem) !important;
     font-size: clamp(1.1rem, 4.5vw, 1.5rem) !important;
+    font-family: 'Value Sans Pro', 'Work Sans', sans-serif !important;
   }
 
   /* ===== ABOUT US SECTION ===== */

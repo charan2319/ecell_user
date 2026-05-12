@@ -48,9 +48,9 @@ function Login() {
     
     // Client-side domain check
     const domain = email.toLowerCase().split('@')[1];
-    const allowedDomains = ['alliance.edu.in', 'ced.alliance.edu.in'];
+    const allowedDomains = ['alliance.edu.in', 'ced.alliance.edu.in', 'stu.alliance.edu.in'];
     if (!allowedDomains.includes(domain)) {
-      setError('Please use your Alliance University email (@alliance.edu.in or @ced.alliance.edu.in)');
+      setError('Please use your Alliance University email (@alliance.edu.in, @ced.alliance.edu.in or @stu.alliance.edu.in)');
       return;
     }
     setLoading(true);
