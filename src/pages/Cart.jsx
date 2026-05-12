@@ -9,7 +9,7 @@ import checkmarkImage from '../assets/checkmark.png';
 import coinImg from '../assets/coin.png';
 
 function Cart() {
-  const { cart, removeFromCart, clearCart, user, updateUser, savedAddresses, selectedAddressId, selectAddress, addAddress, editAddress, getSelectedAddress, userLocation } = useContext(AppContext);
+  const { cart, removeFromCart, clearCart, user, updateUser, savedAddresses, selectedAddressId, selectAddress, addAddress, editAddress, getSelectedAddress, userLocation, updateCartItemQty } = useContext(AppContext);
   const navigate = useNavigate();
   const [showAddressPanel, setShowAddressPanel] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -46,6 +46,12 @@ function Cart() {
     cart.forEach(item => { init[item.id] = item.qty || 1; });
     return init;
   });
+
+  const handleQtyChange = (id, newQty) => {
+    setQuantities(prev => ({ ...prev, [id]: newQty }));
+    // Sync back to CartContext so qty persists across navigation
+    if (updateCartItemQty) updateCartItemQty(id, newQty);
+  };
 
   const [selectedItemIds, setSelectedItemIds] = useState(() => cart.map(item => item.id));
 
@@ -94,11 +100,14 @@ function Cart() {
     }
     try {
       const deliveryLocation = JSON.stringify(selAddr);
+      const token = localStorage.getItem('userToken');
       await axios.post(`${API_BASE}/orders`, {
         user_id: user.id,
         total_vc: total,
         items: itemsToCheckout.map(i => ({ ...i, quantity: getQty(i.id) })),
         delivery_location: deliveryLocation
+      }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       updateUser({ points: user.points - total });
       clearCart();
@@ -209,7 +218,7 @@ function Cart() {
                   <select
                     className="cart-qty-select"
                     value={getQty(item.id)}
-                    onChange={e => setQuantities(prev => ({ ...prev, [item.id]: Number(e.target.value) }))}
+                    onChange={e => handleQtyChange(item.id, Number(e.target.value))}
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
                       <option key={n} value={n}>Qty: {n}</option>

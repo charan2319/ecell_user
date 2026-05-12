@@ -93,7 +93,15 @@ export const AppProvider = ({ children }) => {
     };
 
     const getSelectedAddress = () => {
-        return savedAddresses.find(a => a.id === selectedAddressId) || savedAddresses[0] || null;
+        if (selectedAddressId) {
+            const found = savedAddresses.find(a => a.id === selectedAddressId);
+            if (found) return found;
+            // Stale ID — the address was deleted; clear it
+            setSelectedAddressId(null);
+            localStorage.removeItem('selectedAddressId');
+            return null;
+        }
+        return null;
     };
 
     const reverseGeocode = async (lat, lon) => {
@@ -223,6 +231,10 @@ export const AppProvider = ({ children }) => {
         });
     };
 
+    const updateCartItemQty = (id, qty) => {
+        setCart(prev => prev.map(i => i.id === id ? { ...i, qty } : i));
+    };
+
     const removeFromCart = (id) => {
         setCart(prev => prev.filter(i => i.id !== id));
     };
@@ -231,7 +243,7 @@ export const AppProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{ 
-            cart, addToCart, removeFromCart, clearCart, 
+            cart, addToCart, removeFromCart, clearCart, updateCartItemQty,
             user, login, logout, updateUser, refreshUser, 
             searchTerm, setSearchTerm, 
             products, loading, setLoading, fetchProducts,
