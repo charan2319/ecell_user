@@ -150,6 +150,10 @@ function Home() {
 
   return (
     <div className="home-layout">
+      {/* SEO Title - Visually Hidden */}
+      <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>
+        Founder's Mart | E-Cell Alliance University | ecellstore
+      </h1>
       {/* 1. Dynamic Hero Slider (Match Image 2) */}
       <section className="hero-slider-container">
         {heroImages.length > 0 ? (
