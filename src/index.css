@@ -714,30 +714,34 @@ a {
   overflow: hidden;
   width: 100%;
   padding: 1rem 0;
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.brands-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: brandsScroll 20s linear infinite;
+  transform: translateZ(0); /* force GPU layer */
+  backface-visibility: hidden;
+}
+
+.brands-track:hover {
+  animation-play-state: paused;
 }
 
 .brands-row {
   display: flex;
   gap: 2.5rem;
-  margin-top: 2rem;
   flex-wrap: nowrap;
-  width: max-content;
-  animation: brandsScroll 12s linear infinite;
-}
-
-.brands-row:hover {
-  animation-play-state: paused;
+  flex-shrink: 0;
+  padding-right: 2.5rem; /* match gap so loop is seamless */
 }
 
 @keyframes brandsScroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0%   { transform: translateX(0) translateZ(0); }
+  100% { transform: translateX(-50%) translateZ(0); }
 }
 
 .brand-box {

@@ -314,18 +314,27 @@ function Home() {
       <div className="section-container" style={{ marginBottom: '5rem' }} id="support">
         <h2 className="section-title" style={{ textAlign: 'center' }}>Trusted Brands</h2>
         <div className="brands-marquee">
-          <div className="brands-row">
-            {brands.length > 0 ? (
-              // Duplicate brands list for seamless loop
-              [...brands, ...brands].map((b, idx) => (
-                <div key={`${b.id}-${idx}`} className="brand-box">
-                  <img src={b.image_url} alt="" className="brand-image" />
-                </div>
-              ))
-            ) : (
-              <p style={{ opacity: 0.5, textAlign: 'center', width: '100%' }}>Syncing trusted partners...</p>
-            )}
-          </div>
+          {brands.length > 0 ? (
+            <div className="brands-track">
+              {/* Two identical rows — track animates -50% for seamless loop */}
+              <div className="brands-row">
+                {brands.map((b) => (
+                  <div key={`a-${b.id}`} className="brand-box">
+                    <img src={b.image_url} alt="" className="brand-image" loading="lazy" />
+                  </div>
+                ))}
+              </div>
+              <div className="brands-row" aria-hidden="true">
+                {brands.map((b) => (
+                  <div key={`b-${b.id}`} className="brand-box">
+                    <img src={b.image_url} alt="" className="brand-image" loading="lazy" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p style={{ opacity: 0.5, textAlign: 'center', width: '100%' }}>Syncing trusted partners...</p>
+          )}
         </div>
       </div>
 
