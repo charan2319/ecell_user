@@ -28,81 +28,133 @@ export const AppProvider = ({ children }) => {
     });
     const [detecting, setDetecting] = useState(false);
 
-    // ── Saved Addresses (Amazon/Flipkart-style) ──
+    // ── Saved Addresses — sourced from the BACKEND (cross-device) ──
+    // localStorage is used only as a fast cache so the UI loads instantly.
+    const addrCacheKey = (uid) => uid ? `addrCache_${uid}` : null;
+
     const [savedAddresses, setSavedAddresses] = useState(() => {
-        const saved = localStorage.getItem('savedAddresses');
-        try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+        const storedUser = localStorage.getItem('user');
+        const uid = storedUser ? JSON.parse(storedUser)?.id : null;
+        const key = addrCacheKey(uid);
+        if (!key) return [];
+        try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
     });
+
     const [selectedAddressId, setSelectedAddressId] = useState(() => {
-        return localStorage.getItem('selectedAddressId') || null;
+        const storedUser = localStorage.getItem('user');
+        const uid = storedUser ? JSON.parse(storedUser)?.id : null;
+        return uid ? (localStorage.getItem(`selAddr_${uid}`) || null) : null;
     });
 
-    useEffect(() => {
-        localStorage.setItem('savedAddresses', JSON.stringify(savedAddresses));
-    }, [savedAddresses]);
-
-    useEffect(() => {
-        if (selectedAddressId) localStorage.setItem('selectedAddressId', selectedAddressId);
-    }, [selectedAddressId]);
-
-    const addAddress = (addressData) => {
-        const newAddr = {
-            id: Date.now().toString(),
-            ...addressData,
-            createdAt: new Date().toISOString()
-        };
-        setSavedAddresses(prev => {
-            const updated = [...prev, newAddr];
-            localStorage.setItem('savedAddresses', JSON.stringify(updated));
-            return updated;
-        });
-        setSelectedAddressId(newAddr.id);
-        localStorage.setItem('selectedAddressId', newAddr.id);
-        return newAddr;
+    // Helper: auth header from stored token
+    const authHeader = () => {
+        const token = localStorage.getItem('userToken');
+        return token ? { Authorization: `Bearer ${token}` } : {};
     };
 
-    const removeAddress = (id) => {
-        setSavedAddresses(prev => {
-            const remaining = prev.filter(a => a.id !== id);
-            localStorage.setItem('savedAddresses', JSON.stringify(remaining));
-            if (selectedAddressId === id) {
-                const newSelected = remaining.length > 0 ? remaining[0].id : null;
-                setSelectedAddressId(newSelected);
-                if (newSelected) localStorage.setItem('selectedAddressId', newSelected);
-                else localStorage.removeItem('selectedAddressId');
-            }
-            return remaining;
-        });
+    // ── Fetch addresses from backend (called on login & app mount if logged in) ──
+    const fetchAddresses = useCallback(async (uid) => {
+        if (!uid) return;
+        try {
+            const res = await axios.get(`${API_BASE}/addresses`, { headers: authHeader() });
+            const addrs = res.data;
+            setSavedAddresses(addrs);
+            // Update cache
+            const key = addrCacheKey(uid);
+            if (key) localStorage.setItem(key, JSON.stringify(addrs));
+        } catch (err) {
+            console.error('Failed to fetch addresses:', err);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // On app start, if a user session exists, re-sync addresses from backend
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            const uid = JSON.parse(storedUser)?.id;
+            if (uid) fetchAddresses(uid);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Keep selectedAddressId in localStorage (it's just a preference, not sensitive data)
+    useEffect(() => {
+        const uid = user?.id;
+        if (!uid) return;
+        if (selectedAddressId) {
+            localStorage.setItem(`selAddr_${uid}`, selectedAddressId);
+        } else {
+            localStorage.removeItem(`selAddr_${uid}`);
+        }
+    }, [selectedAddressId, user]);
+
+    // ── Address CRUD — all backed by API ──
+
+    const addAddress = async (addressData) => {
+        try {
+            const res = await axios.post(`${API_BASE}/addresses`, addressData, { headers: authHeader() });
+            const newAddr = res.data;
+            setSavedAddresses(prev => {
+                const updated = [...prev, newAddr];
+                if (user?.id) localStorage.setItem(addrCacheKey(user.id), JSON.stringify(updated));
+                return updated;
+            });
+            setSelectedAddressId(String(newAddr.id));
+            return newAddr;
+        } catch (err) {
+            console.error('Add address error:', err);
+            alert(err.response?.data?.message || 'Failed to save address. Please try again.');
+        }
+    };
+
+    const removeAddress = async (id) => {
+        try {
+            await axios.delete(`${API_BASE}/addresses/${id}`, { headers: authHeader() });
+            setSavedAddresses(prev => {
+                const remaining = prev.filter(a => String(a.id) !== String(id));
+                if (user?.id) localStorage.setItem(addrCacheKey(user.id), JSON.stringify(remaining));
+                if (String(selectedAddressId) === String(id)) {
+                    const next = remaining.length > 0 ? String(remaining[0].id) : null;
+                    setSelectedAddressId(next);
+                }
+                return remaining;
+            });
+        } catch (err) {
+            console.error('Remove address error:', err);
+            alert(err.response?.data?.message || 'Failed to delete address. Please try again.');
+        }
+    };
+
+    const editAddress = async (id, updatedData) => {
+        try {
+            const res = await axios.put(`${API_BASE}/addresses/${id}`, updatedData, { headers: authHeader() });
+            const updated = res.data;
+            setSavedAddresses(prev => {
+                const list = prev.map(a => String(a.id) === String(id) ? updated : a);
+                if (user?.id) localStorage.setItem(addrCacheKey(user.id), JSON.stringify(list));
+                return list;
+            });
+        } catch (err) {
+            console.error('Edit address error:', err);
+            alert(err.response?.data?.message || 'Failed to update address. Please try again.');
+        }
     };
 
     const selectAddress = (id) => {
-        setSelectedAddressId(id);
-        if (id) {
-            localStorage.setItem('selectedAddressId', id);
-        } else {
-            localStorage.removeItem('selectedAddressId');
-        }
-    };
-
-    const editAddress = (id, updatedData) => {
-        setSavedAddresses(prev => {
-            const updated = prev.map(a => a.id === id ? { ...a, ...updatedData } : a);
-            localStorage.setItem('savedAddresses', JSON.stringify(updated));
-            return updated;
-        });
+        setSelectedAddressId(id ? String(id) : null);
     };
 
     const getSelectedAddress = () => {
-        if (selectedAddressId) {
-            const found = savedAddresses.find(a => a.id === selectedAddressId);
-            if (found) return found;
-            // Stale ID — the address was deleted; clear it
-            setSelectedAddressId(null);
-            localStorage.removeItem('selectedAddressId');
-            return null;
-        }
+        if (!selectedAddressId) return null;
+        const found = savedAddresses.find(a => String(a.id) === String(selectedAddressId));
+        if (found) return found;
+        // Stale reference — address was deleted
+        setSelectedAddressId(null);
         return null;
     };
+
+    // ── Geocoding ──
 
     const reverseGeocode = async (lat, lon) => {
         const controller = new AbortController();
@@ -151,14 +203,16 @@ export const AppProvider = ({ children }) => {
         }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
     };
 
+    // ── Products ──
+
     const fetchProducts = useCallback(async () => {
         try {
             setLoading(true);
             const res = await axios.get(`${API_BASE}/products`);
             const electronicsSubcats = [
-                'laptops', 'headphones', 'earbuds', 'laptop accessories', 
-                'mobile accessories', 'camera accessories', 'lighting', 
-                'smartwatches', 'speakers', 'power banks', 'tablets', 
+                'laptops', 'headphones', 'earbuds', 'laptop accessories',
+                'mobile accessories', 'camera accessories', 'lighting',
+                'smartwatches', 'speakers', 'power banks', 'tablets',
                 'monitors', 'keyboards', 'mice', 'chargers', 'cables'
             ];
             const mappedProducts = res.data.map(p => {
@@ -175,7 +229,6 @@ export const AppProvider = ({ children }) => {
         }
     }, []);
 
-    // Initial auth check
     useEffect(() => {
         fetchProducts(); // eslint-disable-line react-hooks/set-state-in-effect
     }, [fetchProducts]);
@@ -185,9 +238,22 @@ export const AppProvider = ({ children }) => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    const login = (userData) => {
+    // ── Auth ──
+
+    const login = (userData, token) => {
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
+        if (token) localStorage.setItem('userToken', token);
+
+        // Restore cached addresses immediately (fast), then sync from backend
+        const uid = userData?.id;
+        const key = addrCacheKey(uid);
+        const cached = key ? localStorage.getItem(key) : null;
+        setSavedAddresses(cached ? JSON.parse(cached) : []);
+        setSelectedAddressId(uid ? (localStorage.getItem(`selAddr_${uid}`) || null) : null);
+
+        // Async backend sync — will update state when it arrives
+        if (uid) fetchAddresses(uid);
     };
 
     const updateUser = (updates) => {
@@ -203,8 +269,6 @@ export const AppProvider = ({ children }) => {
         try {
             const res = await axios.get(`${API_BASE}/auth/user/${user.id}`);
             const freshUser = res.data;
-            
-            // Critical check: don't restore if they logged out during the async call
             if (localStorage.getItem('user')) {
                 setUser(freshUser);
                 localStorage.setItem('user', JSON.stringify(freshUser));
@@ -219,7 +283,11 @@ export const AppProvider = ({ children }) => {
         localStorage.removeItem('user');
         localStorage.removeItem('userToken');
         setCart([]);
+        setSavedAddresses([]);
+        setSelectedAddressId(null);
     };
+
+    // ── Cart ──
 
     const addToCart = (product) => {
         setCart(prev => {
@@ -242,10 +310,10 @@ export const AppProvider = ({ children }) => {
     const clearCart = () => setCart([]);
 
     return (
-        <AppContext.Provider value={{ 
+        <AppContext.Provider value={{
             cart, addToCart, removeFromCart, clearCart, updateCartItemQty,
-            user, login, logout, updateUser, refreshUser, 
-            searchTerm, setSearchTerm, 
+            user, login, logout, updateUser, refreshUser,
+            searchTerm, setSearchTerm,
             products, loading, setLoading, fetchProducts,
             userLocation, detecting, handleDetectLocation,
             savedAddresses, selectedAddressId,

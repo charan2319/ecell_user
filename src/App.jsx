@@ -61,7 +61,7 @@ function App() {
     setShowAddressForm(false);
   };
 
-  const handleAddAddress = (e) => {
+  const handleAddAddress = async (e) => {
     e.preventDefault();
     const { name, phone, house, area, city, state, pincode } = addrForm;
     if (!name || !phone || !house || !area || !city || !state || !pincode) {
@@ -69,10 +69,10 @@ function App() {
       return;
     }
     if (editingAddrId) {
-      editAddress(editingAddrId, addrForm);
+      await editAddress(editingAddrId, addrForm);
       setEditingAddrId(null);
     } else {
-      addAddress(addrForm);
+      await addAddress(addrForm);
     }
     setAddrForm({ name:'', phone:'', house:'', area:'', city:'', state:'', pincode:'', type:'Home' });
     setShowAddressForm(false);
